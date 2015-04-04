@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta property="qc:admins" content="330312777765262514665475144" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<title>{$page_title}</title>
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="base.css" rel="stylesheet" type="text/css" />
+<link href="index.css" rel="stylesheet" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{insert_scripts files='common.js,index.js'}
+<style>
+ .mb{width:460px;height:72px;background:#fff;}
+.mb div{float:left;margin-left:15px;}
+.mb4 div{float:left;}
+.mb4{width:225px;height:72px;background:#fff;}
+.mb2{width:50px;height:70px;background:#5edea3;
+text-align:center;font-size:20px;color:#fff;font-weight:900;line-height:29px; margin-left:15px; margin-right:15px;}
+.cy{width:460px;height:50px;background:#5edea3;}
+.cy .cy3{float:left;margin:15px 30px 0 40px;font-size:20px;font-weight:900;}
+.cy .cy4{float:right;margin:8px 30px 0 0;}
+.cy4 a{position:relative;}
+.cy4 p{display: none;}
+.cy4 a:hover{background:none;}
+.cy4:hover p{display:block;position:absolute;top:0px;right:0;}
+.cy2{width:225px;height:50px;background:#5edea3;
+ text-align:center;line-height:50px;color:#fff;font-size:14px;}
+ .cy3,.cy4{width:120px;height:35px;color:#fff;}
+ .cy5{width:225px;height:50px; margin-top:75px;
+ text-align:left;color:#000;font-size:14px;}
+ .big2{width:696px;}
+</style>
+</head>
+<body>
+<script type="text/javascript">
+var process_request = "正在处理您的请求...";
+</script>
+<script type="text/javascript">
+var isWidescreen=screen.width<1200;
+if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
+</script>
+<div class="header container">
+  <div class="top">
+    <div class="logo"><a class="icon-common-logo" href="index.php" title=""><img src="themes/www_zuimoban_com/images/logo.png" /></a></div>
+    <div class="right clearfix">
+      <div class="menu">
+        <ul class="clearfix">
+          <li>
+            <script type="text/javascript" src="js/transport.js"></script>
+            <script type="text/javascript" src="js/utils.js"></script>
+            <label id="header_menu_top_login"><font id="ECS_MEMBERZONE">{insert name='member_info'}</font></label>
+          </li>
+         
+        </ul>
+      </div>
+       <div style="margin-top:3px;" class="xshop buy_car_bg clearfix"  onmouseover="this.className='xshop hover_on buy_car_bg ul1_on'" onmouseout=  "this.className='xshop buy_car_bg'">
+        
+        <img src="../images/nav_cat.gif" style="float:left; padding-right:5px; padding-left:10px; padding-top:7px;" /> 
+        <div id="ECS_CARTINFO">
+
+   <p><a href="flow.php">{insert name='cart_info'}</a></p>
+   </div> </div>
+     
+      
+     
+    </div>
+  </div>
+  <div style="width:auto;height:120px;background:#de0015;">
+  <div style="margin:0 auto;width:998px;"><img src="../images/165.jpg"></div>
+  </div>
+  <div class="nav">
+   
+      <div class="lnks headerblock">
+        <ul class="lnks-li">
+          <li><a class="lnk  {if $navigator_list.config.index eq 1}on{/if}" href="index.php">首页</a></li>
+          
+		  <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+            <?php
+            $GLOBALS['smarty']->assign('get_child_tree', get_child_tree($GLOBALS['smarty']->_var['nav']['cid']));
+            $GLOBALS['smarty']->assign('menucatid',get_catid_byurl($GLOBALS['smarty']->_var['nav']['url']));
+            ?>
+          <li {if $menucatid && $get_child_tree}class="phonelistarr" onmouseover="this.className='phonelistarr nhover'" onmouseout="this.className='phonelistarr'"{/if}><a class="lnk {if $nav.active eq 1}on{/if}" href="{$nav.url}"> {$nav.name} </a>
+            {if $menucatid && $get_child_tree}
+              <dl>
+                <!--{foreach from=$get_child_tree item=child name=child}-->             
+                <dd {if $smarty.foreach.subcates.last}class="last"{/if}><a href="{$child.url}" title="{$cat.name|escape:html}">{$child.name}</a></dd>
+                <!--{/foreach}-->
+              </dl>
+            {/if}	
+          </li>
+		  <!-- {/foreach} -->
+        </ul>
+      </div>
+    </div>
+    
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="themes/www_zuimoban_com/js/jquery.js"></script>
+<script type="text/javascript" src="themes/www_zuimoban_com/js/xm.js"></script>
+
+
+<script type="text/javascript">
+document.getElementById("div_all_cat").className = "showlist";
+</script>
+
+<div class="container">
+  <div class="fpics row clearfix">
+
+    <div class="span12">
+      <div id="yc-mod-slider">
+        <div id="xmFocus" class="xmFocus">
+		<!--{foreach from=get_flash_xml() item=playerdb name=get_flash_xml}-->
+          <div style="background: url({$playerdb.src}) no-repeat scroll center 50% rgb(255, 255, 255); display: block;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px" index="{$smarty.foreach.get_flash_xml.iteration}"><a href="{$playerdb.url}" target="_blank"></a></div>
+		<!--{/foreach}-->   
+          <ul style="width: 80px; right: 50%; margin-right: -465px;">
+		  <!--{foreach from=get_flash_xml() item=playerdb name=get_flash_xml}-->
+            <li class="{if $smarty.foreach.get_flash_xml.iteration eq 1}on{/if}" index="{$smarty.foreach.get_flash_xml.iteration}"></li>
+		  <!--{/foreach}-->	
+          </ul>
+        </div>
+        <script type="text/javascript">$(function(){Xmeb.App.xmFocus.init($("#xmFocus"),{mwidth:"auto",autoWidth:true});Xmeb.App.lazyload({defObj:".home_main",defHeight:50});});</script>
+      </div>
+      
+    </div>
+  </div>
+ 
+<!-- 首页第一商品排开始 -->    
+<div class="xm-box">
+ 		<div><img src="../images/Image/qrj.jpg"></div>
+ 		<div>
+			<img src="../images/Image/qrj1.jpg">
+			<img src="../images/Image/qrj2.jpg">
+			<img src="../images/Image/qrj3.jpg">
+		</div>
+   <div class="cy">
+	<div class="cy3">RMB:88</div>
+		<div class="cy4"><a href="goods-18.html"><img src="images/2.png" style="width:120px;height:35px;">
+			<p><img src="images/1.png" style="width:120px;height:35px;"></p></a>
+		</div>
+	</div> 
+			<div><img src="../images/Image/1314.jpg"></div>
+ </div>
+ 
+<!-- 首页第二商品排开始 --> 
+       <div class="xm-box">
+         	<img src="../images/Image/sg.jpg">
+        </div>
+  <!-- 首页第三商品排开始 --> 
+<div class="xm-box">
+    <div>
+		<img src="../images/Image/sg1.jpg">
+		<img src="../images/Image/sg2.jpg">
+		<img src="../images/Image/sg3.jpg">
+		<img src="../images/Image/sg4.jpg">
+		<img src="../images/Image/sg5.jpg">
+		<img src="../images/Image/sg6.jpg">
+	</div>     
+<div class="cy">
+<div class="cy3">RMB:59</div>
+<div class="cy4"><a href="goods-19.html"><img src="images/2.png" style="width:120px;height:35px;">
+<p><img src="images/1.png" style="width:120px;height:35px;"></p></a></div>
+ </div>
+ </div>
+	  
+ <!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
+ <!-- #BeginLibraryItem "/library/right.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->		  
+</html>

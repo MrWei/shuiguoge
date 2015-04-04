@@ -1,0 +1,154 @@
+<!-- $Id: goods_list.htm 15908 2009-05-05 09:22:04Z liuhui $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+<!-- 商品搜索 -->
+<div class="form-div">
+  <form action="javascript:searchGoods()" name="searchForm">
+    <img src="images/icon_search.gif" width="26" height="22" border="0" alt="SEARCH" />
+    {if $smarty.get.act neq "trash"}
+    <!-- 分类 -->
+    <select name="cat_id"><option value="0">所有分类</option>{$cat_list}</select>
+    <!-- 品牌 -->
+    <select name="brand_id"><option value="0">所有品牌</option>{html_options options=$brand_list}</select>
+    <!-- 推荐 -->
+    <select name="intro_type"><option value="0">全部</option>{html_options options=$intro_list selected=$smarty.get.intro_type}</select>
+    {/if}
+    <!-- 关键字 -->
+    关键字 <input type="text" name="keyword" size="15" />
+    <input type="hidden" name="tid" value="{$type_id}" />
+    <input type="submit" value="搜索" class="button" />
+  </form>
+</div>
+
+{literal}
+<script language="JavaScript">
+    function searchGoods()
+    {
+{/literal}
+        {if $smarty.get.act neq "trash"}
+        listTable.filter['cat_id'] = document.forms['searchForm'].elements['cat_id'].value;
+        listTable.filter['brand_id'] = document.forms['searchForm'].elements['brand_id'].value;
+        listTable.filter['intro_type'] = document.forms['searchForm'].elements['intro_type'].value;
+        {/if}
+{literal}
+        listTable.filter['keyword'] = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+        listTable.filter['page'] = 1;
+        listTable.filter['tid'] = document.forms['searchForm'].elements['tid'].value;
+        listTable.loadList();
+    }
+</script>
+{/literal}
+<!-- 商品列表 -->
+<form method="post" action="" name="listForm" onsubmit="return confirmSubmit(this)">
+  <!-- start goods list -->
+  <div class="list-div" id="listDiv">
+{/if}
+<table cellpadding="3" cellspacing="1">
+  <tr>
+    <th>
+     编号
+    </th>
+    <th>商品名称</th>
+    <th>货号</th>
+    <th>价格</th>
+    {if $use_storage}
+    <th>库存</th>
+    {/if}
+    <th>操作</th>
+  <tr>
+  {foreach from=$goods_list item=goods}
+  <tr>
+    <td>{$goods.goods_id}</td>
+    <td class="first-cell" style="{if $goods.is_promote}color:red;{/if}"><a href="/goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name|escape:html}</a></td>
+    <td>{$goods.goods_sn}</td>
+    <td align="right">{$goods.shop_price}</td>
+    {if $use_storage}
+    <td align="right">{if $code eq 'virtual_card'}{$goods.goods_number}{else}{$goods.goods_number}{/if}</td>
+    {/if}
+    <td align="center">
+      <a href="ks_card_goods.php?act=addgood&id={$goods.goods_id}&tid={$type_id}">设置关联</a>
+    </td>
+  </tr>
+  {foreachelse}
+  <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+  {/foreach}
+</table>
+<!-- end goods list -->
+
+<!-- 分页 -->
+<table id="page-table" cellspacing="0">
+  <tr>
+    <td align="right" nowrap="true">
+    {include file="page.htm"}
+    </td>
+  </tr>
+</table>
+
+{if $full_page}
+</div>
+
+</form>
+
+<script type="text/javascript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    startCheckOrder(); // 开始检查订单
+    document.forms['listForm'].reset();
+  }
+
+  /**
+   * @param: bool ext 其他条件：用于转移分类
+   */
+  function confirmSubmit(frm, ext)
+  {
+      if (frm.elements['type'].value == 'trash')
+      {
+          return confirm(batch_trash_confirm);
+      }
+      else if (frm.elements['type'].value == 'not_on_sale')
+      {
+          return confirm(batch_no_on_sale);
+      }
+      else if (frm.elements['type'].value == 'move_to')
+      {
+          ext = (ext == undefined) ? true : ext;
+          return ext && frm.elements['target_cat'].value != 0;
+      }
+      else if (frm.elements['type'].value == '')
+      {
+          return false;
+      }
+      else
+      {
+          return true;
+      }
+  }
+
+  function changeAction()
+  {
+      var frm = document.forms['listForm'];
+
+      // 切换分类列表的显示
+      frm.elements['target_cat'].style.display = frm.elements['type'].value == 'move_to' ? '' : 'none';
+
+      if (!document.getElementById('btnSubmit').disabled &&
+          confirmSubmit(frm, false))
+      {
+          frm.submit();
+      }
+  }
+{/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

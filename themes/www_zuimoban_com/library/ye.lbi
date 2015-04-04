@@ -1,0 +1,70 @@
+<style>
+*{list-style:none;margin:0;padding:0;overflow:hidden}
+.tab1{width:958px;margin:0 auto;margin-top:40px;background:#fff;}
+.menu{width:950px;height:40px;}
+li{float:left;width:150px;text-align:center;line-height:40px;height:40px;cursor:pointer;color:#666;font-size:14px;overflow:hidden}
+.menudiv{width:958px;height:460px;background:#fff;}
+.off{background:#E0E2EB;color:#336699;font-weight:bold}
+</style>
+<script type="text/javascript">
+function setTab(name,cursel){
+	cursel_0=cursel;
+	for(var i=1; i<=links_len; i++){
+		var menu = document.getElementById(name+i);
+		var menudiv = document.getElementById("con_"+name+"_"+i);
+		if(i==cursel){
+			menu.className="off";
+			menudiv.style.display="block";
+		}
+		else{
+			menu.className="";
+			menudiv.style.display="none";
+		}
+	}
+}
+function Next(){                                                        
+	cursel_0++;
+	if (cursel_0>links_len)cursel_0=1
+	setTab(name_0,cursel_0);
+} 
+var name_0='one';
+var cursel_0=1;
+var ScrollTime=3000;//循环周期（毫秒）
+var links_len,iIntervalId;
+onload=function(){
+	var links = document.getElementById("tab1").getElementsByTagName('li')
+	links_len=links.length;
+	for(var i=0; i<links_len; i++){
+		links[i].onmouseover=function(){
+			clearInterval(iIntervalId);
+			this.onmouseout=function(){
+				iIntervalId = setInterval(Next,ScrollTime);;
+			}
+		}
+	}
+	document.getElementById("con_"+name_0+"_"+links_len).parentNode.onmouseover=function(){
+		clearInterval(iIntervalId);
+		this.onmouseout=function(){
+			iIntervalId = setInterval(Next,ScrollTime);;
+		}
+	}
+	setTab(name_0,cursel_0);
+	iIntervalId = setInterval(Next,ScrollTime);
+}
+</script>
+<div class="tab1" id="tab1">
+	<div class="menu">
+		<ul>
+			<li id="one1" onclick="setTab('one',1)">安全监测</li>
+			<li id="one2" onclick="setTab('one',2)">冷链物流</li>
+			<li id="one3" onclick="setTab('one',3)">全球精选</li>
+			<li id="one4" onclick="setTab('one',4)">售后服务</li>
+		</ul>
+	</div>
+	<div class="menudiv">
+	<div id="con_one_1"><img src="../images/bottom/2.jpg"></div>
+	<div id="con_one_2" style="display:none;"><img src="../images/bottom/1.jpg"></div>
+	<div id="con_one_3" style="display:none;"><img src="../images/bottom/0.jpg"></div>
+	<div id="con_one_4" style="display:none;"><img src="../images/bottom/3.jpg"></div>
+	</div>
+</div>

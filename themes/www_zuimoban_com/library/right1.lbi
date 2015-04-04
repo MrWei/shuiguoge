@@ -1,0 +1,73 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+.righttop{position:fixed;right:10px;bottom:80px;height:190px;}
+.righttop div a{display:block;width:40px;height:40px;border:1px solid #e3e3e3;margin-bottom:30px;}
+.righttop div a:hover{ background:#59ad31;}
+.tooltips{position:relative;z-index:2;}/*这个是关键*/
+.tooltips:hover{z-index:3;background:none;}/*没有这个在IE中不可用*/
+.tooltips span,.tooltips p{display: none;}
+.tooltips:hover p{display:block;position:absolute;top:0px;right:0;} 
+.tooltips:hover span{display:block;position:absolute;top:0px;right:44px;}
+.shop{position:relative;z-index:2;}/*这个是关键*/
+.shop:hover{z-index:3;background:none;}/*没有这个在IE中不可用*/
+.shop span,.shop p{display: none;}
+.shop:hover p{display:block;position:absolute;top:0px;right:40px;} 
+.shop:hover span{display:block;position:absolute;top:0px;right:0;}
+.top{position:relative;z-index:2;}/*这个是关键*/
+.top:hover{z-index:3;background:none;}/*没有这个在IE中不可用*/
+.top span,.top p{display: none;}
+.top:hover p{display:block;position:absolute;top:0px;right:40px;}
+.top:hover span{display:block;position:absolute;top:0px;right:0;}
+  </style>
+<div class="righttop">
+<div class="weixin" >
+	<a class="tooltips" href="###"><img src="../images/weixin.png">
+	<p><img src="themes/www_zuimoban_com/images/weixin1.png"></p>
+	<span><img src="themes/www_zuimoban_com/images/weixin.jpg"></span></a>
+ </div>
+ <div class="shop">
+	<a class="shop" href="flow.php"><img src="../images/shop.png" >
+	<p><img src="themes/www_zuimoban_com/images/shop2.jpg"></p>
+	<span><img src="themes/www_zuimoban_com/images/shop1.png"></span></a>
+  </div>
+ <div class="top">
+	<a class="top" href="#"><img src="../images/top.png"> 
+	<p><img src="themes/www_zuimoban_com/images/top2.jpg"></p>
+   <span><img src="themes/www_zuimoban_com/images/top1.png"></span></a>
+</a>
+</div>
+</div>
+
+<!--通用页脚-->
+<style>
+ .bottom{_zoom:1;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;
+border:1px solid  #087C1C;width:958px;/*height:1200px;*/margin: 1px auto 7px auto;padding:2px;}
+.centent{position:absolute;}
+.centent p{ margin:0;height:1000px;overflow:hidden; }
+.centent ul{position:absolute;top:50px;}
+.centent ul li{float:left;width:150px;height:50px;}
+.centent a{display:block;margin:1px;width:20px;height:20px;text-align:center;font:700 12px/20px "宋体",sans-serif;color:#fff;text-decoration:none;background:#666;border:1px solid #fff;filter:alpha(opacity=40);opacity:.4;   }
+.centent a:hover {background:#000}
+</style>
+<div class="bottom">
+	 <img src="../images/bottom/top.jpg">
+ <!--	<div class="centent">
+	<ul>
+			<li><a href="#a" title="">1</a></li>
+            <li><a href="#b" title="">2</a></li>
+            <li><a href="#c" title="">3</a></li>
+            <li><a href="#d" title="">4</a></li>
+            <li><a href="#e" title="">5</a></li>
+            <li><a href="#f" title="">6</a></li>
+    </ul>
+	<p>
+		<span id="a">1</span></br><img src="../images/bottom/0.jpg">
+		<span id="b">2</span></br><img src="../images/bottom/1.jpg">
+		<span id="c">3</span></br><img src="../images/bottom/2.jpg">
+		<span id="d">4</span></br><img src="../images/bottom/3.jpg">
+		<span id="e">5</span></br><img src="../images/bottom/4.jpg">
+		<span id="f">6</span></br><img src="../images/bottom/5.jpg">
+	</p>
+	</div>-->
+</div>
+ 

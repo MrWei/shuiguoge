@@ -1,0 +1,103 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+.righttop{position:fixed;right:10px;bottom:10px;}
+.righttop div a{display:block;width:40px;height:40px;border:1px solid #e3e3e3;margin-bottom:30px;}
+.righttop div a:hover{ background:#59ad31;}
+.tooltips,.qq{position:relative;z-index:2;}/*����ǹؼ�*/
+.tooltips:hover,.qq:hover{z-index:3;background:none;}/*û�������IE�в�����*/
+.tooltips span,.tooltips p,.qq span,.qq p{display: none;}
+.tooltips:hover p,.qq:hover p{display:block;position:absolute;top:0px;right:0;}
+.qq:hover span{display:block;position:absolute;top:0px;right:40px;} 
+.tooltips:hover span,.tel:hover span{display:block;position:absolute;top:0px;right:44px;}
+.shop,.tel{position:relative;z-index:2;}/*����ǹؼ�*/
+.shop:hover,.tel:hover{z-index:3;background:none;}/*û�������IE�в�����*/
+.shop span,.shop p,.tel span,.tel p{display: none;}
+.shop:hover p{display:block;position:absolute;top:0px;right:40px;} 
+.shop:hover span,.tel:hover p{display:block;position:absolute;top:0px;right:0;}
+.top,.ww{position:relative;z-index:2;}/*����ǹؼ�*/
+.top:hover,.ww:hover{z-index:3;background:none;}/*û�������IE�в�����*/
+.top span,.top p,.ww span,.ww p{display: none;}
+.top:hover p,.ww:hover span{display:block;position:absolute;top:0px;right:40px;}
+.top:hover span,.ww:hover p{display:block;position:absolute;top:0px;right:0;}
+</style>
+<div class="righttop">
+<div class="tel">
+	<a class="tel" href="###"><img src="../images/tel.png" >
+	<p><img src="themes/www_zuimoban_com/images/tel1.png"></p>
+	<span><img src="themes/www_zuimoban_com/images/tel.jpg"></span></a>
+</div>
+<div class="qq" >
+<!-- QQ ���� {foreach from=$qq item=im} -->
+     <!-- {if $im} -->
+ 	<a class="qq" href="http://wpa.qq.com/msgrd?v=3&uin={$im}&site=qq&menu=yes" target="_blank">
+	<img src="../images/qq.png">
+	<!-- {/if} -->
+<!--{/foreach} ����QQ���� -->
+	<p><img src="themes/www_zuimoban_com/images/qq1.png"></p>
+	<span><img src="themes/www_zuimoban_com/images/qq.jpg"></span></a>
+ </div>
+<div class="ww">
+ <!-- �Ա����� {foreach from=$ww item=im} -->
+      <!-- {if $im} -->
+ 	<a class="ww" href="http://amos1.taobao.com/msg.ww?v=2&uid={$im|escape:u8_url}&s=2" target="_blank"><img src="../images/ww.png" >	
+	 <!-- {/if} -->
+<!--{/foreach} �����Ա����� -->
+	<p><img src="themes/www_zuimoban_com/images/ww1.png"></p>
+	<span><img src="themes/www_zuimoban_com/images/ww.jpg"></span></a>
+  </div>
+<div class="weixin" >
+	<a class="tooltips" href="###"><img src="../images/weixin.png">
+	<p><img src="themes/www_zuimoban_com/images/weixin1.png"></p>
+	<span><img src="themes/www_zuimoban_com/images/weixin.jpg"></span></a>
+ </div>
+ <div class="shop">
+	<a class="shop" href="flow.php"><img src="../images/shop.png" >
+	<p><img src="themes/www_zuimoban_com/images/shop2.jpg"></p>
+	<span><img src="themes/www_zuimoban_com/images/shop1.png"></span></a>
+  </div>
+ <div class="top">
+	<a class="top" href="#"><img src="../images/top.png"> 
+	<p><img src="themes/www_zuimoban_com/images/top2.jpg"></p>
+   <span><img src="themes/www_zuimoban_com/images/top1.png"></span></a>
+</a>
+</div>
+</div>
+
+<!--通用页脚-->
+<style>
+ .bottom{_zoom:1;width:958px;/*height:1200px;*/margin: 1px auto 7px auto;padding:2px;}
+.centent{position:absolute;}
+.centent p{ margin:0;height:1000px;overflow:hidden; }
+.centent ul{position:absolute;top:50px;}
+.centent ul li{float:left;width:150px;height:50px;}
+.centent a{display:block;margin:1px;width:20px;height:20px;text-align:center;font:700 12px/20px "����",sans-serif;color:#fff;text-decoration:none;background:#666;border:1px solid #fff;filter:alpha(opacity=40);opacity:.4;   }
+.centent a:hover {background:#000}
+</style>
+<div class="xm-box" >
+	 <img src="../images/bottom/top.jpg">
+ <div id="com_b" class="history clearfix">
+	<ul>
+			<li> <h2 class="h2bg"><a href="#a" title="">全球精选</a></h2></li>
+            <li><h2 class="h2bg"><a href="#b" title="">冷链物流</a></h2></li>
+            <li><h2 class="h2bg"><a href="#c" title="">安全监测</a></h2></li>
+            <li><h2 class="h2bg"><a href="#d" title="">售后服务</a></h2></li>
+      </ul>
+	<p>
+		<span id="a">1</span></br><img src="../images/bottom/0.jpg">
+		<span id="b">2</span></br><img src="../images/bottom/1.jpg">
+		<span id="c">3</span></br><img src="../images/bottom/2.jpg">
+		<span id="d">4</span></br><img src="../images/bottom/3.jpg">
+		<span id="e">5</span></br><img src="../images/bottom/4.jpg">
+		<span id="f">6</span></br><img src="../images/bottom/5.jpg">
+	</p>
+	</div>
+</div>
+ 
+
+
+      
+       
+      
+
+	
+

@@ -1,0 +1,107 @@
+<!-- $Id: goods_list.htm 15908 2009-05-05 09:22:04Z liuhui $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+
+<form method="post" action="" name="listForm" onsubmit="return confirmSubmit(this)">
+  <!-- start goods list -->
+  <div class="list-div" id="listDiv">
+{/if}
+<table cellpadding="3" cellspacing="1">
+  <tr>
+    <th>
+     编号
+    </th>
+    <th>商品名称</th>
+    <th>货号</th>
+    <th>价格</th>
+    {if $use_storage}
+    <th>库存</th>
+    {/if}
+    <th>操作</th>
+  <tr>
+  {foreach from=$goods_list item=goods}
+  <tr>
+    <td>{$goods.goods_id}</td>
+    <td class="first-cell" style="{if $goods.is_promote}color:red;{/if}"><a href="/goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name|escape:html}</a></td>
+    <td>{$goods.goods_sn}</td>
+    <td align="right">{$goods.shop_price}</td>
+    {if $use_storage}
+    <td align="right">{if $code eq 'virtual_card'}{$goods.goods_number}{else}{$goods.goods_number}{/if}</td>
+    {/if}
+    <td align="center">
+      <a href="ks_card_goods.php?act=delgood&id={$goods.id}&tid={$type_id}">删除关联</a>
+    </td>
+  </tr>
+  {foreachelse}
+  <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+  {/foreach}
+</table>
+<!-- end goods list -->
+
+{if $full_page}
+</div>
+
+</form>
+
+<script type="text/javascript">
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+    startCheckOrder(); // 开始检查订单
+    document.forms['listForm'].reset();
+  }
+
+  /**
+   * @param: bool ext 其他条件：用于转移分类
+   */
+  function confirmSubmit(frm, ext)
+  {
+      if (frm.elements['type'].value == 'trash')
+      {
+          return confirm(batch_trash_confirm);
+      }
+      else if (frm.elements['type'].value == 'not_on_sale')
+      {
+          return confirm(batch_no_on_sale);
+      }
+      else if (frm.elements['type'].value == 'move_to')
+      {
+          ext = (ext == undefined) ? true : ext;
+          return ext && frm.elements['target_cat'].value != 0;
+      }
+      else if (frm.elements['type'].value == '')
+      {
+          return false;
+      }
+      else
+      {
+          return true;
+      }
+  }
+
+  function changeAction()
+  {
+      var frm = document.forms['listForm'];
+
+      // 切换分类列表的显示
+      frm.elements['target_cat'].style.display = frm.elements['type'].value == 'move_to' ? '' : 'none';
+
+      if (!document.getElementById('btnSubmit').disabled &&
+          confirmSubmit(frm, false))
+      {
+          frm.submit();
+      }
+  }
+{/literal}
+</script>
+{include file="pagefooter.htm"}
+{/if}

@@ -1,0 +1,53 @@
+<!-- $Id: bonus_type.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+
+{if $full_page}
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,listtable.js"}
+<!-- start bonus_type list -->
+<form method="post" action="" name="listForm">
+<div class="list-div" id="listDiv">
+{/if}
+
+  <table cellpadding="3" cellspacing="1">
+    <tr>
+      <th>编号</th>
+      <th>货号</th>
+      <th>名字</th>
+    </tr>
+    {foreach from=$type_list item=type}
+    <tr>
+      <td align="center" class="first-cell"><span>{$type.goods_id}</span></td>
+      <td align="center">{$type.goods_sn}</td>
+      <td align="center"><a href="/goods.php?id={$type.goods_id}" target="_blank">{$type.goods_name}</a></td>
+    </tr>
+      {foreachelse}
+    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+      {/foreach}
+
+  </table>
+
+{if $full_page}
+</div>
+</form>
+<!-- end bonus_type list -->
+
+<script type="text/javascript" language="JavaScript">
+<!--
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  onload = function()
+  {
+     // 开始检查订单
+     startCheckOrder();
+  }
+  {/literal}
+//-->
+</script>
+{include file="pagefooter.htm"}
+{/if}
