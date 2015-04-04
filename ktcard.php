@@ -200,9 +200,9 @@ if ($action == 'update_ktcard')
   $fee = $GLOBALS['db']->getOne($sql);
 
 
-            if (empty($order_user) OR (empty($order_tel) AND empty($order_phone)))
+            if (empty($order_user) OR (empty($order_tel) AND empty($order_phone) OR empty($order_address) ))
              {
-                 show_message('联系人为必填项,电话任选其一.'); 
+                 show_message('联系人为必填项,地址为必选项,电话、手机事情任选其一.'); 
                  return 0;
              }
              
@@ -269,7 +269,6 @@ if ($action == 'update_ktcard')
              	 show_message('已经成功提交订单!', '返回储值卡管理', 'ktcard.php','default');
              }
            }
-  echo 'asdfasdffffffffffffffffffffffffffffffffffffffff';
 }
 
 /**

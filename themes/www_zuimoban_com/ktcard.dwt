@@ -13,6 +13,7 @@
 <link href="index.css" rel="stylesheet" type="text/css" />
 <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />{* 包含脚本文件 *}
 <link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{insert_scripts files='jquery-1.10.2.min.js'}
 {insert_scripts files='common.js'}
  </head>
 <body>
@@ -133,6 +134,11 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
     <!--{/if}-->
     
      <!--{if $action eq 'next_ktcard'}-->
+    <script type="text/javascript">
+    $(function(){
+      
+    })
+    </script>     
     <div class="container">
       <div class="module">
         <h1><span></span>储值卡</h1>

@@ -1,4 +1,4 @@
-<?php
+<?php
 $data = array (
   'shop_name' => '美果源原味水果店',
   'shop_title' => '有机水果配送|水果团购网站|春节水果礼盒礼品',
@@ -184,5 +184,5 @@ $data = array (
   'new_number' => 3,
   'hot_number' => 3,
   'promote_number' => 3,
-);
+);
 ?>

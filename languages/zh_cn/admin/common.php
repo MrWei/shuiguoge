@@ -145,6 +145,7 @@ $_LANG['ks_card_cat']   = '礼品卡分类';
 $_LANG['ks_card_list']  = '礼品卡管理';
 $_LANG['ks_card_order'] = '礼品卡订单';
 $_LANG['kt_card_list']  = '储值卡管理';
+$_LANG['kt_card_cat']   = '储值卡分类';
 $_LANG['kt_card_order'] = '储值卡订单';
 
 /* 商品管理 */

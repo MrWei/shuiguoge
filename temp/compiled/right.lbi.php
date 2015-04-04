@@ -26,11 +26,11 @@
 	<span><img src="themes/www_zuimoban_com/images/tel.jpg"></span></a>
 </div>
 <div class="qq" >
-<?php $_from = $this->_var['qq']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'im_0_89050600_1428133919');if (count($_from)):
-    foreach ($_from AS $this->_var['im_0_89050600_1428133919']):
+<?php $_from = $this->_var['qq']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'im_0_72569400_1428135529');if (count($_from)):
+    foreach ($_from AS $this->_var['im_0_72569400_1428135529']):
 ?>
-     <?php if ($this->_var['im_0_89050600_1428133919']): ?>
- 	<a class="qq" href="http://wpa.qq.com/msgrd?v=3&uin=<?php echo $this->_var['im_0_89050600_1428133919']; ?>&site=qq&menu=yes" target="_blank">
+     <?php if ($this->_var['im_0_72569400_1428135529']): ?>
+ 	<a class="qq" href="http://wpa.qq.com/msgrd?v=3&uin=<?php echo $this->_var['im_0_72569400_1428135529']; ?>&site=qq&menu=yes" target="_blank">
 	<img src="themes/www_zuimoban_com/images/qq.png">
 	<?php endif; ?>
 <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
@@ -38,11 +38,11 @@
 	<span><img src="themes/www_zuimoban_com/images/qq.jpg"></span></a>
  </div>
 <div class="ww">
- <?php $_from = $this->_var['ww']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'im_0_89068700_1428133919');if (count($_from)):
-    foreach ($_from AS $this->_var['im_0_89068700_1428133919']):
+ <?php $_from = $this->_var['ww']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'im_0_72598300_1428135529');if (count($_from)):
+    foreach ($_from AS $this->_var['im_0_72598300_1428135529']):
 ?>
-      <?php if ($this->_var['im_0_89068700_1428133919']): ?>
- 	<a class="ww" href="http://amos1.taobao.com/msg.ww?v=2&uid=<?php echo urlencode($this->_var['im_0_89068700_1428133919']); ?>&s=2" target="_blank"><img src="themes/www_zuimoban_com/images/ww.png" >	
+      <?php if ($this->_var['im_0_72598300_1428135529']): ?>
+ 	<a class="ww" href="http://amos1.taobao.com/msg.ww?v=2&uid=<?php echo urlencode($this->_var['im_0_72598300_1428135529']); ?>&s=2" target="_blank"><img src="themes/www_zuimoban_com/images/ww.png" >	
 	 <?php endif; ?>
 <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
 	<p><img src="themes/www_zuimoban_com/images/ww1.png"></p>
