@@ -7,6 +7,11 @@
 <div class="main-div">
 <form action="kt_card.php" method="post" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
 <table width="100%">
+ <tr>
+    <td class="label">类型</td>
+    <td>
+      <input type='text' name='type' maxlength="30" value="" size='20' />    </td>
+  </tr>
 	  <tr>
     <td class="label">前缀标识</td>
     <td>
@@ -47,12 +52,12 @@ document.forms['theForm'].elements['type_name'].focus();
  */
 function validate()
 {
-  validator = new Validator("theForm");
- validator.required("bnum",         "序号为空");
-  validator.required("cnum",      "数量为空");
-  validator.required("sn_head",         "前缀为空");
-
-  return validator.passed();
+	validator = new Validator("theForm");
+	validator.required("type",      "类型为空");
+	validator.required("bnum",      "序号为空");
+	validator.required("cnum",     	"数量为空");
+	validator.required("sn_head",    "前缀为空");
+	return validator.passed();
 }
 onload = function()
 {

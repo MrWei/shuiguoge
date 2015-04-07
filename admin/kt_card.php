@@ -390,8 +390,8 @@ function get_card_list($id,$pagesize,$pageid)
     
     foreach ($result AS $idx => $row)
     {
-    	
-    	  $cards[$idx]['card_id']           = $row['card_id'];
+    	$cards[$idx]['type']           = $row['type'];
+    	$cards[$idx]['card_id']           = $row['card_id'];
         $cards[$idx]['card_sn']         = $row['card_sn'];
         $cards[$idx]['card_pwd']         = $row['card_pwd'];
         $cards[$idx]['add_time']        = local_date($GLOBALS['_CFG']['time_format'],$row['add_time']);
@@ -447,16 +447,16 @@ if ($_REQUEST['act'] == 'edit_card')
 
 if ($_REQUEST['act'] == 'card_update')
 {
-	
 	  /* 初始化数据 */
-	  $sn_head      = !empty($_POST['sn_head'])  ? trim($_POST['sn_head'])    : '';
+	$type     = isset($_POST['type'])  ? trim($_POST['type'])    : null;
+	$sn_head  = !empty($_POST['sn_head'])  ? trim($_POST['sn_head'])    : '';
     $bnum     = !empty($_REQUEST['bnum'])    ? intval($_REQUEST['bnum'])    : 0;
     $cnum     = !empty($_REQUEST['cnum'])    ? intval($_REQUEST['cnum'])    : 0;
     $card_type     = !empty($_REQUEST['card_type'])    ? intval($_REQUEST['card_type'])    : 0;
-    
+
     if($cnum != 0)
     {
-    create_card($sn_head,$bnum,$cnum,$card_type);
+    create_card($type,$sn_head,$bnum,$cnum,$card_type);
     }
   
     $url = "kt_card.php?act=list";
@@ -489,7 +489,7 @@ if ($_REQUEST['act'] == 'delsn')
 
 /* 生成储值卡 */
 
-function create_card($sn_head,$bnum,$cnum,$card_type)
+function create_card( $type,$sn_head,$bnum,$cnum,$card_type)
 
 {
 	if($cnum != 0)
@@ -512,7 +512,8 @@ function create_card($sn_head,$bnum,$cnum,$card_type)
              if (empty($record_arr))
 
              {
-                $GLOBALS['db']->query("INSERT INTO ".$GLOBALS['ecs']->table('kt_bcards')." (card_sn, card_pwd, add_time, used_time, card_type, card_bonus) VALUES('$card_sn','$card_pwd','$add_time','$used_time','$card_type','$card_type')");
+                $GLOBALS['db']->query("INSERT INTO ".$GLOBALS['ecs']->table('kt_bcards')." (type,card_sn, card_pwd, add_time, used_time, card_type, card_bonus) VALUES('$type','$card_sn','$card_pwd','$add_time','$used_time','$card_type','$card_type')");
+             	echo "INSERT INTO ".$GLOBALS['ecs']->table('kt_bcards')." (type,card_sn, card_pwd, add_time, used_time, card_type, card_bonus) VALUES('$type','$card_sn','$card_pwd','$add_time','$used_time','$card_type','$card_type')" . "<hr />";
              }
              else
              {
