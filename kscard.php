@@ -1,18 +1,5 @@
 <?php
 
-/**
- * ECSHOP 标签云
- * ============================================================================
- * 版权所有 2005-2008 上海商派网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.ecshop.com；
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和
- * 使用；不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * $Author: testyang $
- * $Id: tag_cloud.php 15013 2008-10-23 09:31:42Z testyang $
-*/
-
 define('IN_ECS', true);
 
 require(dirname(__FILE__) . '/includes/init.php');
@@ -131,6 +118,16 @@ if ($action == 'act_login') {
 
 if ($action == 'update_kscard')
 {
+	
+
+	include_once(ROOT_PATH . 'includes/lib_passport.php');
+	
+	$username = isset($_POST['username']) ? trim($_POST['username']) : '';
+	$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+	$email    = isset($_POST['email']) ? trim($_POST['email']) : '';
+	
+	exit();
+	
 	$order_user    = isset($_REQUEST['order_user'])? trim($_REQUEST['order_user']): '0';
 	$order_address    = isset($_REQUEST['order_address'])? trim($_REQUEST['order_address']): '0';
 	$order_tel    = isset($_REQUEST['order_tel'])? trim($_REQUEST['order_tel']): '0';

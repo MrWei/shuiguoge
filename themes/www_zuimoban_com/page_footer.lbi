@@ -60,7 +60,11 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
  
   <div class="footerbtm">
     <div class="info"> 
+<<<<<<< HEAD
 	版权所有：<a href="http://www.mrfruit.net/" target="_blank" title="原味水果系统解决方案服务商">水果哥</a>
+=======
+	技术支持：<a href="http://www.zuimoban.com/" target="_blank" title="最模板">最模板</a>
+>>>>>>> 64f2bc08a8d9e95b6c548fd25f21ddd44055eb47
 	</div>
  <!--  <div class="believe"><img src="themes/www_zuimoban_com/images/f1.gif"><img src="themes/www_zuimoban_com/images/f2.gif"><img src="themes/www_zuimoban_com/images/f3.gif">
  	</div>-->
