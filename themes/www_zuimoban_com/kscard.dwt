@@ -13,8 +13,9 @@
 <link href="index.css" rel="stylesheet" type="text/css" />
 <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />{* 包含脚本文件 *}
 <link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{insert_scripts files='jquery-1.10.2.min.js'}
 {insert_scripts files='common.js'}
- </head>
+</head>
 <body>
 <script type="text/javascript">
 var process_request = "正在处理您的请求...";
@@ -73,7 +74,7 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
     <div class="container">
       <div class="module">
          <div class="content" style="padding:8px;">
-         <form name="formLogin" action="kscard.php" method="post"">
+         <form name="formLogin" action="kscard.php" method="post">
             <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
               <tr>
                 <td width="40%" align="right">礼品卡序号</td>
@@ -101,14 +102,19 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
     <!--{/if}-->
     
     <!--{if $action eq 'act_login'}-->
+    <style type="text/css">
+      .tablelist{  border-collapse:collapse; margin: 0px auto; width: 600px;}
+      .tablelist th{ border: #ddd 1px solid;}
+      .tablelist td{ border: #ddd 1px solid;}
+    </style>
     <div class="container">
       <div class="module">
          <div class="content" style="padding:8px;">
-         <form name="formLogin" action="kscard.php" method="post"">
-            <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
+         <form name="formLogin" action="kscard.php" method="post">
+            <table width="1000" border="0" cellpadding="3" cellspacing="5" style="margin:0px auto;">
               <tr>
-                <td width="40%" align="right">联系人</td>
-                <td width="60%"><input name="order_user" type="text" size="20" class="inputBg" /></td>
+                <td width="250" align="right">联系人</td>
+                <td width="750"><input name="order_user" type="text" size="20" class="inputBg" /></td>
               </tr>
               <tr>
                 <td align="right">联系地址</td>
@@ -145,15 +151,27 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
               <tr>
                 <td align="right">选择商品<br /></td>
                 <td>
-                {foreach from=$goods_list item=goods}
-                <input name="goods[]" type="checkbox" value="{$goods.cg_goodid}" /><a href="/goods.php?id={$goods.cg_goodid}" target="_blank">{$goods.cg_goodname}</a>
-                {if $goods.cg_goodbak}
-                 (说明:{$goods.cg_goodbak})  
-                 {/if}<br />
-                {foreachelse}
-                没有可选商品,请联系客服.
-                {/foreach}
                 <span style="color:red;">可选{$sel_num}件</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table class="tablelist">
+                    <tr>
+                      <th>选择</th>
+                      <th>商品名称</th>
+                      <th>商城价</th>
+                      <th>商品图片</th>
+                    </tr>
+                     {foreach from=$goods_list item=goods}
+                    <tr>
+                      <td align="center"><input name="goods[]" class='goods' type="checkbox" value="{$goods.cg_goodid}" /></td>
+                      <td><a href="/goods.php?id={$goods.cg_goodid}" target="_blank">{$goods.cg_goodname}</a></td>
+                      <td align="center">{$goods.cg_price}</td>
+                      <td align="center"><img src="{$goods.cg_img}" alt="" width="60" height="60" /></td>
+                    </tr>
+                     {/foreach}
+                  </table>     
                 </td>
               </tr>
                             <tr>
@@ -174,6 +192,36 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
         </div>
       </div>
     </div>
+    <script type="text/javascript">
+    $(function(){
+      $("input[name='submit']").click(function(){
+      var phone = $("input[name='order_tel']").val();
+      var mobile = $("input[name='order_phone']").val();  
+      if( !$("input[name='order_user']").val() ){
+          alert('请输入联系人')
+          return false;
+        }
+         if( !$("input[name='order_address']").val() ){
+          alert('请输入联系人地址')
+          return false;
+        }
+         if( !phone && !mobile){
+          alert('请输入联系人固定电话或者手机号')
+          return false;
+        }
+        var isPhone = /^0\d{2,3}-?\d{7,8}$/;
+        var isMobile = /^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
+        if( phone && !isPhone.test(phone)  ){
+           alert('请输入正确的固定电话')
+           return false;
+        }
+         if( mobile && !isMobile.test(mobile)  ){
+           alert('请输入正确的手机号')
+           return false;
+        }
+      })
+    })
+    </script>  
     <!--{/if}-->
     
      <!--{if $action eq 'order_info'}-->

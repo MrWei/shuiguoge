@@ -129,8 +129,10 @@ if ($action == 'next_ktcard')
              
              if ($fee > $card_bonus)
              {
-             	$order_msg = $fee - $card_bonus;
-             	$order_msg = "订单超出储值卡余额 $order_msg 元,收货时还需补交 $order_msg 元.";
+             	show_message('订单超出储值卡余额,请重新选择商品');
+             	return 0;
+//              	$order_msg = $fee - $card_bonus;
+//              	$order_msg = "订单超出储值卡余额 $order_msg 元,收货时还需补交 $order_msg 元.";
              }
             else
              {
@@ -266,7 +268,7 @@ if ($action == 'update_ktcard')
 
                 $db->query($sql);
                $action = 'default';
-             	 show_message('已经成功提交订单!', '返回储值卡管理', 'ktcard.php','default');
+             	 show_message('已经成功提交订单!', '返回商城首页', 'index.php','default');
              }
            }
 }

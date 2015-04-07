@@ -29,7 +29,7 @@ E_C("CREATE TABLE `ecs_admin_user` (
   KEY `user_name` (`user_name`),
   KEY `agency_id` (`agency_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8");
-E_D("replace into `ecs_admin_user` values('1','admin','test@zuimoban.com','9700a20c4f1f96a016988b709b7ee149','775','1400466666','1405274225','127.0.0.1','all','商品列表|goods.php?act=list,订单列表|order.php?act=list,用户评论|comment_manage.php?act=list,会员列表|users.php?act=list,商店设置|shop_config.php?act=list_edit','','0','0','','0');");
+E_D("replace into `ecs_admin_user` values('1','admin','test@mrfruit.net','9700a20c4f1f96a016988b709b7ee149','775','1400466666','1405274225','127.0.0.1','all','商品列表|goods.php?act=list,订单列表|order.php?act=list,用户评论|comment_manage.php?act=list,会员列表|users.php?act=list,商店设置|shop_config.php?act=list_edit','','0','0','','0');");
 
 require("../../inc/footer.php");
 ?>

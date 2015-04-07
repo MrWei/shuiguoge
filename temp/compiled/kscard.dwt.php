@@ -14,8 +14,9 @@
 <link href="themes/www_zuimoban_com/index.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo $this->_var['ecs_css_path']; ?>" rel="stylesheet" type="text/css" />
 <link rel="alternate" type="application/rss+xml" title="RSS|<?php echo $this->_var['page_title']; ?>" href="<?php echo $this->_var['feed_url']; ?>" />
+<?php echo $this->smarty_insert_scripts(array('files'=>'jquery-1.10.2.min.js')); ?>
 <?php echo $this->smarty_insert_scripts(array('files'=>'common.js')); ?>
- </head>
+</head>
 <body>
 <script type="text/javascript">
 var process_request = "正在处理您的请求...";
@@ -92,7 +93,7 @@ if ($this->_foreach['child']['total'] > 0):
     <div class="container">
       <div class="module">
          <div class="content" style="padding:8px;">
-         <form name="formLogin" action="kscard.php" method="post"">
+         <form name="formLogin" action="kscard.php" method="post">
             <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
               <tr>
                 <td width="40%" align="right">礼品卡序号</td>
@@ -120,14 +121,19 @@ if ($this->_foreach['child']['total'] > 0):
     <?php endif; ?>
     
     <?php if ($this->_var['action'] == 'act_login'): ?>
+    <style type="text/css">
+      .tablelist{border-collapse:collapse; margin: 0px auto; width: 600px;}
+      .tablelist th{border: #ddd 1px solid;}
+      .tablelist td{border: #ddd 1px solid;}
+    </style>
     <div class="container">
       <div class="module">
          <div class="content" style="padding:8px;">
-         <form name="formLogin" action="kscard.php" method="post"">
-            <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
+         <form name="formLogin" action="kscard.php" method="post">
+            <table width="1000" border="0" cellpadding="3" cellspacing="5" style="margin:0px auto;">
               <tr>
-                <td width="40%" align="right">联系人</td>
-                <td width="60%"><input name="order_user" type="text" size="20" class="inputBg" /></td>
+                <td width="250" align="right">联系人</td>
+                <td width="750"><input name="order_user" type="text" size="20" class="inputBg" /></td>
               </tr>
               <tr>
                 <td align="right">联系地址</td>
@@ -164,17 +170,29 @@ if ($this->_foreach['child']['total'] > 0):
               <tr>
                 <td align="right">选择商品<br /></td>
                 <td>
-                <?php $_from = $this->_var['goods_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'goods');if (count($_from)):
+                <span style="color:red;">可选<?php echo $this->_var['sel_num']; ?>件</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table class="tablelist">
+                    <tr>
+                      <th>选择</th>
+                      <th>商品名称</th>
+                      <th>商城价</th>
+                      <th>商品图片</th>
+                    </tr>
+                     <?php $_from = $this->_var['goods_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'goods');if (count($_from)):
     foreach ($_from AS $this->_var['goods']):
 ?>
-                <input name="goods[]" type="checkbox" value="<?php echo $this->_var['goods']['cg_goodid']; ?>" /><a href="/goods.php?id=<?php echo $this->_var['goods']['cg_goodid']; ?>" target="_blank"><?php echo $this->_var['goods']['cg_goodname']; ?></a>
-                <?php if ($this->_var['goods']['cg_goodbak']): ?>
-                 (说明:<?php echo $this->_var['goods']['cg_goodbak']; ?>)  
-                 <?php endif; ?><br />
-                <?php endforeach; else: ?>
-                没有可选商品,请联系客服.
-                <?php endif; unset($_from); ?><?php $this->pop_vars();; ?>
-                <span style="color:red;">可选<?php echo $this->_var['sel_num']; ?>件</span>
+                    <tr>
+                      <td align="center"><input name="goods[]" class='goods' type="checkbox" value="<?php echo $this->_var['goods']['cg_goodid']; ?>" /></td>
+                      <td><a href="/goods.php?id=<?php echo $this->_var['goods']['cg_goodid']; ?>" target="_blank"><?php echo $this->_var['goods']['cg_goodname']; ?></a></td>
+                      <td align="center"><?php echo $this->_var['goods']['cg_price']; ?></td>
+                      <td align="center"><img src="<?php echo $this->_var['goods']['cg_img']; ?>" alt="" width="60" height="60" /></td>
+                    </tr>
+                     <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+                  </table>     
                 </td>
               </tr>
                             <tr>
@@ -195,6 +213,36 @@ if ($this->_foreach['child']['total'] > 0):
         </div>
       </div>
     </div>
+    <script type="text/javascript">
+    $(function(){
+      $("input[name='submit']").click(function(){
+      var phone = $("input[name='order_tel']").val();
+      var mobile = $("input[name='order_phone']").val();  
+      if( !$("input[name='order_user']").val() ){
+          alert('请输入联系人')
+          return false;
+        }
+         if( !$("input[name='order_address']").val() ){
+          alert('请输入联系人地址')
+          return false;
+        }
+         if( !phone && !mobile){
+          alert('请输入联系人固定电话或者手机号')
+          return false;
+        }
+        var isPhone = /^0\d{2,3}-?\d{7,8}$/;
+        var isMobile = /^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
+        if( phone && !isPhone.test(phone)  ){
+           alert('请输入正确的固定电话')
+           return false;
+        }
+         if( mobile && !isMobile.test(mobile)  ){
+           alert('请输入正确的手机号')
+           return false;
+        }
+      })
+    })
+    </script>  
     <?php endif; ?>
     
      <?php if ($this->_var['action'] == 'order_info'): ?>

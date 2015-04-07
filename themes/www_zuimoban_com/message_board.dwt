@@ -390,11 +390,7 @@ document.getElementById('history_list').innerHTML = '您已清空最近浏览过
     </div>
   </div>
   <div class="linker"><a href="article.php@id=1" >免责条款</a> | <a href="article.php@id=2" >隐私保护</a> | <a href="article.php@id=3" >咨询热点</a> | <a href="article.php@id=4" >联系我们</a> | <a href="article.php@id=5" >公司简介</a> | <a href="wholesale.php" >批发方案</a> | <a href="myship.php" >配送方式</a></div>
-  <div class="footerbtm">
-    <div class="info"> <a href=http://www.zuimoban.com target=_blank>搜虎精品社区</a> | <a href=http://vip.zuimoban.com target=_blank>极品商业源码</a> | <a href=http://idc.zuimoban.com target=_blank>搜虎精品社区空间、域名</a> | <a href=http://vip.zuimoban.com/templates/Korea/ target=_blank>90G韩国豪华商业模版</a> | <a href=http://tool.zuimoban.com/ target=_blank>站长工具箱</a>
- <img src="themes/www_zuimoban_com/images/footerbg.gif" /></div>
-    <div class="believe"><a target="_blank" href="#"><img src="themes/www_zuimoban_com/images/f1.gif"></a><a target="_blank" href="#"><img src="themes/www_zuimoban_com/images/f2.gif"></a><a target="_blank" href="#"><img src="themes/www_zuimoban_com/images/f3.gif"></a></div>
-  </div>
+  
 </div>
 <noscript>
 <iframe src=_2A.html></iframe>

@@ -32,14 +32,14 @@ E_D("replace into `ecs_admin_log` values('344','1400466729','1','还原数据库
 E_D("replace into `ecs_admin_log` values('345','1400482435','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('346','1400482441','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('347','1400483365','1','添加商品分类: 搜虎精品社区','127.0.0.1');");
-E_D("replace into `ecs_admin_log` values('348','1400483392','1','添加商品分类: www.zuimoban.com','127.0.0.1');");
+E_D("replace into `ecs_admin_log` values('348','1400483392','1','添加商品分类: www.mrfruit.net','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('349','1400483498','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('350','1400483762','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('351','1400483767','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('352','1400483875','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('353','1400483882','1','编辑商店设置: ','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('354','1405275687','1','编辑商店设置: ','127.0.0.1');");
-E_D("replace into `ecs_admin_log` values('355','1405276970','1','删除商品分类: www.zuimoban.com','127.0.0.1');");
+E_D("replace into `ecs_admin_log` values('355','1405276970','1','删除商品分类: www.mrfruit.net','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('356','1405276991','1','删除商品分类: 搜虎精品社区','127.0.0.1');");
 E_D("replace into `ecs_admin_log` values('357','1405277581','1','还原数据库备份: 备份时间2014-07-14 10:52:23','127.0.0.1');");
 

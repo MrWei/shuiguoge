@@ -27,7 +27,7 @@ E_C("CREATE TABLE `ecs_weixin_menu` (
 E_D("replace into `ecs_weixin_menu` values('43','热卖商品','1','','hot','','50','0','38');");
 E_D("replace into `ecs_weixin_menu` values('44','促销活动','1','','promote','','50','0','38');");
 E_D("replace into `ecs_weixin_menu` values('38','商品信息','1','','shop','','1','0','0');");
-E_D("replace into `ecs_weixin_menu` values('39','会员功能','1','','member','http://www.zuimoban.com','2','0','0');");
+E_D("replace into `ecs_weixin_menu` values('39','会员功能','1','','member','http://www.mrfruit.net','2','0','0');");
 E_D("replace into `ecs_weixin_menu` values('40','更多..','1','','more','','3','0','0');");
 E_D("replace into `ecs_weixin_menu` values('41','新品上市','1','','new','','50','0','38');");
 E_D("replace into `ecs_weixin_menu` values('42','精品推荐','1','','best','','50','0','38');");

@@ -101,6 +101,7 @@ if ($action == 'act_login') {
                 $smarty->assign('card_pwd',     $card_pwd); 
                 $smarty->assign('card_type',    $record_arr['card_type']);  
                 $smarty->assign('goods_list',    get_order_goods_list($record_arr['card_type'])); 
+                
                 $smarty->assign('sel_num',    get_goods_num($record_arr['card_type']));     
                 $smarty->display('kscard.dwt');
                 }
@@ -200,10 +201,9 @@ if ($action == 'update_kscard')
 
            $db->query($sql);
                $action = 'default';
-             	 show_message('已经成功提交订单!', '返回礼品卡管理', 'kscard.php','default');
+             	 show_message('已经成功提交订单!', '返回商城首页', 'index.php','default');
              }
            }
-  echo 'asdfasdffffffffffffffffffffffffffffffffffffffff';
 }
 
 /**
@@ -226,21 +226,21 @@ function get_order_sn()
 function get_order_goods_list($id)
 {
 
-   
-    $sql = "SELECT * FROM " .$GLOBALS['ecs']->table('ks_cardgoods') . " WHERE cg_catid = $id" ;
+    $field="tc.cg_id,tc.cg_catid,tc.cg_goodid,g.goods_name,g.shop_price,g.goods_thumb";
+    $sql = "SELECT {$field} FROM " .$GLOBALS['ecs']->table('ks_cardgoods') . "AS tc LEFT JOIN ".$GLOBALS['ecs']->table('goods') ." AS g ON tc.cg_goodid=g.goods_id";
+    $sql .= " WHERE tc.cg_catid = $id" ;
                             
     $result = $GLOBALS['db']->getAll($sql);
     $goods = array();
-    
     foreach ($result AS $idx => $row)
     {
     	
-    	  $goods[$idx]['cg_id']           = $row['cg_id'];
-        $goods[$idx]['cg_catid']         = $row['cg_catid'];
-        $goods[$idx]['cg_goodid']         = $row['cg_goodid'];
-        $goods[$idx]['cg_goodname']        = get_goods_name($row['cg_goodid']);
-        $goods[$idx]['cg_goodbak']        = get_goods_bak($row['cg_goodid']);
-
+    	$goods[$idx]['cg_id']           = $row['cg_id'];
+        $goods[$idx]['cg_catid']        = $row['cg_catid'];
+        $goods[$idx]['cg_goodid']       = $row['cg_goodid'];
+        $goods[$idx]['cg_goodname']     = $row['goods_name'];
+        $goods[$idx]['cg_price']     	= $row['shop_price'];
+        $goods[$idx]['cg_img']     		= $row['goods_thumb'];
     }
 
 return $goods; 
