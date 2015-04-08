@@ -10,7 +10,7 @@
 
   <table cellpadding="3" cellspacing="1">
     <tr>
-      <th>礼品卡类型</th>
+      <th>水果卡类型</th>
       <th>类型标识</th>
       <th>描述</th>
       <th>可选择数</th>

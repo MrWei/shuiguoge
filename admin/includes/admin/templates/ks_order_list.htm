@@ -3,7 +3,7 @@
 {if $full_page}
 {include file="pageheader.htm"}
 <form action="ks_card.php" method="post" name="theForm" enctype="multipart/form-data">
-<h1>礼品卡序号:<input type='text' name='keywords' maxlength="30" value="" size='20' /><input type="submit" value="查询" class="button" /></h1>
+<h1>水果卡序号:<input type='text' name='keywords' maxlength="30" value="" size='20' /><input type="submit" value="查询" class="button" /></h1>
 <input type="hidden" name="act" value="order" />
 </form>
 {insert_scripts files="../js/utils.js,listtable.js"}
@@ -16,7 +16,7 @@
     <tr>
       <th>编号</th>
       <th>订单号</th>
-      <th>礼品卡分类</th>
+      <th>水果卡分类</th>
       <th>联系人</th>
       <th>特殊要求备注</th>
       <th>创建时间</th>
@@ -36,7 +36,7 @@
       <td align="center">
         <a href="ks_card.php?act=order_info&id={$type.order_id}">订单详情</a> |
         <a href="ks_card.php?act=goods&gid={$type.order_goods}">配送商品</a> |
-        <a href="ks_card.php?act=list&id={$type.card_id}">礼品卡</a></td>
+        <a href="ks_card.php?act=list&id={$type.card_id}">水果卡</a></td>
     </tr>
       {foreachelse}
     <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>

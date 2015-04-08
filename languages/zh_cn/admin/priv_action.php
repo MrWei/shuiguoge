@@ -24,15 +24,15 @@ $_LANG['email'] = '邮件管理';
 $_LANG['templates_manage'] = '模板管理';
 $_LANG['db_manage'] = '数据库管理';
 $_LANG['sms_manage'] = '短信管理';
-$_LANG['card_and_card'] = '礼品卡设置';
+$_LANG['card_and_card'] = '水果卡设置';
 
-/* 礼品卡 */
-$_LANG['ks_card_cat']   = '礼品卡分类';
-$_LANG['ks_card_list']  = '礼品卡管理';
-$_LANG['ks_card_order'] = '礼品卡订单';
-$_LANG['kt_card_list']  = '储值卡管理';
-$_LANG['kt_card_cat']   = '储值卡分类';
-$_LANG['kt_card_order'] = '储值卡订单';
+/* 水果卡 */
+$_LANG['ks_card_cat']   = '水果卡分类';
+$_LANG['ks_card_list']  = '水果卡管理';
+$_LANG['ks_card_order'] = '水果卡订单';
+$_LANG['kt_card_list']  = '代金卡管理';
+$_LANG['kt_card_cat']   = '代金卡分类';
+$_LANG['kt_card_order'] = '代金卡订单';
 
 //商品管理部分的权限
 $_LANG['goods_manage'] = '商品添加/编辑';
@@ -116,7 +116,7 @@ $_LANG['back_view'] = '查看退货单';
 
 //促销管理
 $_LANG['snatch_manage'] = '夺宝奇兵';
-$_LANG['bonus_manage'] = '储值卡管理';
+$_LANG['bonus_manage'] = '代金卡管理';
 $_LANG['card_manage'] = '祝福贺卡';
 $_LANG['pack'] = '商品包装';
 $_LANG['ad_manage'] = '广告管理';

@@ -28,7 +28,7 @@ $_LANG['label_address'] = '收货地址';
 $_LANG['label_message'] = '我的留言';
 $_LANG['label_tag'] = '我的标签';
 $_LANG['label_collection'] = '我的收藏';
-$_LANG['label_bonus'] = '我的储值卡';
+$_LANG['label_bonus'] = '我的代金卡';
 $_LANG['label_comment'] = '我的评论';
 $_LANG['label_affiliate'] = '我的推荐';
 $_LANG['label_group_buy'] = '我的团购';
@@ -114,19 +114,19 @@ $_LANG['member_discount'] = '会员折扣';
 $_LANG['rank_integral'] = '等级积分';
 $_LANG['consume_integral'] = '消费积分';
 $_LANG['account_balance'] = '账户余额';
-$_LANG['user_bonus'] = '用户储值卡';
+$_LANG['user_bonus'] = '用户代金卡';
 $_LANG['user_bonus_info'] = '共计 %d 个,价值 %s';
-$_LANG['not_bonus'] = '没有储值卡';
-$_LANG['add_user_bonus'] = '添加一个储值卡';
-$_LANG['bonus_number'] = '储值卡序列号';
+$_LANG['not_bonus'] = '没有代金卡';
+$_LANG['add_user_bonus'] = '添加一个代金卡';
+$_LANG['bonus_number'] = '代金卡序列号';
 $_LANG['old_password'] = '原密码';
 $_LANG['new_password'] = '新密码';
 $_LANG['confirm_password'] = '确认密码';
 
-$_LANG['bonus_sn_exist'] = "此储值卡号码已经被占用了！";
-$_LANG['bonus_sn_not_exist'] = "此储值卡号码不存在！";
-$_LANG['add_bonus_sucess'] = "添加新的储值卡操作成功！";
-$_LANG['add_bonus_false'] = "添加新的储值卡操作失败！";
+$_LANG['bonus_sn_exist'] = "此代金卡号码已经被占用了！";
+$_LANG['bonus_sn_not_exist'] = "此代金卡号码不存在！";
+$_LANG['add_bonus_sucess'] = "添加新的代金卡操作成功！";
+$_LANG['add_bonus_false'] = "添加新的代金卡操作失败！";
 
 $_LANG['not_login'] = '用户未登录。无法完成操作';
 $_LANG['profile_lnk'] = '查看我的个人资料';
@@ -136,8 +136,8 @@ $_LANG['edit_profile_failed'] = "修改个人资料操作失败！";
 $_LANG['oldpassword_error'] = "您输入的旧密码有误!请确认再后输入！";
 
 //JS语言项
-$_LANG['profile_js']['bonus_sn_empty'] = "请输入您要添加的储值卡号码！";
-$_LANG['profile_js']['bonus_sn_error'] = "您输入的储值卡号码格式不正确！";
+$_LANG['profile_js']['bonus_sn_empty'] = "请输入您要添加的代金卡号码！";
+$_LANG['profile_js']['bonus_sn_error'] = "您输入的代金卡号码格式不正确！";
 
 $_LANG['profile_js']['email_empty'] = "请输入您的电子邮件地址！";
 $_LANG['profile_js']['email_error'] = "您输入的电子邮件地址格式不正确！";
@@ -236,16 +236,16 @@ $_LANG['message_empty'] = "您现在还没有留言！";
 $_LANG['msg_success'] = "您的留言已成功提交！";
 $_LANG['confirm_remove_msg'] = '你确实要彻底删除这条留言吗？';
 
-/* 会员储值卡 */
-$_LANG['bonus_is_used'] = "你输入的储值卡你已经领取过了！";
-$_LANG['bonus_is_used_by_other'] = "你输入的储值卡已经被其他人领取！";
-$_LANG['bonus_add_success'] = "您已经成功的添加了一个新的储值卡！";
-$_LANG['bonus_not_exist'] = '你输入的储值卡不存在';
-$_LANG['user_bonus_empty'] = '您现在还没有储值卡';
-$_LANG['add_bonus_sucess'] = "添加新的储值卡操作成功！";
-$_LANG['add_bonus_false'] = "添加新的储值卡操作失败！";
-$_LANG['bonus_add_expire'] = "该储值卡已经过期！";
-$_LANG['bonus_use_expire'] = "该储值卡已经过了使用期！";
+/* 会员代金卡 */
+$_LANG['bonus_is_used'] = "你输入的代金卡你已经领取过了！";
+$_LANG['bonus_is_used_by_other'] = "你输入的代金卡已经被其他人领取！";
+$_LANG['bonus_add_success'] = "您已经成功的添加了一个新的代金卡！";
+$_LANG['bonus_not_exist'] = '你输入的代金卡不存在';
+$_LANG['user_bonus_empty'] = '您现在还没有代金卡';
+$_LANG['add_bonus_sucess'] = "添加新的代金卡操作成功！";
+$_LANG['add_bonus_false'] = "添加新的代金卡操作失败！";
+$_LANG['bonus_add_expire'] = "该代金卡已经过期！";
+$_LANG['bonus_use_expire'] = "该代金卡已经过了使用期！";
 
 /* 会员订单 */
 $_LANG['order_list_lnk'] = '我的订单列表';
@@ -317,7 +317,7 @@ $_LANG['order_user_not_same'] = '要合并的两个订单不是同一个用户�
 $_LANG['from_order_sn'] = '第一个订单号：';
 $_LANG['to_order_sn'] = '第二个订单号：';
 $_LANG['merge'] = '合并';
-$_LANG['notice_order_sn'] = '当两个订单不一致时，合并后的订单信息（如：支付方式、配送方式、包装、贺卡、储值卡等）以第二个为准。';
+$_LANG['notice_order_sn'] = '当两个订单不一致时，合并后的订单信息（如：支付方式、配送方式、包装、贺卡、代金卡等）以第二个为准。';
 $_LANG['subtotal'] = '小计';
 $_LANG['goods_price'] = '商品价格';
 $_LANG['goods_attr'] = '属性';
@@ -422,7 +422,7 @@ $_LANG['your_account'] = '您的账户';
 $_LANG['your_notice'] = '用户提醒';
 $_LANG['your_surplus'] = '余额';
 $_LANG['credit_line'] = '信用额度';
-$_LANG['your_bonus'] = '储值卡';
+$_LANG['your_bonus'] = '代金卡';
 $_LANG['your_message'] = '留言';
 $_LANG['your_order'] = '订单';
 $_LANG['your_integral'] = '积分';
@@ -505,13 +505,13 @@ $_LANG['consigness_empty'] = '收货人姓名为空';
 $_LANG['address_empty'] = '收货地址详情为空';
 $_LANG['require_unconfirmed'] = '该订单状态下不能再修改地址';
 
-/* 储值卡详情 */
-$_LANG['bonus_sn'] = '储值卡序号';
-$_LANG['bonus_name'] = '储值卡名称';
-$_LANG['bonus_amount'] = '储值卡金额';
+/* 代金卡详情 */
+$_LANG['bonus_sn'] = '代金卡序号';
+$_LANG['bonus_name'] = '代金卡名称';
+$_LANG['bonus_amount'] = '代金卡金额';
 $_LANG['min_goods_amount'] = '最小订单金额';
 $_LANG['bonus_end_date'] = '截至使用日期';
-$_LANG['bonus_status'] = '储值卡状态';
+$_LANG['bonus_status'] = '代金卡状态';
 
 $_LANG['not_start'] = '未开始';
 $_LANG['overdue'] = '已过期';
@@ -643,6 +643,6 @@ $_LANG['user_reg_info'][4] = '保存您的个人资料';
 $_LANG['user_reg_info'][5] = '收藏您关注的商品';
 $_LANG['user_reg_info'][6] = '享受会员积分制度';
 $_LANG['user_reg_info'][7] = '订阅本店商品信息';
-$_LANG['add_bonus'] = '添加储值卡';
+$_LANG['add_bonus'] = '添加代金卡';
 
 ?>

@@ -31,12 +31,12 @@ else
 $exc = new exchange($ecs->table('bonus_type'), $db, 'type_id', 'type_name');
 
 /*------------------------------------------------------ */
-//-- 礼品卡分类列表
+//-- 水果卡分类列表
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'cat')
 {
-    $smarty->assign('ur_here',     '礼品卡分类');
-    $smarty->assign('action_link', array('text' => '添加礼品卡类型', 'href' => 'ks_card.php?act=add'));
+    $smarty->assign('ur_here',     '水果卡分类');
+    $smarty->assign('action_link', array('text' => '添加水果卡类型', 'href' => 'ks_card.php?act=add'));
     $smarty->assign('full_page',   1);
 
     $list = get_type_list();
@@ -61,8 +61,8 @@ if ($_REQUEST['act'] == 'edit_card_type')
 	  $card_type = !empty($_REQUEST['tid'])    ? intval($_REQUEST['tid'])    : 0;
     
     $smarty->assign('lang',         $_LANG);
-    $smarty->assign('ur_here',     '编辑礼品卡类别');
-    $smarty->assign('action_link', array('text' => '礼品卡列表', 'href' => "ks_card.php?act=list"));
+    $smarty->assign('ur_here',     '编辑水果卡类别');
+    $smarty->assign('action_link', array('text' => '水果卡列表', 'href' => "ks_card.php?act=list"));
     $smarty->assign('action',       'edit_card_type');
     
     $smarty->assign('card_name',     get_type_name($card_type));
@@ -78,7 +78,7 @@ if ($_REQUEST['act'] == 'edit_card_type')
 }
 
 /*------------------------------------------------------ */
-//-- 修改礼品卡分类
+//-- 修改水果卡分类
 /*------------------------------------------------------ */
 
 if ($_REQUEST['act'] == 'card_type_update')
@@ -121,13 +121,13 @@ if ($_REQUEST['act'] == 'excel')
     /* 文件标题 */
     if (EC_CHARSET != 'gbk')
     {
-        echo ecs_iconv('UTF8', 'GB2312', '礼品卡序号') ."\t";
-        echo ecs_iconv('UTF8', 'GB2312', '礼品卡密码') ."\t\n";
+        echo ecs_iconv('UTF8', 'GB2312', '水果卡序号') ."\t";
+        echo ecs_iconv('UTF8', 'GB2312', '水果卡密码') ."\t\n";
     }
     else
     {
-        echo "礼品卡序号" ."\t";
-        echo "礼品卡密码" ."\t\n";
+        echo "水果卡序号" ."\t";
+        echo "水果卡密码" ."\t\n";
     }
 
     $val = array();
@@ -147,7 +147,7 @@ if ($_REQUEST['act'] == 'excel')
 
 
 /**
- * 获取礼品卡分类
+ * 获取水果卡分类
  */
 function get_catd_type_list()
 {
@@ -170,7 +170,7 @@ return $goods;
 }
 
 /**
- * 获得礼品卡实卡列表
+ * 获得水果卡实卡列表
  *
  * @access  public
  * @params  integer $isdelete
@@ -182,8 +182,8 @@ if ($_REQUEST['act'] == 'edit_card')
 	  $type_id     = !empty($_REQUEST['tid'])    ? intval($_REQUEST['tid'])    : 0;
     
     $smarty->assign('lang',         $_LANG);
-    $smarty->assign('ur_here',     '礼品卡列表');
-    $smarty->assign('action_link', array('text' => '礼品卡列表', 'href' => "ks_card.php?act=list"));
+    $smarty->assign('ur_here',     '水果卡列表');
+    $smarty->assign('action_link', array('text' => '水果卡列表', 'href' => "ks_card.php?act=list"));
     $smarty->assign('action',       'edit_card');
 
     $smarty->assign('form_act',     'card_update');
@@ -229,8 +229,8 @@ if ($_REQUEST['act'] == 'list')
     $pageid = !empty($_REQUEST['page'])    ? intval($_REQUEST['page'])    : 1;
 	  $pagesize = 50;
     
-    $smarty->assign('ur_here',     '礼品卡实卡');
-    $smarty->assign('action_link', array('text' => '生成礼品卡', 'href' => "ks_card.php?act=edit_card&tid=$type_id"));
+    $smarty->assign('ur_here',     '水果卡实卡');
+    $smarty->assign('action_link', array('text' => '生成水果卡', 'href' => "ks_card.php?act=edit_card&tid=$type_id"));
     $smarty->assign('full_page',   1);
 
     $list = get_card_list($type_id,$card_id,$pagesize,$pageid);
@@ -246,7 +246,7 @@ if ($_REQUEST['act'] == 'list')
 
 
 /**
- * 获得礼品卡实卡页码
+ * 获得水果卡实卡页码
  */
 function get_card_page($pagesize,$type_id)
 {
@@ -305,7 +305,7 @@ if ($_REQUEST['act'] == 'card_update')
 }
 
 /*------------------------------------------------------ */
-//-- 删除礼品卡实卡
+//-- 删除水果卡实卡
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'delsn')
 {
@@ -317,7 +317,7 @@ if ($_REQUEST['act'] == 'delsn')
 //   $exc->drop($id);
 
 
-    /* 删除礼品卡 */
+    /* 删除水果卡 */
     $db->query("DELETE FROM " .$ecs->table('ks_cards'). " WHERE card_id = '$id'");
 
     $url = "ks_card.php?act=list&tid=$tid";
@@ -328,7 +328,7 @@ if ($_REQUEST['act'] == 'delsn')
 }
 
 /*------------------------------------------------------ */
-//-- 礼品卡订单详情
+//-- 水果卡订单详情
 /*------------------------------------------------------ */
 
 if ($_REQUEST['act'] == 'order_info')
@@ -399,8 +399,8 @@ if ($_REQUEST['act'] == 'order')
 	  $keywords      = trim($_POST['keywords']);
 	  $order_id     = !empty($_REQUEST['id'])    ? intval($_REQUEST['id'])    : 0;
 	      
-    $smarty->assign('ur_here',     '礼品卡订单列表');
-    $smarty->assign('action_link', array('text' => '礼品卡类型', 'href' => 'ks_card.php?act=cat'));
+    $smarty->assign('ur_here',     '水果卡订单列表');
+    $smarty->assign('action_link', array('text' => '水果卡类型', 'href' => 'ks_card.php?act=cat'));
     $smarty->assign('full_page',   1);
 
     $list = get_order_list($keywords,$order_id);
@@ -418,14 +418,14 @@ if ($_REQUEST['act'] == 'order')
 }
 
 /*------------------------------------------------------ */
-//-- 礼品卡商品配送信息
+//-- 水果卡商品配送信息
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'goods')
 {
 	  $id = $_GET['gid'];
 	  
-    $smarty->assign('ur_here',     '礼品卡配送商品');
-    $smarty->assign('action_link', array('text' => '礼品卡订单列表', 'href' => 'ks_card.php?act=order'));
+    $smarty->assign('ur_here',     '水果卡配送商品');
+    $smarty->assign('action_link', array('text' => '水果卡订单列表', 'href' => 'ks_card.php?act=order'));
     $smarty->assign('full_page',   1);
 
     $list = get_order_goods_list($id);
@@ -437,7 +437,7 @@ if ($_REQUEST['act'] == 'goods')
 }
 
 /*------------------------------------------------------ */
-//-- 删除礼品卡类型
+//-- 删除水果卡类型
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'remove')
 {
@@ -450,10 +450,10 @@ if ($_REQUEST['act'] == 'remove')
     /* 删除关联商品 */
     $db->query("DELETE FROM " .$ecs->table('ks_cardgoods'). " WHERE cg_catid = '$id'");
 
-    /* 删除礼品卡类型 */
+    /* 删除水果卡类型 */
     $db->query("DELETE FROM " .$ecs->table('ks_cardcats'). " WHERE cat_id = '$id'");
     
-    /* 删除礼品卡实卡 */
+    /* 删除水果卡实卡 */
     $db->query("DELETE FROM " .$ecs->table('ks_cards'). " WHERE card_type = '$id'");
 
     $url = "ks_card.php?act=cat";
@@ -464,15 +464,15 @@ if ($_REQUEST['act'] == 'remove')
 }
 
 /*------------------------------------------------------ */
-//-- 礼品卡类型添加
+//-- 水果卡类型添加
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'add')
 {
     admin_priv('card_and_card');
 
     $smarty->assign('lang',         $_LANG);
-    $smarty->assign('ur_here',      '添加礼品卡类型');
-    $smarty->assign('action_link',  array('href' => 'ks_card.php?act=cat', 'text' => '礼品卡类型列表'));
+    $smarty->assign('ur_here',      '添加水果卡类型');
+    $smarty->assign('action_link',  array('href' => 'ks_card.php?act=cat', 'text' => '水果卡类型列表'));
     $smarty->assign('action',       'add');
 
     $smarty->assign('form_act',     'insert');
@@ -530,10 +530,10 @@ if ($_REQUEST['act'] == 'insert')
     clear_cache_files();
 
     /* 提示信息 */
-    $link[0]['text'] = '添加礼品卡类型';
+    $link[0]['text'] = '添加水果卡类型';
     $link[0]['href'] = 'ks_card.php?act=add';
 
-    $link[1]['text'] = '礼品卡类型列表';
+    $link[1]['text'] = '水果卡类型列表';
     $link[1]['href'] = 'ks_card.php?act=cat';
 
     sys_msg($_LANG['add'] . "&nbsp;" .$_POST['type_name'] . "&nbsp;" . $_LANG['attradd_succed'],0, $link);
@@ -541,13 +541,13 @@ if ($_REQUEST['act'] == 'insert')
 }
 
 /*------------------------------------------------------ */
-//-- 礼品卡类型编辑页面
+//-- 水果卡类型编辑页面
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'edit')
 {
     admin_priv('card_and_card');
 
-    /* 获取礼品卡类型数据 */
+    /* 获取水果卡类型数据 */
     $type_id = !empty($_GET['tid']) ? intval($_GET['tid']) : 0;
     $bonus_arr = $db->getRow("SELECT * FROM " .$ecs->table('ks_cardcats'). " WHERE cat_id = '$type_id'");
 
@@ -557,8 +557,8 @@ if ($_REQUEST['act'] == 'edit')
 //    $bonus_arr['use_end_date']      = local_date('Y-m-d', $bonus_arr['use_end_date']);
 
     $smarty->assign('lang',        $_LANG);
-    $smarty->assign('ur_here',     '礼品卡类型编辑');
-    $smarty->assign('action_link', array('href' => 'ks_card.php?act=cat' , 'text' => '返回礼品卡类型列表'));
+    $smarty->assign('ur_here',     '水果卡类型编辑');
+    $smarty->assign('action_link', array('href' => 'ks_card.php?act=cat' , 'text' => '返回水果卡类型列表'));
     $smarty->assign('form_act',    'update');
     $smarty->assign('bonus_arr',   $bonus_arr);
 
@@ -567,7 +567,7 @@ if ($_REQUEST['act'] == 'edit')
 }
 
 /*------------------------------------------------------ */
-//-- 礼品卡类型编辑的处理
+//-- 水果卡类型编辑的处理
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'update')
 {
@@ -601,7 +601,7 @@ if ($_REQUEST['act'] == 'update')
    clear_cache_files();
 
    /* 提示信息 */
-   $link[] = array('text' => '返回礼品卡类型列表' , 'href' => 'ks_card.php?act=cat');
+   $link[] = array('text' => '返回水果卡类型列表' , 'href' => 'ks_card.php?act=cat');
    sys_msg($_LANG['edit'] .' '.$_POST['type_name'].' '. $_LANG['attradd_succed'], 0, $link);
 
 }
@@ -1177,7 +1177,7 @@ if ($_REQUEST['act'] == 'batch')
 }
 
 /**
- * 获取礼品卡类型列表
+ * 获取水果卡类型列表
  * @access  public
  * @return void
  */
@@ -1203,7 +1203,7 @@ return $goods;
 }
 
 /**
- * 获得礼品卡实卡列表
+ * 获得水果卡实卡列表
  *
  * @access  public
  * @params  integer $isdelete
@@ -1260,7 +1260,7 @@ return $cards;
 
 }
 
-/* 获取礼品卡类型名称 */
+/* 获取水果卡类型名称 */
 
 function get_type_name($card_type)
 
@@ -1273,7 +1273,7 @@ function get_type_name($card_type)
                
 }
 
-/* 生成礼品卡 */
+/* 生成水果卡 */
 
 function create_card($type_id,$bnum,$cnum)
 
@@ -1311,7 +1311,7 @@ function create_card($type_id,$bnum,$cnum)
 
 }
 
-/* 获取礼品卡类型标识 */
+/* 获取水果卡类型标识 */
 
 function get_sn_head($card_type)
 
@@ -1324,7 +1324,7 @@ function get_sn_head($card_type)
                
 }
 
-/* 礼品卡序号生成器 */
+/* 水果卡序号生成器 */
 
 function rancard($length,$string = '0123456789abcdefghijklmnopqrstuvwxyz') {
 $rstr = '';
@@ -1336,7 +1336,7 @@ return $rstr;
 }
 
 /**
- * 获取礼品卡类型列表
+ * 获取水果卡类型列表
  * @access  public
  * @return void
  */
@@ -1366,7 +1366,7 @@ function get_type_list()
 return $cardtype; 
 }
 
-/* 获取礼品卡发放数量 */
+/* 获取水果卡发放数量 */
 
 function get_all_num($card_type)
 
@@ -1379,7 +1379,7 @@ function get_all_num($card_type)
                
 }
 
-/* 获取礼品卡使用数量 */
+/* 获取水果卡使用数量 */
 
 function get_ok_num($card_type)
 
@@ -1393,7 +1393,7 @@ function get_ok_num($card_type)
 }
 
 /**
- * 获取礼品卡订单列表
+ * 获取水果卡订单列表
  * @access  public
  * @return void
  */
@@ -1449,7 +1449,7 @@ function get_order_list($keywords,$order_id)
     return $arr;
 }
 
-/* 获取礼品卡id */
+/* 获取水果卡id */
 
 function get_card_id($keywords)
 

@@ -40,7 +40,7 @@ $_LANG['email_exists'] = '您输入的电子邮件已存在，请换一个试试
 $_LANG['surplus_not_enough'] = '您使用的余额不能超过您现有的余额。';
 $_LANG['integral_not_enough'] = '您使用的积分不能超过您现有的积分。';
 $_LANG['integral_too_much'] = "您使用的积分不能超过%d";
-$_LANG['invalid_bonus'] = "您选择的储值卡并不存在。";
+$_LANG['invalid_bonus'] = "您选择的代金卡并不存在。";
 $_LANG['no_goods_in_cart'] = '您的购物车中没有商品！';
 $_LANG['not_submit_order'] = '您参与本次团购商品的订单已提交，请勿重复操作！';
 $_LANG['pay_success'] = '本次支付已经成功，我们将尽快为您发货。';
@@ -161,12 +161,12 @@ $_LANG['sms_paid'] = '已付款';
 $_LANG['notice_gb_order_amount'] = '（备注：团购如果有保证金，第一次只需支付保证金和相应的支付费用）';
 
 $_LANG['pay_order'] = '支付订单 %s';
-$_LANG['validate_bonus'] = '验证储值卡';
-$_LANG['input_bonus_no'] = '或者输入储值卡序列号';
-$_LANG['select_bonus'] = '选择已有储值卡';
-$_LANG['bonus_sn_error'] = '该储值卡序列号不正确';
-$_LANG['bonus_min_amount_error'] = '订单商品金额没有达到使用该储值卡的最低金额 %s';
-$_LANG['bonus_is_ok'] = '该储值卡序列号可以使用，可以抵扣 %s';
+$_LANG['validate_bonus'] = '验证代金卡';
+$_LANG['input_bonus_no'] = '或者输入代金卡序列号';
+$_LANG['select_bonus'] = '选择已有代金卡';
+$_LANG['bonus_sn_error'] = '该代金卡序列号不正确';
+$_LANG['bonus_min_amount_error'] = '订单商品金额没有达到使用该代金卡的最低金额 %s';
+$_LANG['bonus_is_ok'] = '该代金卡序列号可以使用，可以抵扣 %s';
 
 
 $_LANG['shopping_myship'] = '我的配送';

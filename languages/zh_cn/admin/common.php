@@ -138,15 +138,15 @@ $_LANG['13_backup'] = '数据库管理';
 $_LANG['14_sms'] = '短信管理';
 $_LANG['15_rec'] = '推荐管理';
 $_LANG['16_email_manage'] = '邮件群发管理';
-$_LANG['17_card_and_card'] = '礼品卡设置';
+$_LANG['17_card_and_card'] = '水果卡设置';
 
-/* 礼品卡 */
-$_LANG['ks_card_cat']   = '礼品卡分类';
-$_LANG['ks_card_list']  = '礼品卡管理';
-$_LANG['ks_card_order'] = '礼品卡订单';
-$_LANG['kt_card_list']  = '储值卡管理';
-$_LANG['kt_card_cat']   = '储值卡分类';
-$_LANG['kt_card_order'] = '储值卡订单';
+/* 水果卡 */
+$_LANG['ks_card_cat']   = '水果卡分类';
+$_LANG['ks_card_list']  = '水果卡管理';
+$_LANG['ks_card_order'] = '水果卡订单';
+$_LANG['kt_card_list']  = '代金卡管理';
+$_LANG['kt_card_cat']   = '代金卡分类';
+$_LANG['kt_card_order'] = '代金卡订单';
 
 /* 商品管理 */
 $_LANG['01_goods_list'] = '商品列表';
@@ -178,10 +178,10 @@ $_LANG['navigator'] = '自定义导航栏';
 /* 促销管理 */
 $_LANG['02_snatch_list'] = '夺宝奇兵';
 $_LANG['snatch_add'] = '添加夺宝奇兵';
-$_LANG['04_bonustype_list'] = '储值卡类型';
-$_LANG['bonustype_add'] = '添加储值卡类型';
-$_LANG['05_bonus_list'] = '线下储值卡';
-$_LANG['bonus_add'] = '添加会员储值卡';
+$_LANG['04_bonustype_list'] = '代金卡类型';
+$_LANG['bonustype_add'] = '添加代金卡类型';
+$_LANG['05_bonus_list'] = '线下代金卡';
+$_LANG['bonus_add'] = '添加会员代金卡';
 $_LANG['06_pack_list'] = '商品包装';
 $_LANG['07_card_list'] = '祝福贺卡';
 $_LANG['pack_add'] = '添加新包装';

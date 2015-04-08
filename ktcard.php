@@ -46,13 +46,13 @@ if (empty($_SESSION['user_id']))
     }
 }
 
-/* 登陆储值卡界面 */
+/* 登陆代金卡界面 */
 if ($action == 'default')
 {
 	
     assign_template();
-    $smarty->assign('page_title', '用户储值卡管理');    
-    $smarty->assign('ur_here',    '储值卡'); 
+    $smarty->assign('page_title', '用户代金卡管理');    
+    $smarty->assign('ur_here',    '代金卡'); 
     $smarty->assign('helps',      get_shop_help());    
     $smarty->assign('act',    'act_login');    
     $smarty->assign('action',      $action);   
@@ -62,7 +62,7 @@ if ($action == 'default')
     
 }
 
-/* 处理储值卡登陆界面 */ 
+/* 处理代金卡登陆界面 */ 
 if ($action == 'act_login') {
 
 	$card_sn    = isset($_REQUEST['card_sn'])? trim($_REQUEST['card_sn']): '0';
@@ -89,8 +89,8 @@ if ($action == 'act_login') {
              { 
 
              	  assign_template();
-                $smarty->assign('page_title', '用户储值卡管理');    
-                $smarty->assign('ur_here',    '储值卡'); 
+                $smarty->assign('page_title', '用户代金卡管理');    
+                $smarty->assign('ur_here',    '代金卡'); 
                 $smarty->assign('helps',      get_shop_help());    
                 $smarty->assign('act',    'next_ktcard');    
                 $smarty->assign('action',      $action);   
@@ -106,7 +106,7 @@ if ($action == 'act_login') {
 
 }
 
-/* 登陆储值卡界面 */
+/* 登陆代金卡界面 */
 if ($action == 'next_ktcard')
 {
 	  $arr       = array();
@@ -129,15 +129,15 @@ if ($action == 'next_ktcard')
              
              if ($fee > $card_bonus)
              {
-             	show_message('订单超出储值卡余额,请重新选择商品');
+             	show_message('订单超出代金卡余额,请重新选择商品');
              	return 0;
 //              	$order_msg = $fee - $card_bonus;
-//              	$order_msg = "订单超出储值卡余额 $order_msg 元,收货时还需补交 $order_msg 元.";
+//              	$order_msg = "订单超出代金卡余额 $order_msg 元,收货时还需补交 $order_msg 元.";
              }
             else
              {
             	$order_msg = $card_bonus - $fee;
-             	$order_msg = "订单总额: $fee 元,提交当前订单之后储值卡余额为: $order_msg 元.";
+             	$order_msg = "订单总额: $fee 元,提交当前订单之后代金卡余额为: $order_msg 元.";
              }
              if (empty($record_arr))
 
@@ -152,8 +152,8 @@ if ($action == 'next_ktcard')
              }
 
     assign_template();
-    $smarty->assign('page_title', '用户储值卡管理');    
-    $smarty->assign('ur_here',    '储值卡'); 
+    $smarty->assign('page_title', '用户代金卡管理');    
+    $smarty->assign('ur_here',    '代金卡'); 
     $smarty->assign('helps',      get_shop_help());    
     $smarty->assign('act',    'update_ktcard');    
     $smarty->assign('action',      $action);   
@@ -286,7 +286,7 @@ function get_order_sn()
 }
 
 /**
- * 获取储值卡商品列表
+ * 获取代金卡商品列表
  * @access  public
  * @return void
  */

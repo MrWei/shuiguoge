@@ -37,7 +37,7 @@ if (!defined('IN_ECS'))
     $purview['52_virtual_card_change'] = 'virualcard';
     $purview['goods_auto']           = 'goods_auto';
 
-//礼品卡权限管理
+//水果卡权限管理
     $purview['ks_card_cat']             = 'card_and_card';
     $purview['ks_card_list']            = 'card_and_card';
     $purview['ks_card_order']           = 'card_and_card';

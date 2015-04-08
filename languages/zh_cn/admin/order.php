@@ -175,7 +175,7 @@ $_LANG['label_card_fee'] = '贺卡费用：';
 $_LANG['label_money_paid'] = '已付款金额：';
 $_LANG['label_surplus'] = '使用余额：';
 $_LANG['label_integral'] = '使用积分：';
-$_LANG['label_bonus'] = '使用储值卡：';
+$_LANG['label_bonus'] = '使用代金卡：';
 $_LANG['label_order_amount'] = '订单总金额：';
 $_LANG['label_money_dues'] = '应付款金额：';
 $_LANG['label_money_refund'] = '应退款金额：';
@@ -199,7 +199,7 @@ $_LANG['return_list'] = '返回订单列表';
 /* 订单处理提示 */
 $_LANG['surplus_not_enough'] = '该订单使用 %s 余额支付，现在用户余额不足';
 $_LANG['integral_not_enough'] = '该订单使用 %s 积分支付，现在用户积分不足';
-$_LANG['bonus_not_available'] = '该订单使用储值卡支付，现在储值卡不可用';
+$_LANG['bonus_not_available'] = '该订单使用代金卡支付，现在代金卡不可用';
 
 /* 购货人信息 */
 $_LANG['display_buyer'] = '显示购货人信息';
@@ -209,7 +209,7 @@ $_LANG['rank_points'] = '等级积分';
 $_LANG['user_money'] = '账户余额';
 $_LANG['email'] = '电子邮件';
 $_LANG['rank_name'] = '会员等级';
-$_LANG['bonus_count'] = '储值卡数量';
+$_LANG['bonus_count'] = '代金卡数量';
 $_LANG['zipcode'] = '邮编';
 $_LANG['tel'] = '电话';
 $_LANG['mobile'] = '备用电话';
@@ -227,7 +227,7 @@ $_LANG['merge_invalid_order'] = '对不起，您选择合并的订单不允许�
 $_LANG['from_order_sn'] = '从订单：';
 $_LANG['to_order_sn'] = '主订单：';
 $_LANG['merge'] = '合并';
-$_LANG['notice_order_sn'] = '当两个订单不一致时，合并后的订单信息（如：支付方式、配送方式、包装、贺卡、储值卡等）以主订单为准。';
+$_LANG['notice_order_sn'] = '当两个订单不一致时，合并后的订单信息（如：支付方式、配送方式、包装、贺卡、代金卡等）以主订单为准。';
 $_LANG['js_languages']['confirm_merge'] = '您确实要合并这两个订单吗？';
 
 /* 批处理 */
@@ -286,7 +286,7 @@ $_LANG['add_to_order'] = '加入订单';
 $_LANG['calc_order_amount'] = '计算订单金额';
 $_LANG['available_surplus'] = '可用余额：';
 $_LANG['available_integral'] = '可用积分：';
-$_LANG['available_bonus'] = '可用储值卡：';
+$_LANG['available_bonus'] = '可用代金卡：';
 $_LANG['admin'] = '管理员添加';
 $_LANG['search_goods'] = '按商品编号或商品名称或商品货号搜索';
 $_LANG['category'] = '分类';

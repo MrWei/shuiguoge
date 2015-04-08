@@ -3,7 +3,7 @@
 {if $full_page}
 {include file="pageheader.htm"}
 <form action="kt_card.php" method="post" name="theForm" enctype="multipart/form-data">
-<h1>储值卡序号:<input type='text' name='keywords' maxlength="30" value="" size='20' /><input type="submit" value="查询" class="button" /></h1>
+<h1>代金卡序号:<input type='text' name='keywords' maxlength="30" value="" size='20' /><input type="submit" value="查询" class="button" /></h1>
 <input type="hidden" name="act" value="order" />
 </form>
 {insert_scripts files="../js/utils.js,listtable.js"}
@@ -40,7 +40,7 @@
       <td align="center">
         <a href="kt_card.php?act=order_info&id={$type.order_id}">详情</a> |
         <a href="kt_card.php?act=goods&gid={$type.order_goods}">商品</a> |
-        <a href="kt_card.php?act=list&id={$type.card_id}">储值卡</a></td>
+        <a href="kt_card.php?act=list&id={$type.card_id}">代金卡</a></td>
     </tr>
       {foreachelse}
     <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>

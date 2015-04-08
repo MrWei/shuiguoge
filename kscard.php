@@ -46,13 +46,13 @@ if (empty($_SESSION['user_id']))
     }
 }
 
-/* 登陆礼品卡界面 */
+/* 登陆水果卡界面 */
 if ($action == 'default')
 {
 	
     assign_template();
-    $smarty->assign('page_title', '用户礼品卡管理');    
-    $smarty->assign('ur_here',    '礼品卡'); 
+    $smarty->assign('page_title', '用户水果卡管理');    
+    $smarty->assign('ur_here',    '水果卡'); 
     $smarty->assign('helps',      get_shop_help());    
     $smarty->assign('act',    'act_login');    
     $smarty->assign('action',      $action);   
@@ -62,7 +62,7 @@ if ($action == 'default')
     
 }
 
-/* 处理礼品卡登陆界面 */ 
+/* 处理水果卡登陆界面 */ 
 if ($action == 'act_login') {
 
 	$card_sn    = isset($_REQUEST['card_sn'])? trim($_REQUEST['card_sn']): '0';
@@ -90,8 +90,8 @@ if ($action == 'act_login') {
              	  if($record_arr['order_id'] == 0)
              	  {
              	  assign_template();
-                $smarty->assign('page_title', '用户礼品卡管理');    
-                $smarty->assign('ur_here',    '礼品卡'); 
+                $smarty->assign('page_title', '用户水果卡管理');    
+                $smarty->assign('ur_here',    '水果卡'); 
                 $smarty->assign('helps',      get_shop_help());    
                 $smarty->assign('act',    'update_kscard');    
                 $smarty->assign('action',      $action);   
@@ -108,8 +108,8 @@ if ($action == 'act_login') {
                 else
                 {
                  assign_template();
-                $smarty->assign('page_title', '用户礼品卡管理');    
-                $smarty->assign('ur_here',    '礼品卡'); 
+                $smarty->assign('page_title', '用户水果卡管理');    
+                $smarty->assign('ur_here',    '水果卡'); 
                 $smarty->assign('helps',      get_shop_help());    
                 $smarty->assign('act',        'order_info');    
                 $smarty->assign('action',     'order_info');   
@@ -219,7 +219,7 @@ function get_order_sn()
 }
 
 /**
- * 获取礼品卡商品列表
+ * 获取水果卡商品列表
  * @access  public
  * @return void
  */

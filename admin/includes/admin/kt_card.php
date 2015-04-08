@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ECSHOP 储值卡类型的处理
+ * ECSHOP 代金卡类型的处理
  * ============================================================================
  * 版权所有 2005-2008 上海商派网络科技有限公司，并保留所有权利。
  * 网站地址: http://www.ecshop.com；
@@ -51,7 +51,7 @@ if ($_REQUEST['act'] == 'query')
 }
 
 /*------------------------------------------------------ */
-//-- 修改储值卡价格
+//-- 修改代金卡价格
 /*------------------------------------------------------ */
 
 if ($_REQUEST['act'] == 'edit_fee')
@@ -60,8 +60,8 @@ if ($_REQUEST['act'] == 'edit_fee')
     $card_id     = !empty($_REQUEST['id'])    ? intval($_REQUEST['id'])    : 0;
     
     $smarty->assign('lang',         $_LANG);
-    $smarty->assign('ur_here',     '修改储值卡价格');
-    $smarty->assign('action_link', array('text' => '储值卡列表', 'href' => "kt_card.php?act=list"));
+    $smarty->assign('ur_here',     '修改代金卡价格');
+    $smarty->assign('action_link', array('text' => '代金卡列表', 'href' => "kt_card.php?act=list"));
     $smarty->assign('action',       'edit_fee');
     $smarty->assign('form_act',     'update_fee');
     $smarty->assign('cfg_lang',     $_CFG['lang']);
@@ -76,7 +76,7 @@ if ($_REQUEST['act'] == 'edit_fee')
 
 
 /*------------------------------------------------------ */
-//-- 修改储值卡价格
+//-- 修改代金卡价格
 /*------------------------------------------------------ */
 
 if ($_REQUEST['act'] == 'update_fee')
@@ -93,7 +93,7 @@ if ($_REQUEST['act'] == 'update_fee')
    $db->query($sql);
     
     /* 记录管理员操作 */
-    $log_info = "初始化储值卡余额" . $card_type . "元,储值卡id为:".$card_id ;
+    $log_info = "初始化代金卡余额" . $card_type . "元,代金卡id为:".$card_id ;
 
     $sql = 'INSERT INTO ' . $ecs->table('admin_log') . ' (log_time, user_id, log_info, ip_address) ' .
             " VALUES ('" . gmtime() . "', $_SESSION[admin_id], '" . stripslashes($log_info) . "', '" . real_ip() . "')";
@@ -115,7 +115,7 @@ if ($_REQUEST['act'] == 'excel')
 
 
     /* 文件名称 */
-    $bonus_filename = "储值卡" .'_bonus_list';
+    $bonus_filename = "代金卡" .'_bonus_list';
     if (EC_CHARSET != 'gbk')
     {
         $bonus_filename = ecs_iconv('UTF8', 'GB2312',$bonus_filename);
@@ -127,13 +127,13 @@ if ($_REQUEST['act'] == 'excel')
     /* 文件标题 */
     if (EC_CHARSET != 'gbk')
     {
-        echo ecs_iconv('UTF8', 'GB2312', '储值卡序号') ."\t";
-        echo ecs_iconv('UTF8', 'GB2312', '储值卡密码') ."\t\n";
+        echo ecs_iconv('UTF8', 'GB2312', '代金卡序号') ."\t";
+        echo ecs_iconv('UTF8', 'GB2312', '代金卡密码') ."\t\n";
     }
     else
     {
-        echo "储值卡序号" ."\t";
-        echo "储值卡密码" ."\t\n";
+        echo "代金卡序号" ."\t";
+        echo "代金卡密码" ."\t\n";
     }
 
     $val = array();
@@ -158,8 +158,8 @@ if ($_REQUEST['act'] == 'order')
 {
 	  $id = intval($_GET['id']);
 	  $keywords      = trim($_POST['keywords']);
-    $smarty->assign('ur_here',     '储值卡订单列表');
-    $smarty->assign('action_link', array('text' => '礼品卡类型', 'href' => 'kt_card.php?act=order'));
+    $smarty->assign('ur_here',     '代金卡订单列表');
+    $smarty->assign('action_link', array('text' => '水果卡类型', 'href' => 'kt_card.php?act=order'));
     $smarty->assign('full_page',   1);
 
     $list = get_order_list($id,$keywords);
@@ -222,7 +222,7 @@ if ($_REQUEST['act'] == 'order_status')
 }
 
 /*------------------------------------------------------ */
-//-- 礼品卡订单详情
+//-- 水果卡订单详情
 /*------------------------------------------------------ */
 
 if ($_REQUEST['act'] == 'order_info')
@@ -293,14 +293,14 @@ if ($_REQUEST['act'] == 'order_update')
   }
   
 /*------------------------------------------------------ */
-//-- 储值卡商品配送信息
+//-- 代金卡商品配送信息
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'goods')
 {
 	  $id = $_GET['gid'];
 	  
-    $smarty->assign('ur_here',     '储值卡配送商品');
-    $smarty->assign('action_link', array('text' => '储值卡订单列表', 'href' => 'kt_card.php?act=order'));
+    $smarty->assign('ur_here',     '代金卡配送商品');
+    $smarty->assign('action_link', array('text' => '代金卡订单列表', 'href' => 'kt_card.php?act=order'));
     $smarty->assign('full_page',   1);
 
     $list = get_order_goods_list($id);
@@ -321,8 +321,8 @@ if ($_REQUEST['act'] == 'list')
 	  $pageid = !empty($_REQUEST['page'])    ? intval($_REQUEST['page'])    : 1;
 	  $pagesize = 50;
     
-    $smarty->assign('ur_here',     '储值卡实卡');
-    $smarty->assign('action_link', array('text' => '生成储值卡', 'href' => "kt_card.php?act=edit_card"));
+    $smarty->assign('ur_here',     '代金卡实卡');
+    $smarty->assign('action_link', array('text' => '生成代金卡', 'href' => "kt_card.php?act=edit_card"));
     $smarty->assign('full_page',   1);
 
     $list = get_card_list($id,$pagesize,$pageid);
@@ -336,7 +336,7 @@ if ($_REQUEST['act'] == 'list')
 }
 
 /**
- * 获得礼品卡实卡页码
+ * 获得水果卡实卡页码
  */
 function get_card_page($pagesize)
 {
@@ -359,7 +359,7 @@ return $pagestr;
 }
 
 /**
- * 获得礼品卡实卡列表
+ * 获得水果卡实卡列表
  *
  * @access  public
  * @params  integer $isdelete
@@ -411,7 +411,7 @@ return $cards;
 }
 
 /**
- * 获得礼品卡实卡列表
+ * 获得水果卡实卡列表
  *
  * @access  public
  * @params  integer $isdelete
@@ -423,8 +423,8 @@ if ($_REQUEST['act'] == 'edit_card')
 	
     
     $smarty->assign('lang',         $_LANG);
-    $smarty->assign('ur_here',     '储值卡列表');
-    $smarty->assign('action_link', array('text' => '储值卡列表', 'href' => "kt_card.php?act=list"));
+    $smarty->assign('ur_here',     '代金卡列表');
+    $smarty->assign('action_link', array('text' => '代金卡列表', 'href' => "kt_card.php?act=list"));
     $smarty->assign('action',       'edit_card');
 
     $smarty->assign('form_act',     'card_update');
@@ -460,7 +460,7 @@ if ($_REQUEST['act'] == 'card_update')
 }
 
 /*------------------------------------------------------ */
-//-- 删除礼品卡实卡
+//-- 删除水果卡实卡
 /*------------------------------------------------------ */
 if ($_REQUEST['act'] == 'delsn')
 {
@@ -471,7 +471,7 @@ if ($_REQUEST['act'] == 'delsn')
 //   $exc->drop($id);
 
 
-    /* 删除礼品卡 */
+    /* 删除水果卡 */
     $db->query("DELETE FROM " .$ecs->table('kt_bcards'). " WHERE card_id = '$id'");
 
     $url = "kt_card.php?act=list";
@@ -481,7 +481,7 @@ if ($_REQUEST['act'] == 'delsn')
 
 }
 
-/* 生成储值卡 */
+/* 生成代金卡 */
 
 function create_card($sn_head,$bnum,$cnum,$card_type)
 
@@ -519,7 +519,7 @@ function create_card($sn_head,$bnum,$cnum,$card_type)
 }
 
 
-/* 礼品卡序号生成器 */
+/* 水果卡序号生成器 */
 
 function rancard($length,$string = '0123456789abcdefghijklmnopqrstuvwxyz') {
 $rstr = '';
@@ -531,7 +531,7 @@ return $rstr;
 }
 
 /**
- * 获取礼品卡类型列表
+ * 获取水果卡类型列表
  * @access  public
  * @return void
  */
@@ -556,7 +556,7 @@ function get_order_goods_list($id)
 return $goods; 
 }
 
-/* 获取储值卡配送商品名称 */
+/* 获取代金卡配送商品名称 */
 
 function get_goods_name($id)
 
@@ -570,7 +570,7 @@ function get_goods_name($id)
 }
 
 /**
- * 获取礼品卡订单列表
+ * 获取水果卡订单列表
  * @access  public
  * @return void
  */
@@ -627,7 +627,7 @@ function get_order_list($id,$keywords)
     return $arr;
 }
 
-/* 获取礼品卡id */
+/* 获取水果卡id */
 
 function get_card_id($keywords)
 
@@ -640,7 +640,7 @@ function get_card_id($keywords)
                
 }
 
-/* 获取礼品卡类型名称 */
+/* 获取水果卡类型名称 */
 
 function get_type_name($card_type)
 

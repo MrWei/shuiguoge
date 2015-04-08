@@ -73,7 +73,7 @@ if ($_REQUEST['act'] == 'query')
 }
 
 /*------------------------------------------------------ */
-//-- 添加礼品卡配备商品
+//-- 添加水果卡配备商品
 /*------------------------------------------------------ */
 
 if ($_REQUEST['act'] == 'goods')
@@ -98,7 +98,7 @@ if ($_REQUEST['act'] == 'goods')
 
     /* 模板赋值 */
     $goods_ur = array('' => $_LANG['01_goods_list'], 'virtual_card'=>$_LANG['50_virtual_card_list']);
-    $ur_here = '添加礼品卡关联商品';
+    $ur_here = '添加水果卡关联商品';
     $smarty->assign('ur_here', $ur_here);
 
     $action_link2  = array('href' => "ks_card_goods.php?act=goods&tid=$type_id", 'text' => '添加关联商品');
