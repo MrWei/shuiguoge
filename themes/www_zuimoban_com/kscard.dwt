@@ -2,241 +2,250 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <meta name="Keywords" content="{$keywords}" />
-<meta name="Description" content="{$description}" /><meta http-equiv=x-ua-compatible content=ie=7 />
+<meta name="Description" content="{$description}" />
 <!-- TemplateBeginEditable name="doctitle" -->
 <title>{$page_title}</title>
 <!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
 <link href="base.css" rel="stylesheet" type="text/css" />
-<link href="index.css" rel="stylesheet" type="text/css" />
-<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />{* 包含脚本文件 *}
-<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+<link href="flow.css" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='jquery-1.10.2.min.js'}
 {insert_scripts files='common.js'}
- </head>
+</head>
 <body>
-<script type="text/javascript">
-var process_request = "正在处理您的请求...";
-</script>
-<script type="text/javascript">
-var isWidescreen=screen.width<1200;
-if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
-</script>
-<div class="header container">
-  <div class="top">
-    <div class="logo"><a class="icon-common-logo" href="index.php" title=""><img src="themes/www_zuimoban_com/images/logo.png" /></a></div>
-    <div class="right clearfix">
-      <div class="menu">
-        <ul class="clearfix">
-          <li>
-            <script type="text/javascript" src="js/transport.js"></script>
-            <script type="text/javascript" src="js/utils.js"></script>
-            <label id="header_menu_top_login"><font id="ECS_MEMBERZONE">{insert name='member_info'}</font></label>
-          </li>
-         </ul>
-      </div>
-       <div style="margin-top:3px;" class="xshop buy_car_bg clearfix"  onmouseover="this.className='xshop hover_on buy_car_bg ul1_on'" onmouseout=  "this.className='xshop buy_car_bg'">
-         <img src="../images/nav_cat.gif" style="float:left; padding-right:5px; padding-left:10px; padding-top:7px;" /> 
-        <div id="ECS_CARTINFO">
-    <p><a href="flow.php">{insert name='cart_info'}</a></p>
-   </div> </div>
-      </div>
-  </div>
-  <div class="nav">
-       <div class="lnks headerblock">
-        <ul class="lnks-li">
-          <li><a class="lnk  {if $navigator_list.config.index eq 1}on{/if}" href="index.php">首页</a></li>
- 		  <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
-            <?php
-            $GLOBALS['smarty']->assign('get_child_tree', get_child_tree($GLOBALS['smarty']->_var['nav']['cid']));
-            $GLOBALS['smarty']->assign('menucatid',get_catid_byurl($GLOBALS['smarty']->_var['nav']['url']));
-            ?>
-          <li {if $menucatid && $get_child_tree}class="phonelistarr" onmouseover="this.className='phonelistarr nhover'" onmouseout="this.className='phonelistarr'"{/if}><a class="lnk {if $nav.active eq 1}on{/if}" href="{$nav.url}"> {$nav.name} </a>
-            {if $menucatid && $get_child_tree}
-              <dl>
-                <!--{foreach from=$get_child_tree item=child name=child}-->             
-                <dd {if $smarty.foreach.subcates.last}class="last"{/if}><a href="{$child.url}" title="{$cat.name|escape:html}">{$child.name}</a></dd>
-                <!--{/foreach}-->
-              </dl>
-            {/if}	
-          </li>
-		  <!-- {/foreach} -->
-        </ul>
-      </div>
-    </div>
-       </ul>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<!--当前位置 end-->
+<!--{if $action eq 'default'}-->
+<div class="container">
+  <div class="module">
+    <div class="content" style="padding:8px;">
+      <form name="formLogin" action="kscard.php" method="post">
+        <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
+          <tr>
+            <td width="40%" align="right">礼品卡序号</td>
+            <td width="60%"><input name="card_sn" type="text" size="20" class="inputBg" /></td>
+          </tr>
+          <tr>
+            <td align="right">礼品卡密码</td>
+            <td><input name="card_pwd" type="text" size="20"  class="inputBg"/></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td align="left"><input type="hidden" name="act" value="{$act}" />
+              <input type="hidden" name="back_act" value="{$back_act}" />
+              <input type="submit" name="submit" value="" class="us_Submit" /></td>
+          </tr>
+        </table>
+      </form>
     </div>
   </div>
 </div>
-    <!--{if $action eq 'default'}-->
-    <div class="container">
-      <div class="module">
-         <div class="content" style="padding:8px;">
-         <form name="formLogin" action="kscard.php" method="post"">
-            <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
-              <tr>
-                <td width="40%" align="right">礼品卡序号</td>
-                <td width="60%"><input name="card_sn" type="text" size="20" class="inputBg" /></td>
-              </tr>
-              <tr>
-                <td align="right">礼品卡密码</td>
-                <td>
-                <input name="card_pwd" type="text" size="20"  class="inputBg"/>
-                </td>
-              </tr>
-                            <tr>
-                <td>&nbsp;</td>
-                <td align="left">
-                  <input type="hidden" name="act" value="{$act}" />
-                  <input type="hidden" name="back_act" value="{$back_act}" />
-                  <input type="submit" name="submit" value="" class="us_Submit" />
-                </td>
-              </tr>
-            </table>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!--{/if}-->
-    
-    <!--{if $action eq 'act_login'}-->
-    <div class="container">
-      <div class="module">
-         <div class="content" style="padding:8px;">
-         <form name="formLogin" action="kscard.php" method="post"">
-            <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
-              <tr>
-                <td width="40%" align="right">联系人</td>
-                <td width="60%"><input name="order_user" type="text" size="20" class="inputBg" /></td>
-              </tr>
-              <tr>
-                <td align="right">联系地址</td>
-                <td>
-                <input name="order_address" type="text" size="20"  class="inputBg"/>
-                </td>
-              </tr>
-              <tr>
-                <td align="right">固定电话</td>
-                <td>
-                <input name="order_tel" type="text" size="20"  class="inputBg"/>
-                </td>
-              </tr>
-              <tr>
-                <td align="right">移动电话</td>
-                <td>
-                <input name="order_phone" type="text" size="20"  class="inputBg"/>
-                </td>
-              </tr>
-              <tr>
-                <td align="right">特殊要求</td>
-                <td>
-                <input name="order_bak" type="text" size="20"  class="inputBg"/>
-                </td>
-              </tr>
-              <tr>
-                <td align="right">配送时间</td>
-                <td>
-                <input type="radio" name="shipping_time" value="全天" checked="checked" />全天
-                <input type="radio" name="shipping_time" value="上午" />上午
-                <input type="radio" name="shipping_time" value="下午" />下午
-                </td>
-              </tr>
-              <tr>
-                <td align="right">选择商品<br /></td>
-                <td>
+<!--{/if}--> 
+
+<!--{if $action eq 'act_login'}-->
+{insert_scripts files='region.js,utils.js'}
+<style type="text/css">
+      .module{ width: 1000px; margin: 0px auto; border: #ddd 1px solid; margin-top: 15px; background: #fff;}
+      input.txt{width: 300px; height: 30px; line-height: 30px; padding: 0px 5px; background: #fff ;border: #ddd 1px solid;}
+      .txt2{width: 120px; height: 30px; line-height: 30px; padding: 0px 5px; background: #fff ;border: #ddd 1px solid;}
+      .tablelist{  border-collapse:collapse; margin: 0px auto; width: 780px;}
+      .tablelist th{ border: #ddd 1px solid; line-height: 35px; background: #f1f1f1 ;}
+      .tablelist td{ border: #ddd 1px solid;}
+    </style>
+<div class="container">
+  <div class="module">
+    <div class="content" style="padding:8px;">
+      <form name="formLogin" action="kscard.php" method="post">
+        <table width="1000" border="0" cellpadding="3" cellspacing="5" style="margin:0px auto;">
+           <tr >
+              <td width="10%" align="right">姓名:</td>
+              <td width="90%">
+        <input type="text" name="name" value="{$consignee.consignee|escape}"  class="txt">&nbsp;&nbsp;{if $smarty.session.user_id gt 0}{/if}<font color=#ff3300>(必填) </font> 请填写姓名
+        </td>
+        </tr>
+          <tr>
+            <td align=right height="30">手机</td>
+            <td height="30"><input type="text" name="tel" value="{$consignee.tel}" class="txt">
+              <font color=#ff3300>(必填) </font> 请填写有效联系手机</td>
+          </tr>
+          <tr>
+            <td height="30" align=right>配送区域：</td>
+            <td height="30"><input type="hidden" name="consignee_post" value="1">
+              <input name="address_id" type="hidden" value="{$consignee.address_id}" />
+              <select name="country" id="selCountries_0" onchange="region.changed(this, 1, 'selProvinces_0')" style="border:1px solid #ccc;" class="txt2">
+                <option value="0">请选择国家</option>
+                <option value="1" selected>中国</option>
+              </select>
+              <select name="province" id="selProvinces_0" onchange="region.changed(this, 2, 'selCities_0')" onblur="shippingBox_change(document.forms['theForm'])"  class="txt2">
+                <option value="0">{$lang.please_select}{$name_of_region[1]}</option>
+                <!-- {foreach from=$shop_province_list item=province} -->
+                <option value="{$province.region_id}" {if $consignee.province eq $province.region_id}selected{/if}>{$province.region_name}</option>
+                <!-- {/foreach} -->
+              </select>
+              <select name="city" id="selCities_0" onchange="region.changed(this, 3, 'selDistricts_0')"  class="txt2">
+                <option value="0">{$lang.please_select}{$name_of_region[2]}</option>
+                <!-- {foreach from=$shop_city_list item=city} -->
+                <option value="{$city.region_id}" {if $consignee.city eq $city.region_id}selected{/if}>{$city.region_name}</option>
+                <!-- {/foreach} -->
+              </select>
+              <select name="district" id="selDistricts_0"  {if !$shop_district_list}style="display:none"{/if}  class="txt2">
+                <option value="0">{$lang.please_select}{$name_of_region[3]}</option>
+                <!-- {foreach from=$shop_district_list item=district} -->
+                <option value="{$district.region_id}" {if $consignee.district eq $district.region_id}selected{/if}>{$district.region_name}</option>
+                <!-- {/foreach} -->
+              </select>
+              <font color=#ff3300>(必填) </font></td>
+          </tr>
+          <tr>
+            <td height="30" align=right>收货地址：</td>
+            <td height="30"><input type="text" name="address" value="{$consignee.address|escape}"  class="txt">
+              <font color=#ff3300>(必填) </font> 请详细填写收货地址，便于及时、准确的收发货</td>
+          </tr>
+          
+          <!-- {if $total.real_goods_count gt 0} -->
+          <tr>
+            <td align=right valign=top>订单附言：</td>
+            <td style="padding:5px 0 20px 0;"><textarea name="postscript" rows=3 cols=70></textarea></td>
+          </tr>
+          <!-- {/if} -->
+          <tr>
+            <td align="right">特殊要求</td>
+            <td><input name="order_bak" type="text"  class="txt"  class="inputBg"/></td>
+          </tr>
+          <tr>
+            <td align="right">配送时间</td>
+            <td><input type="radio" name="shipping_time" value="全天" checked="checked" />
+              全天
+              <input type="radio" name="shipping_time" value="上午" />
+              上午
+              <input type="radio" name="shipping_time" value="下午" />
+              下午 </td>
+          </tr>
+          <tr>
+            <td align="right">选择商品<br /></td>
+            <td><span style="color:red;">可选{$sel_num}件</span></td>
+          </tr>
+          <tr>
+            <td colspan="2"><table class="tablelist">
+                <tr>
+                  <th>选择</th>
+                  <th>商品名称</th>
+                  <th>商城价</th>
+                  <th>商品图片</th>
+                </tr>
                 {foreach from=$goods_list item=goods}
-                <input name="goods[]" type="checkbox" value="{$goods.cg_goodid}" /><a href="/goods.php?id={$goods.cg_goodid}" target="_blank">{$goods.cg_goodname}</a>
-                {if $goods.cg_goodbak}
-                 (说明:{$goods.cg_goodbak})  
-                 {/if}<br />
-                {foreachelse}
-                没有可选商品,请联系客服.
+                <tr>
+                  <td align="center"><input name="goods[]" class='goods' type="checkbox" value="{$goods.cg_goodid}" /></td>
+                  <td><a href="/goods.php?id={$goods.cg_goodid}" target="_blank">{$goods.cg_goodname}</a></td>
+                  <td align="center">{$goods.cg_price}</td>
+                  <td align="center"><img src="{$goods.cg_img}" alt="" width="60" height="60" /></td>
+                </tr>
                 {/foreach}
-                <span style="color:red;">可选{$sel_num}件</span>
-                </td>
-              </tr>
-                            <tr>
-                <td>&nbsp;</td>
-                <td align="left">
-                  <input type="hidden" name="act" value="{$act}" />
-                  <input type="hidden" name="back_act" value="{$back_act}" />
-                  <input type="hidden" name="card_sn" value="{$card_sn}" />
-                  <input type="hidden" name="card_id" value="{$card_id}" />
-                  <input type="hidden" name="card_pwd" value="{$card_pwd}" />
-                  <input type="hidden" name="card_type" value="{$card_type}" />
-                  <input type="hidden" name="sel_num" value="{$sel_num}" />
-                  <input type="submit" name="submit" value="" style="width:145px; height:40px; background:url(images/bnt_subOrder.gif) no-repeat 0 0; border:none; cursor:pointer;" />
-                </td>
-              </tr>
-            </table>
-          </form>
-        </div>
-      </div>
+              </table></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td align="left"><input type="hidden" name="act" value="{$act}" />
+              <input type="hidden" name="back_act" value="{$back_act}" />
+              <input type="hidden" name="card_sn" value="{$card_sn}" />
+              <input type="hidden" name="card_id" value="{$card_id}" />
+              <input type="hidden" name="card_pwd" value="{$card_pwd}" />
+              <input type="hidden" name="card_type" value="{$card_type}" />
+              <input type="hidden" name="sel_num" value="{$sel_num}" />
+              <input type="submit" name="submit" value="" style="width:145px; height:40px; background:url(images/bnt_subOrder.gif) no-repeat 0 0; border:none; cursor:pointer;" /></td>
+          </tr>
+        </table>
+      </form>
     </div>
-    <!--{/if}-->
-    
-     <!--{if $action eq 'order_info'}-->
-    <div class="container">
-      <div class="module">
-        <h1><span></span>已提交的订单</h1>
-        <div class="content" style="padding:8px;">
-         <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
-	<tr>
-    <td width="40%" align="right">订单号</td>
-    <td width="60%" >
-      <input disabled="true"　readOnly="true" type='text' name='order_id' maxlength="30" value="{$order.order_sn}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">联系人</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_user' maxlength="30" value="{$order.order_user}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">联系地址</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_address' maxlength="30" value="{$order.order_address}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">联系电话</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_tel' maxlength="30" value="{$order.order_tel}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">移动电话</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_phone' maxlength="30" value="{$order.order_phone}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">特殊要求备注</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_bak' maxlength="30" value="{$order.order_bak}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">配送时间</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='shipping_time' maxlength="30" value="{$order.shipping_time}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">订单创建时间</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_time' maxlength="30" value="{$order_time}" size='20' />    </td>
-  </tr>
-  <tr>
-    <td align="right">订单状态</td>
-    <td>
-      <input disabled="true"　readOnly="true" type='text' name='order_status' maxlength="30" value="{if $type.order_status eq 0}正常{elseif $type.order_status eq 1}已确认{elseif $type.order_status eq 2}已配送{elseif $type.order_status eq 3}完成{/if}" size='20' />    </td>
-  </tr>
-</table>
-        </div>
-      </div>
-    </div>
-    <!--{/if}-->
-    
-    
- <!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem -->
- <!-- #BeginLibraryItem "/library/right.lbi" --><!-- #EndLibraryItem -->
-<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
   </div>
+</div>
+<script type="text/javascript">
+    // $(function(){
+    //   $("input[name='submit']").click(function(){
+    //   var phone = $("input[name='order_tel']").val();
+    //   var mobile = $("input[name='order_phone']").val();  
+    //   if( !$("input[name='order_user']").val() ){
+    //       alert('请输入联系人')
+    //       return false;
+    //     }
+    //      if( !$("input[name='order_address']").val() ){
+    //       alert('请输入联系人地址')
+    //       return false;
+    //     }
+    //      if( !phone && !mobile){
+    //       alert('请输入联系人固定电话或者手机号')
+    //       return false;
+    //     }
+    //     var isPhone = /^0\d{2,3}-?\d{7,8}$/;
+    //     var isMobile = /^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
+    //     if( phone && !isPhone.test(phone)  ){
+    //        alert('请输入正确的固定电话')
+    //        return false;
+    //     }
+    //      if( mobile && !isMobile.test(mobile)  ){
+    //        alert('请输入正确的手机号')
+    //        return false;
+    //     }
+    //   })
+    // })
+    </script> 
+<!--{/if}--> 
+
+<!--{if $action eq 'order_info'}-->
+<div class="container">
+  <div class="module">
+    <h1><span></span>已提交的订单</h1>
+    <div class="content" style="padding:8px;">
+      <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
+        <tr>
+          <td width="40%" align="right">订单号</td>
+          <td width="60%" ><input disabled="true"　readOnly="true" type='text' name='order_id' maxlength="30" value="{$order.order_sn}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">联系人</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_user' maxlength="30" value="{$order.order_user}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">联系地址</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_address' maxlength="30" value="{$order.order_address}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">联系电话</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_tel' maxlength="30" value="{$order.order_tel}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">移动电话</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_phone' maxlength="30" value="{$order.order_phone}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">特殊要求备注</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_bak' maxlength="30" value="{$order.order_bak}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">配送时间</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='shipping_time' maxlength="30" value="{$order.shipping_time}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">订单创建时间</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_time' maxlength="30" value="{$order_time}" size='20' /></td>
+        </tr>
+        <tr>
+          <td align="right">订单状态</td>
+          <td><input disabled="true"　readOnly="true" type='text' name='order_status' maxlength="30" value="{if $type.order_status eq 0}正常{elseif $type.order_status eq 1}已确认{elseif $type.order_status eq 2}已配送{elseif $type.order_status eq 3}完成{/if}" size='20' /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<!--{/if}--> 
+
+<!-- #BeginLibraryItem "/library/help.lbi" --><!-- #EndLibraryItem --> <!-- #BeginLibraryItem "/library/right.lbi" --><!-- #EndLibraryItem --> <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</div>
 </body>
 </html>
