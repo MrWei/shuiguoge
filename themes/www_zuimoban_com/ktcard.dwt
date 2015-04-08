@@ -83,11 +83,11 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
          <form name="formLogin" action="ktcard.php" method="post">
             <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
               <tr>
-                <td width="40%" align="right">储值卡序号</td>
+                <td width="40%" align="right">代金卡序号</td>
                 <td width="60%"><input name="card_sn" type="text" size="20" class="inputBg" /></td>
               </tr>
               <tr>
-                <td align="right">储值卡密码</td>
+                <td align="right">代金卡密码</td>
                 <td>
                 <input name="card_pwd" type="text" size="20"  class="inputBg"/>
                 </td>
@@ -111,7 +111,7 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
     <div class="container">
       <div class="module">
          <div class="content" style="padding:50px;">
-             <div style="color:red;">储值卡余额: {$card_bonus}元</div>
+             <div style="color:red;">代金卡余额: {$card_bonus}元</div>
          <form name="formLogin" action="ktcard.php" method="post">
              <div style="width:900px;margin:0 auto;">
              {foreach from=$goods_list item=goods}
@@ -166,9 +166,9 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
     </script>     
     <div class="container">
       <div class="module">
-        <h1><span></span>储值卡</h1>
+        <h1><span></span>代金卡</h1>
         <div class="content" style="padding:8px;">
-        <div style="color:red;">储值卡余额: {$card_bonus}元  此次消费总额:{$fee}元   说明: {$order_msg}</div>
+        <div style="color:red;">代金卡余额: {$card_bonus}元  此次消费总额:{$fee}元   说明: {$order_msg}</div>
          <form name="formLogin" action="ktcard.php" method="post">
             <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
               <tr>
@@ -210,7 +210,7 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
               <tr>
                 <td align="right">余额送礼</td>
                 <td>
-                <input type="checkbox" name="order_clr" value="1" />储值卡内剩余小余额通过赠品形式连同礼品同时送达
+                <input type="checkbox" name="order_clr" value="1" />代金卡内剩余小余额通过赠品形式连同礼品同时送达
                 </td>
               </tr>
               <tr>

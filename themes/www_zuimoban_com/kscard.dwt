@@ -77,11 +77,11 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
          <form name="formLogin" action="kscard.php" method="post">
             <table width="100%" border="0" align="left" cellpadding="3" cellspacing="5">
               <tr>
-                <td width="40%" align="right">礼品卡序号</td>
+                <td width="40%" align="right">水果卡序号</td>
                 <td width="60%"><input name="card_sn" type="text" size="20" class="inputBg" /></td>
               </tr>
               <tr>
-                <td align="right">礼品卡密码</td>
+                <td align="right">水果卡密码</td>
                 <td>
                 <input name="card_pwd" type="text" size="20"  class="inputBg"/>
                 </td>
