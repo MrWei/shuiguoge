@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <div class="footer container">
   <div class="footerup" style="margin-top:30px;">
@@ -81,4 +82,85 @@ function ResumeError()
 }
 window.onerror = ResumeError; 
 </script>
+=======
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="footer container">
+  <div class="footerup" style="margin-top:30px;">
+    <div class="footercont">
+	<div style="background:#59ad31;width:100%;height:85px;">
+      <ul class="nums clearfix">
+        <li class="first"><span>原</span><strong>
+          <label>产地</label>
+          精选</strong></li>
+        <li class="line">|</li>
+        <li class="second"><span>原</span><strong>
+          <label>生态</label>
+          种植</strong></li>
+		 <li class="line">|</li>
+        <li class="second"><span>原</span><strong>
+          <label>味道</label>
+          健康</strong></li>
+         <li class="line">|</li>
+        <li class="third"><span>24</span><strong>
+          <label>小时内</label>
+          无理由退换货 </strong></li>
+       </ul>
+	  </div>
+      <div class="service clearfix">
+	  <!-- {foreach from=get_shop_help() item=help_cat} -->
+        <dl>
+          <dt>{$help_cat.cat_name}</dt>
+		  <!-- {foreach from=$help_cat.article item=item} -->
+          <dd><a href="{$item.url}" title="{$item.short_title}">{$item.short_title}</a></dd>
+          <!-- {/foreach} -->
+        </dl>
+      <!-- {/foreach} -->
+        <div class="online">
+          <ul>
+            <li class="item1"><span class="icon-common icon-common-tel"></span>{$service_phone}</li>
+            <li class="item2"> 周一至周六9:00-18:00 </li>
+            <!-- QQ 号码 {foreach from=$qq item=im} -->
+      <!-- {if $im} -->
+        <li class="item3 clearfix">
+      <a class="btn btn-green" href="http://wpa.qq.com/msgrd?v=3&uin={$im}&site=qq&menu=yes" target="_blank"><span class="icon-common icon-common-face"></span>24小时在线客服</a></li>
+      <!-- {/if} -->
+      <!-- {/foreach} 结束QQ号码 -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="footerbtm">
+    <div class="info"> 
+	技术支持：<a href="http://www.zuimoban.com/" target="_blank" title="最模板">最模板</a>
+	</div>
+ <!--  <div class="believe"><img src="themes/www_zuimoban_com/images/f1.gif"><img src="themes/www_zuimoban_com/images/f2.gif"><img src="themes/www_zuimoban_com/images/f3.gif">
+ 	</div>-->
+     </div>
+ </div>
+ <div style="margin:0 auto;width:100%;text-align:center;"><a href="###">电脑版</a>&nbsp&nbspl&nbsp&nbsp<a href="/mobile">手机版</a><span><!--百度统计代码-->
+		  <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6fdf827c32a0c5cb8c5e88cf6ee26622' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</span></div>
+<script type="text/javascript">
+   if (Object.prototype.toJSONString){
+      var oldToJSONString = Object.toJSONString;
+      Object.prototype.toJSONString = function(){
+        if (arguments.length > 0){
+          return false;
+        }else{
+          return oldToJSONString.apply(this, arguments);
+        }
+		}
+}
+function ResumeError()
+{
+   return true;
+}
+window.onerror = ResumeError; 
+</script>
+>>>>>>> 097e9949b29117780003ce3bdf2e47207f97eebf
  
