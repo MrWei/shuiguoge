@@ -31,7 +31,7 @@ $_LANG['ks_card_cat']   = '水果卡分类';
 $_LANG['ks_card_list']  = '水果卡管理';
 $_LANG['ks_card_order'] = '水果卡订单';
 $_LANG['kt_card_list']  = '代金卡管理';
-$_LANG['kt_card_cat']   = '代金卡分类';
+//$_LANG['kt_card_cat']   = '代金卡分类';
 $_LANG['kt_card_order'] = '代金卡订单';
 
 //商品管理部分的权限
