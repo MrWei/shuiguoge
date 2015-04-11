@@ -143,9 +143,9 @@ $_LANG['17_card_and_card'] = '水果卡设置';
 /* 水果卡 */
 $_LANG['ks_card_cat']   = '水果卡分类';
 $_LANG['ks_card_list']  = '水果卡管理';
-$_LANG['ks_card_order'] = '水果卡订单';
+//$_LANG['ks_card_order'] = '水果卡订单';
 $_LANG['kt_card_list']  = '代金卡管理';
-$_LANG['kt_card_order'] = '代金卡订单';
+//$_LANG['kt_card_order'] = '代金卡订单';
 
 /* 商品管理 */
 $_LANG['01_goods_list'] = '商品列表';
