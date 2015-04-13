@@ -188,7 +188,7 @@ if ($action == 'update_kscard') {
 		show_message ( '请选择商品' );
 		return 0;
 	}
-	if ($sel_num != $goods_num) {
+	if ($sel_num < $goods_num) {
 		show_message ( "商品限定只选择($sel_num)种,请重新选择." );
 		return 0;
 	}
