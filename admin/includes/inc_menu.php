@@ -146,8 +146,8 @@ $modules['16_email_manage']['view_sendlist']        = 'view_sendlist.php?act=lis
 
 $modules['17_card_and_card']['ks_card_cat']               = 'ks_card.php?act=cat';
 $modules['17_card_and_card']['ks_card_list']              = 'ks_card.php?act=list';
-$modules['17_card_and_card']['ks_card_order']             = 'ks_card.php?act=order';
+// $modules['17_card_and_card']['ks_card_order']             = 'ks_card.php?act=order';
 $modules['17_card_and_card']['kt_card_list']              = 'kt_card.php?act=list';
-$modules['17_card_and_card']['kt_card_order']             = 'kt_card.php?act=order';
+// $modules['17_card_and_card']['kt_card_order']             = 'kt_card.php?act=order';
 
 ?>
