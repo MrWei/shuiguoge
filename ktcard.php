@@ -23,7 +23,8 @@ $action = isset ( $_REQUEST ['act'] ) ? trim ( $_REQUEST ['act'] ) : 'default';
 $not_login_arr = array (
 		'act_login',
 		'update_ktcard',
-		'next_ktcard' 
+		'next_ktcard',
+		'ajaxshop' 
 );
 
 /* 显示页面的action列表 */
@@ -86,7 +87,7 @@ if ($action == 'act_login') {
 			$smarty->assign ( 'page_title', '用户代金卡管理' );
 			$smarty->assign ( 'ur_here', '代金卡' );
 			$smarty->assign ( 'helps', get_shop_help () );
-			$smarty->assign ( 'act', 'next_ktcard' );
+			$smarty->assign ( 'act', 'ajaxshop' );
 			$smarty->assign ( 'action', $action );
 			$smarty->assign ( 'back_act', $back_act );
 			$smarty->assign ( 'card_sn', $card_sn );
@@ -100,37 +101,28 @@ if ($action == 'act_login') {
 
 /* 登陆代金卡界面 */
 if ($action == 'next_ktcard') {
-	$arr = array ();
-	$arr = $_POST ['goods'];
-	$goods = ! empty ( $arr ) ? join ( ",", $arr ) : '0';
-	
 	$card_sn = isset ( $_REQUEST ['card_sn'] ) ? trim ( $_REQUEST ['card_sn'] ) : '0';
 	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
-	
+	$fee = intval($_POST['sum']);
 	$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
-	
 	$record_arr = $db->getRow ( $sql );
 	$card_bonus = $record_arr ['card_bonus'];
-	
-	$sql = "SELECT SUM(shop_price) FROM " . $GLOBALS ['ecs']->table ( 'goods' ) . " WHERE goods_id in ($goods)";
-	$fee = $GLOBALS ['db']->getOne ( $sql );
-	
 	if ($fee > $card_bonus) {
 		show_message ( '订单超出代金卡余额,请重新选择商品' );
 		return 0;
-		// $order_msg = $fee - $card_bonus;
-		// $order_msg = "订单超出代金卡余额 $order_msg 元,收货时还需补交 $order_msg 元.";
-	} else {
-		$order_msg = $card_bonus - $fee;
-		$order_msg = "订单总额: $fee 元,提交当前订单之后代金卡余额为: $order_msg 元.";
-	}
+	} 
 	if (empty ( $record_arr )) 
-
 	{
 		show_message ( '卡号或密码错误' );
 		return 0;
 	}
-	if (empty ( $arr )) {
+	//购买的商品
+	$goods = array ();
+	foreach ( $_POST['goods'] as $k=>$v ){
+		$goods[$k]['goods_id'] = $v;
+		$goods[$k]['goods_num'] = $_POST['goods_num'][$v];
+	}
+	if (!is_array($goods) && empty ( $goods)) {
 		show_message ( '请选择商品' );
 		return 0;
 	}
@@ -144,10 +136,9 @@ if ($action == 'next_ktcard') {
 	$smarty->assign ( 'back_act', $back_act );
 	$smarty->assign ( 'card_sn', $card_sn );
 	$smarty->assign ( 'card_pwd', $card_pwd );
-	$smarty->assign ( 'goods_id', $goods );
+	$smarty->assign ( 'goodsAll', $goods );
 	$smarty->assign ( 'card_bonus', $record_arr ['card_bonus'] );
 	$smarty->assign ( 'fee', $fee );
-	$smarty->assign ( 'order_msg', $order_msg );
 	
 	//省市
 	
@@ -192,20 +183,18 @@ if ($action == 'update_ktcard') {
 	
 	$card_sn = isset ( $_REQUEST ['card_sn'] ) ? trim ( $_REQUEST ['card_sn'] ) : '0';
 	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
-	
-	$goods = isset ( $_REQUEST ['goods'] ) ? trim ( $_REQUEST ['goods'] ) : '0';
-	
+	//价格
+	$fee = intval($_POST['sum']);
+	$goodsNum = $_POST['goods_num'] ;
+	$goodsArr = array();
+	//去除产品数量为0的产品
+	foreach ( $_REQUEST ['goods'] as $k=>$v ){
+		if( $goodsNum[$v] ) $goodsArr[$k] = $v;
+	}
+	$goods = implode(',', $goodsArr);
+	//
 	$order_sn = get_order_sn ();
 	$order_time = gmtime ();
-	
-	$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
-	
-	$record_arr = $db->getRow ( $sql );
-	$card_bonus = $record_arr ['card_bonus'];
-	
-	$sql = "SELECT SUM(shop_price) FROM " . $GLOBALS ['ecs']->table ( 'goods' ) . " WHERE goods_id in ($goods)";
-	//查询商品总金额
-	$fee = $GLOBALS ['db']->getOne ( $sql );
 	//商品信息
 	$sql = "SELECT * FROM " . $GLOBALS ['ecs']->table ( 'goods' ) . " WHERE goods_id in ($goods)";
 	$goodsInfo = $GLOBALS ['db']->getAll ( $sql );
@@ -217,9 +206,12 @@ if ($action == 'update_ktcard') {
 	if ($card_sn != '0') {
 		
 		$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
-		
 		$record_arr = $db->getRow ( $sql );
-		
+		$card_bonus = $record_arr ['card_bonus'];
+		if ($fee > $card_bonus) {
+			show_message ( '订单超出代金卡余额,请重新选择商品' );
+			return 0;
+		}
 		if (empty ( $record_arr )) 
 
 		{
@@ -227,11 +219,9 @@ if ($action == 'update_ktcard') {
 			return 0;
 		} else {
 			$card_id = intval ( $record_arr ['card_id'] );
-			
 			if ($fee > $card_bonus) {
 				show_message ( '所选商品总额大于代金卡金额' );
 			} 
-			
 			//保存到order_info
 			$order_sn = get_order_sn ();
 			$order_time = gmtime ();
@@ -245,7 +235,7 @@ if ($action == 'update_ktcard') {
 			foreach ( $goodsInfo as $v ){
 				
 				$sql = "INSERT INTO " . $GLOBALS ['ecs']->table ( 'order_goods' ) . " (order_id,goods_id,goods_name,goods_sn,goods_number,market_price,goods_price,is_real)";
-				$sql .="VALUES( {$order_id} , {$v['goods_id']}, '{$v['goods_name']}',{$v['goods_sn']},1,{$v['market_price']},{$v['shop_price']}, {$v['is_real']})";
+				$sql .="VALUES( {$order_id} , {$v['goods_id']}, '{$v['goods_name']}',{$v['goods_sn']},{$goodsNum[$v['goods_id']]},{$v['market_price']},{$v['shop_price']}, {$v['is_real']})";
 				$db->query($sql);
 			}
 			
@@ -256,19 +246,44 @@ if ($action == 'update_ktcard') {
 		}
 	}
 }
-
-// /**
-//  * 得到新订单号
-//  * 
-//  * @return string
-//  */
-// function get_order_sn() {
-// 	/* 选择一个随机的方案 */
-// 	mt_srand ( ( double ) microtime () * 1000000 );
-	
-// 	return date ( 'Ymd' ) . str_pad ( mt_rand ( 1, 99999 ), 5, '0', STR_PAD_LEFT );
-// }
-
+/**
+ * 验证卡号密码
+ * 处理post的产品
+ */
+if ($action == 'ajaxshop') {
+	$data = array();
+	$data['status'] = 0;
+	$data['tips']  = "";
+	$goodsSetId = isset ( $_REQUEST ['goods_id'] ) ? trim ( $_REQUEST ['goods_id'] ) : '';
+	$card_sn = isset ( $_REQUEST ['card_sn'] ) ? trim ( $_REQUEST ['card_sn'] ) : '0';
+	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
+	if ($card_sn != '0') {
+		$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
+		$record_arr = $db->getRow ( $sql );
+		if (empty ( $record_arr )){
+			$data['tips']  = "无效的代金卡";
+			exit( json_encode( $data) );
+		}else {
+			//处理商品，计算总价格
+			$data['total'] = "";
+			foreach ( $_POST['goods'] as $k=>$v ){
+				$data['total'] += $_POST['goods_num'][$v] * $_POST['goods_price'][$v] ;
+			}
+			//价格对比
+			if( $record_arr ['card_bonus'] < $data['total'] ){
+				$data['tips']  = "所选的商品总额大于代金卡金额";
+				$data['goods_id'] = $goodsSetId;
+				$data['goods_num'] = $_POST['goods_num'][$goodsSetId]-1;
+			}else{
+				$data['total'] = sprintf( "%1\$.2f" , $data['total']);
+				$data['status'] = 1;
+				$data['yue'] =  ($record_arr ['card_bonus'] - $data['total']);
+				$data['yue'] = sprintf( "%1\$.2f" , $data['yue']);
+			}
+			exit( json_encode( $data) );
+		}
+	}
+}
 /**
  * 获取代金卡商品列表
  * 
@@ -284,9 +299,10 @@ function get_order_goods_list() {
 	foreach ( $result as $idx => $row ) {
 		$goods [$idx] ['goods_id'] = $row ['goods_id'];
 		$goods [$idx] ['goods_name'] = $row ['goods_name'];
-		$goods [$idx] ['shop_price'] = $row ['shop_price'];
+		$goods [$idx] ['goods_price'] = $row ['shop_price'];
+		$goods [$idx] ['goods_number'] = $row ['goods_number'];
+		$goods [$idx] ['goods_thumb'] = $row ['goods_thumb'];
 	}
-	
 	return $goods;
 }
 
