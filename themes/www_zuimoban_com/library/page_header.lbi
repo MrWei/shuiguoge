@@ -21,9 +21,6 @@ if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
           
         </ul>
       </div>
-      
-
-      
     <div style="margin-top:3px;" class="xshop buy_car_bg clearfix"  onmouseover="this.className='xshop hover_on buy_car_bg ul1_on'" onmouseout=  "this.className='xshop buy_car_bg'">
 	
 	<img src="../images/nav_cat.gif" style="float:left; padding-right:5px; padding-left:10px; padding-top:7px;" /> 
