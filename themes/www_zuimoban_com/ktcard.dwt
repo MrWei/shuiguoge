@@ -40,10 +40,9 @@
       .tablelist th{ border: #ddd 1px solid;}
       .tablelist td{ border: #ddd 1px solid;}
     </style>
+<!--{if $action eq 'default'}-->
   <!-- #BeginLibraryItem "/library/page_header.lbi" -->
   <!-- #EndLibraryItem -->
-
-<!--{if $action eq 'default'}-->
 <div class="container">
 <div class="module">
 <div class="content" style="padding:50px;">
@@ -77,35 +76,143 @@
 <!--{/if}-->
 
 <!--{if $action eq 'act_login'}-->
+  <!-- #BeginLibraryItem "/library/page_header_nothird.lbi" -->
+  <!-- #EndLibraryItem -->
+<style type="text/css">
+  #daijinka{  width: 900px; margin: 0px auto;   border-collapse:collapse;}
+  #daijinka th{ border: #ccc 1px solid; line-height: 30px; height: 30px; background: #f1f1f1;}
+  #daijinka td{ border: #ccc 1px solid; line-height: 30px; height: 30px; background: #fff;text-align: center;}
+  #total{line-height: 50px; font-size: 25px; text-align: right; padding-right: 30px;}
+  #sum{ font-weight: bold; color: red}
+  #yue{ font-size: 14px; font-weight: bold; color: red}
+</style>
 <div class="container">
 <div class="module">
 <div class="content" style="padding:50px;">
-  <div style="color:red;">代金卡余额: {$card_bonus}元</div>
-  <form name="formLogin" action="ktcard.php" method="post">
-    <div style="width:900px;margin:0 auto;">
-      {foreach from=$goods_list item=goods}
-      <li style="float:left;width:300px;">
-        <input name="goods[]" type="checkbox" value="{$goods.goods_id}" />
-        <a href="/goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name}  ￥{$goods.shop_price}</a>
-      </li>
+   <form name="formLogin" action="ktcard.php" method="post">
+    <table id="daijinka">
+      <tr>
+        <th>选择</th>
+        <th>水果图片</th>
+        <th>名称</th>
+        <th>商城价</th>
+        <th>数量</th>
+        <th>库存</th>
+      </tr>
+       {foreach from=$goods_list item=goods}
+      <tr>
+        <td><input type="checkbox" name="goods[]" value="{$goods.goods_id}"/></td>
+        <td><img src="{$goods.goods_thumb}" width="90" /></td>
+        <td style="text-align:left;  padding-left: 10px;"><a href="/goods.php?id={$goods.goods_id}" target="_blank">{$goods.goods_name}</a></td>
+        <td>{$goods.goods_price}</td>
+        <td>
+          <input type="hidden" name="goods_price[{$goods.goods_id}]" value="{$goods.goods_price}"/>
+          <a href="javascript:;" onclick="editnum( this, 0)">-</a>
+          <input type="text" class='goods_num' onchange="goodsNumChange(this, {$goods.goods_number} )"  name="goods_num[{$goods.goods_id}]" style="width:30px; text-align:center" value="0"/>
+          <a href="javascript:;" onclick="editnum( this, {$goods.goods_number} )">+</a>
+        </td>
+        <td>{$goods.goods_number}</td>
+      </tr>
       {foreachelse}
-                没有可选商品,请联系客服.
-             {/foreach}
-    </div>
+      <tr>
+        <td colspan="6" styel="text-align:center"> 没有可选商品,请联系客服.</td>
+      </tr>
+       {/foreach}
+    </table>
+    <div id="total">总计金额 <span id="sum">0</span> 元</div>
+    <div>友情提醒：本券不兑现金，给不找零，每张限用一次，还有余额<span id="yue">0</span>请在本次消费完毕!</div>
     <div style="text-align: center;padding-top:10px;">
+      <input type="hidden" name="sum" value="" />
       <input type="hidden" name="act" value="{$act}" />
       <input type="hidden" name="back_act" value="{$back_act}" />
       <input type="hidden" name="card_sn" value="{$card_sn}" />
       <input type="hidden" name="card_pwd" value="{$card_pwd}" />
-      <input type="submit" name="submit" value="" style="width:145px; height:40px; background:url(images/bnt_subOrder.gif) no-repeat 0 0; border:none; cursor:pointer;" />
+      <input type="submit" onclick="return submitOk(this)" name="submit" value="" style="width:145px; height:40px; background:url(images/bnt_subOrder.gif) no-repeat 0 0; border:none; cursor:pointer;" />
     </div>
   </form>
 </div>
 </div>
 </div>
+<script type="text/javascript">
+  function submitOk ( obj) {
+    var sure = confirm("确定要提交吗");
+    if( sure ){
+       $("input[name='act']").val("next_ktcard")
+       return true;
+    }else{
+      $("input[name='act']").val("{$act}")
+      return false;
+    }
+  }
+
+   function editnum  ( obj, num) {
+      var _this = $(obj).parents('form');
+      var _checkbox = $(obj).parents('tr').find("input[name='goods[]']");
+      var _num = $(obj).parent().find(".goods_num");
+      var _value = parseInt(_num.val());
+      if( num > 0 ){
+        _num.val( _value+1 );
+        _checkbox.prop("checked",true);
+         $.post( "ktcard.php?goods_id=" + _checkbox.val(), _this.serialize(), function(data){
+              shopResponse(data);
+         }, "json");
+        //
+        if( _value >= num ){
+          _num.val( num );
+          alert('达到商品最大数量') ;
+          return false;
+        }
+      }else{
+        if( _value < 1 ){
+          _checkbox.prop("checked",false);
+          _num.val( 0 );
+        }else{
+          _num.val( _value-1 );
+          _checkbox.prop("checked",true);
+           $.post( "ktcard.php?goods_id=" + _checkbox.val(), _this.serialize(), function(data){
+              shopResponse(data);
+           }, "json");
+        };
+      }
+    }
+
+    function goodsNumChange( obj, num ) {
+      var _this = $(obj).parents('form');
+      var _value = parseInt( $(obj).val() );
+      var _checkbox = $(obj).parents('tr').find("input[name='goods[]']");
+      if( _value > 0 ){
+        if( _value > num ){
+          alert('达到商品最大数量') ;
+          $(obj).val( num );
+        }
+        _checkbox.prop("checked",true);
+        $.post( "ktcard.php?goods_id=" + _checkbox.val(), _this.serialize(), function(data){
+          shopResponse(data);
+       }, "json");
+      }else{
+        _checkbox.prop( "checked", false );
+      }
+    }
+
+    function shopResponse( data ){
+      if( data.status ){
+          $("#yue").html( data.yue);
+          $("#sum").html( data.total);
+          $("input[name='sum']").val( data.total);
+      }else{
+        if( data.goods_id ){
+           $("input[name='goods_num["+data.goods_id+"]']").val(data.goods_num)
+        }
+        alert( data.tips)
+         return false;
+      }
+    }
+  </script>
 <!--{/if}-->
 
 <!--{if $action eq 'next_ktcard'}-->
+  <!-- #BeginLibraryItem "/library/page_header.lbi" -->
+  <!-- #EndLibraryItem -->
 <script type="text/javascript">
     $(function(){
       $("input[name='submit']").click(function(){
@@ -138,7 +245,6 @@
   代金卡
 </h1>
 <div class="content" style="padding:8px;">
-  <div style="color:red;">代金卡余额: {$card_bonus}元  此次消费总额:{$fee}元   说明: {$order_msg}</div>
   <form name="formLogin" action="ktcard.php" method="post">
     <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#fff8f2" >
       <th colspan=2 style="text-align:left;height:27px;line-height:27px;background:url(images/bg_consignee.gif) repeat-x 0 0;">填写收货人信息</th>
@@ -214,7 +320,11 @@
           <input type="hidden" name="back_act" value="{$back_act}" />
           <input type="hidden" name="card_sn" value="{$card_sn}" />
           <input type="hidden" name="card_pwd" value="{$card_pwd}" />
-          <input type="hidden" name="goods" value="{$goods_id}" />
+          {foreach from=$goodsAll item=vo}
+          <input type="hidden" name="goods[]" value='{$vo.goods_id}' />
+          <input type="hidden" name="goods_num[{$vo.goods_id}]" value='{$vo.goods_num}' />
+          {/foreach}
+          <input type="hidden" name="sum" value="{$fee}" />
           <input type="submit" name="submit" value="" style="width:145px; height:40px; background:url(images/bnt_subOrder.gif) no-repeat 0 0; border:none; cursor:pointer;" />
         </td>
       </tr>
@@ -226,6 +336,8 @@
 <!--{/if}-->
 
 <!--{if $action eq 'order_info'}-->
+  <!-- #BeginLibraryItem "/library/page_header.lbi" -->
+  <!-- #EndLibraryItem -->
 <div class="container">
 <div class="module">
 <h1>
