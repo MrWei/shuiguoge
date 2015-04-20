@@ -7,6 +7,7 @@ var process_request = "正在处理您的请求...";
 var isWidescreen=screen.width<1200;
 if (isWidescreen){document.getElementsByTagName("body")[0].className="w950";}
 </script>
+<body onload="setGoodsNum()">
 <div class="header container">
   <div class="top">
     <div class="logo"><a class="icon-common-logo" href="index.php" title=""><img src="themes/www_zuimoban_com/images/logo.png" /></a></div>

@@ -24,7 +24,6 @@ $not_login_arr = array (
 		'act_login',
 		'update_ktcard',
 		'next_ktcard',
-		'ajaxshop' 
 );
 
 /* 显示页面的action列表 */
@@ -87,7 +86,7 @@ if ($action == 'act_login') {
 			$smarty->assign ( 'page_title', '用户代金卡管理' );
 			$smarty->assign ( 'ur_here', '代金卡' );
 			$smarty->assign ( 'helps', get_shop_help () );
-			$smarty->assign ( 'act', 'ajaxshop' );
+			$smarty->assign ( 'act', 'next_ktcard' );
 			$smarty->assign ( 'action', $action );
 			$smarty->assign ( 'back_act', $back_act );
 			$smarty->assign ( 'card_sn', $card_sn );
@@ -101,70 +100,100 @@ if ($action == 'act_login') {
 
 /* 登陆代金卡界面 */
 if ($action == 'next_ktcard') {
+	$getAction = isset ( $_REQUEST ['action'] ) ? trim ( $_REQUEST ['action'] ) : NULL;
+	$goodsSetId = isset ( $_REQUEST ['goods_id'] ) ? trim ( $_REQUEST ['goods_id'] ) : '';
+	
 	$card_sn = isset ( $_REQUEST ['card_sn'] ) ? trim ( $_REQUEST ['card_sn'] ) : '0';
 	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
-	$fee = intval($_POST['sum']);
+	
 	$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
 	$record_arr = $db->getRow ( $sql );
 	$card_bonus = $record_arr ['card_bonus'];
-	if ($fee > $card_bonus) {
-		show_message ( '订单超出代金卡余额,请重新选择商品' );
-		return 0;
-	} 
-	if (empty ( $record_arr )) 
-	{
-		show_message ( '卡号或密码错误' );
-		return 0;
+	//选择商品处理
+	if( $getAction == "ajaxshop" ){
+		//要返回的数据
+		$data = array();
+		$data['status'] = 0;
+		$data['tips']  = "";
+		if (empty ( $record_arr )){
+			$data['tips']  = "无效的代金卡";
+			exit( json_encode( $data) );
+		}else {
+			//处理商品，计算总价格
+			$data['total'] = "";
+			foreach ( $_POST['goods'] as $k=>$v ){
+				$data['total'] += $_POST['goods_num'][$v] * $_POST['goods_price'][$v] ;
+			}
+			//价格对比
+			if( $record_arr ['card_bonus'] < $data['total'] ){
+				$data['tips']  = "所选的商品总额大于代金卡金额";
+				$data['goods_id'] = $goodsSetId;
+				$data['goods_num'] = $_POST['goods_num'][$goodsSetId]-1;
+			}else{
+				$data['total'] = sprintf( "%1\$.2f" , $data['total']);
+				$data['status'] = 1;
+				$data['yue'] =  ($record_arr ['card_bonus'] - $data['total']);
+				$data['yue'] = sprintf( "%1\$.2f" , $data['yue']);
+			}
+			exit( json_encode( $data) );
+		}
+	}else {
+		$fee = intval($_POST['sum']);
+		if ($fee > $card_bonus) {
+			show_message ( '订单超出代金卡余额,请重新选择商品' );
+			return 0;
+		}
+		if (empty ( $record_arr )) {
+			show_message ( '卡号或密码错误' );
+			return 0;
+		}
+		// 购买的商品
+		$goods = array ();
+		foreach ( $_POST ['goods'] as $k => $v ) {
+			$goods [$k] ['goods_id'] = $v;
+			$goods [$k] ['goods_num'] = $_POST ['goods_num'] [$v];
+		}
+		if (! is_array ( $goods ) || empty ( $goods )) {
+			show_message ( '请选择商品' );
+			return 0;
+		}
+		assign_template ();
+		$smarty->assign ( 'page_title', '用户代金卡管理' );
+		$smarty->assign ( 'ur_here', '代金卡' );
+		$smarty->assign ( 'helps', get_shop_help () );
+		$smarty->assign ( 'act', 'update_ktcard' );
+		$smarty->assign ( 'action', $action );
+		$smarty->assign ( 'back_act', $back_act );
+		$smarty->assign ( 'card_sn', $card_sn );
+		$smarty->assign ( 'card_pwd', $card_pwd );
+		$smarty->assign ( 'goodsAll', $goods );
+		$smarty->assign ( 'card_bonus', $record_arr ['card_bonus'] );
+		$smarty->assign ( 'fee', $fee );
+		// 省市
+		/* 取得省份列表 By zhangyh */
+		$smarty->assign ( 'shop_province_list', get_regions ( 1, $_CFG ['shop_country'] ) );
+		$consignee = get_consignee ( $_SESSION ['user_id'] );
+		if ($consignee ['province']) {
+			$smarty->assign ( 'shop_city_list', get_regions ( 2, $consignee ['province'] ) );
+		}
+		if ($consignee ['city']) {
+			$smarty->assign ( 'shop_district_list', get_regions ( 3, $consignee ['city'] ) );
+		}
+		/* 取得配送列表 */
+		$region = array (
+				1,
+				$consignee ['province'],
+				$consignee ['city'],
+				$consignee ['district'] 
+		);
+		$shipping_list = available_shipping_list ( $region );
+		$cart_weight_price = cart_weight_price ( $flow_type );
+		$insure_disabled = true;
+		$cod_disabled = true;
+		// 省市结束
+		$smarty->display ( 'ktcard.dwt' );
 	}
-	//购买的商品
-	$goods = array ();
-	foreach ( $_POST['goods'] as $k=>$v ){
-		$goods[$k]['goods_id'] = $v;
-		$goods[$k]['goods_num'] = $_POST['goods_num'][$v];
-	}
-	if (!is_array($goods) && empty ( $goods)) {
-		show_message ( '请选择商品' );
-		return 0;
-	}
 	
-	assign_template ();
-	$smarty->assign ( 'page_title', '用户代金卡管理' );
-	$smarty->assign ( 'ur_here', '代金卡' );
-	$smarty->assign ( 'helps', get_shop_help () );
-	$smarty->assign ( 'act', 'update_ktcard' );
-	$smarty->assign ( 'action', $action );
-	$smarty->assign ( 'back_act', $back_act );
-	$smarty->assign ( 'card_sn', $card_sn );
-	$smarty->assign ( 'card_pwd', $card_pwd );
-	$smarty->assign ( 'goodsAll', $goods );
-	$smarty->assign ( 'card_bonus', $record_arr ['card_bonus'] );
-	$smarty->assign ( 'fee', $fee );
-	
-	//省市
-	
-	/* 取得省份列表 By zhangyh */
-	$smarty->assign('shop_province_list', get_regions(1, $_CFG['shop_country']));
-	
-	$consignee = get_consignee($_SESSION['user_id']);
-	
-	if($consignee['province'])
-	{
-		$smarty->assign('shop_city_list', get_regions(2, $consignee['province']));
-	}
-	if($consignee['city'])
-	{
-		$smarty->assign('shop_district_list', get_regions(3, $consignee['city']));
-	}
-	/* 取得配送列表 */
-	$region            = array(1, $consignee['province'], $consignee['city'], $consignee['district']);
-	$shipping_list     = available_shipping_list($region);
-	$cart_weight_price = cart_weight_price($flow_type);
-	$insure_disabled   = true;
-	$cod_disabled      = true;
-	
-	
-	//省市结束
-	$smarty->display ( 'ktcard.dwt' );
 }
 
 /* 提交客户订单 */
@@ -243,44 +272,6 @@ if ($action == 'update_ktcard') {
 			$db->query ( $sql );
 			$action = 'default';
 			show_message ( '已经成功提交订单!', '返回商城首页', 'index.php', 'default' );
-		}
-	}
-}
-/**
- * 验证卡号密码
- * 处理post的产品
- */
-if ($action == 'ajaxshop') {
-	$data = array();
-	$data['status'] = 0;
-	$data['tips']  = "";
-	$goodsSetId = isset ( $_REQUEST ['goods_id'] ) ? trim ( $_REQUEST ['goods_id'] ) : '';
-	$card_sn = isset ( $_REQUEST ['card_sn'] ) ? trim ( $_REQUEST ['card_sn'] ) : '0';
-	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
-	if ($card_sn != '0') {
-		$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
-		$record_arr = $db->getRow ( $sql );
-		if (empty ( $record_arr )){
-			$data['tips']  = "无效的代金卡";
-			exit( json_encode( $data) );
-		}else {
-			//处理商品，计算总价格
-			$data['total'] = "";
-			foreach ( $_POST['goods'] as $k=>$v ){
-				$data['total'] += $_POST['goods_num'][$v] * $_POST['goods_price'][$v] ;
-			}
-			//价格对比
-			if( $record_arr ['card_bonus'] < $data['total'] ){
-				$data['tips']  = "所选的商品总额大于代金卡金额";
-				$data['goods_id'] = $goodsSetId;
-				$data['goods_num'] = $_POST['goods_num'][$goodsSetId]-1;
-			}else{
-				$data['total'] = sprintf( "%1\$.2f" , $data['total']);
-				$data['status'] = 1;
-				$data['yue'] =  ($record_arr ['card_bonus'] - $data['total']);
-				$data['yue'] = sprintf( "%1\$.2f" , $data['yue']);
-			}
-			exit( json_encode( $data) );
 		}
 	}
 }
