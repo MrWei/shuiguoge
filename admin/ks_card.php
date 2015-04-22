@@ -166,6 +166,7 @@ if( $_REQUEST['act'] == 'import' ){
  * 导入execel
  */
 if ($_REQUEST ['act'] == 'importExcel') {
+// 	$GLOBALS['db']->query("INSERT INTO ".$GLOBALS['ecs']->table('ks_cards')." (card_type, card_sn, card_pwd, add_time, used_time, order_id) VALUES('$type_id', '$card_sn','$card_pwd','$add_time','$used_time','$order_id')");
 	@set_time_limit ( 0 );
 	$data = array();
 	$datap['status'] = 1;
@@ -181,14 +182,17 @@ if ($_REQUEST ['act'] == 'importExcel') {
 		$data['info'] = '没有任何数据！';
 		exit ( json_encode($data) );
 	}
+	//组合sql
 	
-	var_dump($len_result);
+	$sql = "INSERT INTO ".$GLOBALS['ecs']->table('ks_cards')." (card_type, card_sn, card_pwd, add_time, used_time, order_id) VALUES( ";
+	$sql .="{}";
+	$sql .=" )";
+	
 	
 	for($i = 1; $i < $len_result; $i ++) { // 循环获取各字段值
 		$name = iconv ( 'gb2312', 'utf-8', $result [$i] [0] ); // 中文转码
 		$sex = iconv ( 'gb2312', 'utf-8', $result [$i] [1] );
 		$age = $result [$i] [2];
-		$data_values .= "('$name','$sex','$age'),";
 	}
 	
 }
