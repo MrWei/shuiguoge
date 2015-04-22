@@ -144,8 +144,78 @@ if ($_REQUEST['act'] == 'excel')
         echo "\t\n";
     }
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////			导入excel	start		//////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if( $_REQUEST['act'] == 'import' ){
+	$type_id     = !empty($_REQUEST['tid'])    ? intval($_REQUEST['tid'])    : 0;
+	//语言
+	$smarty->assign('lang',         $_LANG);
+	$smarty->assign('ur_here',     '导入水果卡');
+	//返回链接
+	$smarty->assign( 'action_link', array('text' => '返回水果卡列表', 'href' => "ks_card.php?act=edit_card&tid=$type_id"));
+	$smarty->assign( 'typeid', $type_id );
+	//当前水果卡类型
+	$smarty->assign('card_name',     get_type_name($type_id));
+	//内存占用情况
+	$smarty->assign('form_act',     'importExcel');
+	assign_query_info();
+	$smarty->display('ks_card_import.htm');
+}
+/**
+ * 导入execel
+ */
+if ($_REQUEST ['act'] == 'importExcel') {
+	@set_time_limit ( 0 );
+	$data = array();
+	$datap['status'] = 1;
+	$filename = $_FILES ['file'] ['tmp_name'];
+	if (empty ( $filename )) {
+		$data['info'] = '请选择要导入的CSV文件！';
+		exit ( json_encode($data) );
+	}
+	$handle = fopen ( $filename, 'r' );
+	$result = input_csv ( $handle ); // 解析csv
+	$len_result = count ( $result );
+	if ($len_result == 0) {
+		$data['info'] = '没有任何数据！';
+		exit ( json_encode($data) );
+	}
+	
+	var_dump($len_result);
+	
+	for($i = 1; $i < $len_result; $i ++) { // 循环获取各字段值
+		$name = iconv ( 'gb2312', 'utf-8', $result [$i] [0] ); // 中文转码
+		$sex = iconv ( 'gb2312', 'utf-8', $result [$i] [1] );
+		$age = $result [$i] [2];
+		$data_values .= "('$name','$sex','$age'),";
+	}
+	
+}
+function input_csv($handle) {
+	$out = array ();
+	$n = 0;
+	while ($data = fgetcsv($handle, 10000)) {
+		$num = count($data);
+		for ($i = 0; $i < $num; $i++) {
+			$out[$n][$i] = $data[$i];
+		}
+		$n++;
+	}
+	return $out;
+}
 
-
+function export_csv($filename,$data) {
+	header("Content-type:text/csv");
+	header("Content-Disposition:attachment;filename=".$filename);
+	header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+	header('Expires:0');
+	header('Pragma:public');
+	echo $data;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////			导入excel	end		//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * 获取水果卡分类
  */
@@ -227,10 +297,10 @@ if ($_REQUEST['act'] == 'list')
     $type_id     = !empty($_REQUEST['tid'])    ? intval($_REQUEST['tid'])    : 0;
     $card_id     = !empty($_REQUEST['id'])    ? intval($_REQUEST['id'])    : 0;
     $pageid = !empty($_REQUEST['page'])    ? intval($_REQUEST['page'])    : 1;
-	  $pagesize = 50;
-    
+	$pagesize = 50;
     $smarty->assign('ur_here',     '水果卡实卡');
     $smarty->assign('action_link', array('text' => '生成水果卡', 'href' => "ks_card.php?act=edit_card&tid=$type_id"));
+    if( $type_id )$smarty->assign('import_link', array('text' => '导入水果卡', 'href' => "ks_card.php?act=import&tid=$type_id"));
     $smarty->assign('full_page',   1);
 
     $list = get_card_list($type_id,$card_id,$pagesize,$pageid);
