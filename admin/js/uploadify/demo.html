@@ -1,0 +1,38 @@
+<dl class="lineD">
+        <dt> <font color="red">*</font> 活动封面： </dt>
+        <dd>
+          <input name="" type="text" id="placeUrl" value=""  class="s-txt" >
+          <input name="placeImage" id="placeImage" type="file">
+          <input name="attach_id" type="hidden" value="">
+        </dd>
+      </dl><script type="text/javascript">
+(function($){
+  var url = "{:U('admin/Attach/upload',array('from'=>1,'uid'=>$uid,'id'=>$id))}";
+  /* 初始化上传插件 */
+  $("#placeImage").uploadify({
+        "height"          : 30,
+        "width"           : 80,
+        "swf"             : "__THEME__/js/uploadify/uploadify.swf",
+        "fileObjName"     : "place",
+        "uploader"        : url,
+        "buttonText"      : "上传图片",
+        'formData'        : { '<?php echo session_name();?>' : '<?php echo session_id();?>' },
+        "onUploadSuccess" : uploadSuccess,
+        "successTimeout"  : 36000,
+        'onFallback' : function() {
+            alert('未检测到兼容版本的Flash.');
+        }
+    });
+
+  /* 文件上传成功回调函数 */
+    function uploadSuccess(file, data){
+      var data = $.parseJSON(data);
+        if(data.status){
+          $("#placeUrl").val(data.data.url);
+          $("input[name='attach_id']").val(data.data.attach_id);
+        } else {
+          alert(data.error);
+        }
+    }
+})(jQuery);
+</script>
