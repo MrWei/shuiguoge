@@ -166,35 +166,41 @@ if( $_REQUEST['act'] == 'import' ){
  * 导入execel
  */
 if ($_REQUEST ['act'] == 'importExcel') {
-// 	$GLOBALS['db']->query("INSERT INTO ".$GLOBALS['ecs']->table('ks_cards')." (card_type, card_sn, card_pwd, add_time, used_time, order_id) VALUES('$type_id', '$card_sn','$card_pwd','$add_time','$used_time','$order_id')");
-	@set_time_limit ( 0 );
-	$data = array();
-	$datap['status'] = 1;
+	$cuur_typeid = intval($_POST['typeid']);
+	//语言
+	$smarty->assign('lang',         $_LANG);
+	$smarty->assign('ur_here',     '导入水果卡');
+	//内存占用情况
 	$filename = $_FILES ['file'] ['tmp_name'];
-	if (empty ( $filename )) {
-		$data['info'] = '请选择要导入的CSV文件！';
-		exit ( json_encode($data) );
-	}
+	if ( $filename == '' )  exit(  "请选择要导入的CSV文件！" );
 	$handle = fopen ( $filename, 'r' );
 	$result = input_csv ( $handle ); // 解析csv
 	$len_result = count ( $result );
-	if ($len_result == 0) {
-		$data['info'] = '没有任何数据！';
-		exit ( json_encode($data) );
-	}
-	//组合sql
-	
-	$sql = "INSERT INTO ".$GLOBALS['ecs']->table('ks_cards')." (card_type, card_sn, card_pwd, add_time, used_time, order_id) VALUES( ";
-	$sql .="{}";
-	$sql .=" )";
-	
-	
+	if ($len_result == 0) exit( "导入的空CSV文件！" );
+	//组合数据库
+	$data_values = "";
+	$add_time = gmtime();
+	$used_time = 0;
+	$order_id = 0;
 	for($i = 1; $i < $len_result; $i ++) { // 循环获取各字段值
-		$name = iconv ( 'gb2312', 'utf-8', $result [$i] [0] ); // 中文转码
-		$sex = iconv ( 'gb2312', 'utf-8', $result [$i] [1] );
-		$age = $result [$i] [2];
+		$typeid = $result[$i] [0];
+		if( $typeid != $cuur_typeid )exit('类型id有误');
+		$cardSN = $result [$i] [1];
+		$cardPWD = $result [$i] [2];
+		$data_values .= "('$typeid','$cardSN','$cardPWD', '$add_time', '$used_time', '$order_id'),";
 	}
-	
+	fclose($handle); //关闭指针
+	$data_values = substr($data_values,0,-1); //去掉最后一个逗号
+	$sql ="INSERT INTO ".$GLOBALS['ecs']->table('ks_cards') . "(card_type, card_sn, card_pwd, add_time, used_time, order_id) VALUES " . $data_values;
+	$res = $GLOBALS['db']->query( $sql );
+	if( $res ){
+		$iresult =  "恭喜，导入成功" ;
+	}else {
+		$iresult =  "导入失败" ;
+	}
+	$smarty->assign( 'action_link', array('text' => '返回水果卡列表', 'href' => "ks_card.php?act=list&tid=$cuur_typeid"));
+	$smarty->assign('iresult', $iresult);
+	$smarty->display('ks_card_importcsv.htm');
 }
 function input_csv($handle) {
 	$out = array ();
