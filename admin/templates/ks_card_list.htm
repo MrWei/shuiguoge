@@ -16,8 +16,13 @@
       <th>水果卡序号</th>
       <th>水果卡密码</th>
       <th>创建时间</th>
+      <th>过期时间</th>
+      <th>发卡时间</th>
+      <th>领卡人</th>
+      <th>状态</th>
       <th>使用时间</th>
       <th>操作</th>
+      <th>使用人</th>
     </tr>
     {foreach from=$type_list item=type}
     <tr>
@@ -26,6 +31,10 @@
       <td align="center">{$type.card_sn}</td>
       <td align="center">{$type.card_pwd}</td>
       <td align="center">{$type.add_time}</td>
+      <td align="center">{$type.pass_time}</td>
+      <td align="center">{$type.send_time}</td>
+      <td align="center">{$type.owner}</td>
+      <td align="center">{$type.status_text}</td>
       <td align="center">{if $type.used_time eq '0'}未使用{else}{$type.used_time}{/if}</td>
       <td align="center">
       	{if $type.order_id neq '0'}
@@ -33,9 +42,10 @@
         {/if}
         <a href="ks_card.php?act=edit_card_type&cid={$type.id}&tid={$type.type_id}">编辑</a> |
         <a href="ks_card.php?act=delsn&amp;id={$type.id}&tid={$type.type_id}">作废</a></span></td>
+       <td align="center">{$type.used_name}</td> 
     </tr>
       {foreachelse}
-    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+    <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
       {/foreach}
 
   </table>
