@@ -77,6 +77,9 @@ if ($action == 'act_login') {
 		}elseif ( $record_arr['pass_time']<time() ){
 			show_message ( '卡号已过期' );
 			return 0;
+		}elseif ( $record_arr['used_time']){
+			show_message ( '卡号已经被使用' );
+			return 0;
 		} else {
 			if ($record_arr ['order_id'] == 0) {
 				assign_template ();
@@ -210,6 +213,7 @@ if ($action == 'update_kscard') {
            	$sql = "UPDATE " .$ecs->table('ks_cards'). " SET ".
                       "order_id         = '$order_id' ,".
                       "order_id         = '$order_id' ,".
+                      "used_time         = '$order_time', ".
                       "used_name         = '$order_user' ".
                       " WHERE card_sn = '$card_sn'" .
                       " AND card_pwd = '$card_pwd'";

@@ -83,6 +83,9 @@ if ($action == 'act_login') {
 		}elseif ( $record_arr['pass_time']<time() ){
 			show_message ( '卡号已过期' );
 			return 0;
+		}elseif ( $record_arr['used_time']){
+			show_message ( '卡号已经被使用' );
+			return 0;
 		} else {
 			
 			assign_template ();
