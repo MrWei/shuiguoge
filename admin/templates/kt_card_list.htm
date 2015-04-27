@@ -11,40 +11,85 @@
 
   <table cellpadding="3" cellspacing="1">
     <tr>
+      <th>选择</th>
       <th>编号</th>
       <th>类型</th>
       <th>代金卡序号</th>
       <th>代金卡密码</th>
-      <th>创建时间</th>
+      <th>过期时间</th>
+      <th>发卡时间</th>
+      <th>领卡人</th>
+      <th>状态</th>
       <th>使用时间</th>
-      <th>初始金额</th>
       <th>可用余额</th>
       <th>操作</th>
+      <th>使用人</th>
     </tr>
     {foreach from=$type_list item=type}
     <tr>
+      <td><input type="checkbox" name="ids[]" value="{$type.card_id}"></td>
       <td align="center" class="first-cell"><span>{$type.card_id}</span></td>
       <td align="center">{$type.type}</td>
       <td align="center">{$type.card_sn}</td>
       <td align="center">{$type.card_pwd}</td>
-      <td align="center">{$type.add_time}</td>
+      <td align="center">{$type.send_time}</td>
+      <td align="center">{$type.pass_time}</td>
+      <td align="center">{$type.owner}</td>
+      <td align="center">{$type.status_text}</td>
       <td align="center">{if $type.used_time eq '0'}未使用{else}{$type.used_time}{/if}</td>
-      <td align="center">{$type.card_type}</td>
       <td align="center">{$type.card_bonus}</td>
       <td align="center">
       	<a href="kt_card.php?act=excel">发放</a> |
       	<a href="kt_card.php?act=edit_fee&id={$type.card_id}">编辑</a> |
-        <a href="kt_card.php?act=delsn&amp;id={$type.card_id}">作废</a></span></td>
+        <a href="kt_card.php?act=delsn&amp;id={$type.card_id}">作废</a></td>
+      <td align="center">{$type.used_name}</td>
     </tr>
       {foreachelse}
-    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+    <tr><td class="no-records" colspan="13">{$lang.no_records}</td></tr>
       {/foreach}
 
   </table>
 
 {if $full_page}
 </div>
+<h1>
+<div class="toolbar">
+  <input type="checkbox" onclick="selectAll();">全选
+  <input type="checkbox" onclick="selectOther();">反选
+  <input type="checkbox" onclick="selectClean();">全不选
+  <span class="action-span"><a href="javascript:;" action="{$action}" id="setstaus">批量激活</a></span>
+</div>
+<div style="clear:both"></div>
+</h1>
 </form>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+$(function(){
+  $("input[name='ids[]']").attr('checked',false);
+  $(".toolbar input[type='checkbox']").attr('checked',false);
+  $(".toolbar input[type='checkbox']").each(function(index){
+    $(this).click(function(){
+        $(this).prop('checked',true)
+       $(this).siblings().prop('checked',false);
+    })
+  })
+
+  $('#setstaus').click(function(){
+    var _this = $("form[name='listForm']");
+    var action = $(this).attr('action');
+    _this.css({'backround':'red'});
+    $.post( "kt_card.php?act="+action, _this.serialize(), function(data){
+       if( data.status ){
+          alert(data.desc);
+          location.reload();
+       }else{
+          alert(data.desc)
+       }
+     }, "json");
+  })
+})  
+</script>
 <!-- end bonus_type list -->
 
 <script type="text/javascript" language="JavaScript">

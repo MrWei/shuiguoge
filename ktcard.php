@@ -68,17 +68,20 @@ if ($action == 'act_login') {
 	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
 	
 	if ($card_sn != '0') 
-
 	{
-		
 		$sql = "SELECT * FROM " . $ecs->table ( 'kt_bcards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
 		
 		$record_arr = $db->getRow ( $sql );
 		
 		if (empty ( $record_arr )) 
-
 		{
 			show_message ( '卡号或密码错误' );
+			return 0;
+		}elseif ( !$record_arr['status'] ){
+			show_message ( '卡号未激活!' );
+			return 0;
+		}elseif ( $record_arr['pass_time']<time() ){
+			show_message ( '卡号已过期' );
 			return 0;
 		} else {
 			
@@ -268,7 +271,7 @@ if ($action == 'update_ktcard') {
 				$db->query($sql);
 			}
 			
-			$sql = "UPDATE " . $ecs->table ( 'kt_bcards' ) . " SET " . "used_time         = '$order_time' " . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
+			$sql = "UPDATE " . $ecs->table ( 'kt_bcards' ) . " SET " . "used_time = '$order_time', used_name = '$order_user'" . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
 			$db->query ( $sql );
 			$action = 'default';
 			show_message ( '已经成功提交订单!', '返回商城首页', 'index.php', 'default' );

@@ -11,6 +11,7 @@
 
   <table cellpadding="3" cellspacing="1">
     <tr>
+      <th>选择</th>
       <th>编号</th>
       <th>水果卡类型</th>
       <th>水果卡序号</th>
@@ -26,6 +27,7 @@
     </tr>
     {foreach from=$type_list item=type}
     <tr>
+      <td><input type="checkbox" name="ids[]" value="{$type.id}"></td>
       <td align="center" class="first-cell"><span>{$type.id}</span></td>
       <td align="center">{$type.type_name}</td>
       <td align="center">{$type.card_sn}</td>
@@ -41,7 +43,7 @@
         <a href="ks_card.php?act=order&id={$type.order_id}">订单</a> |
         {/if}
         <a href="ks_card.php?act=edit_card_type&cid={$type.id}&tid={$type.type_id}">编辑</a> |
-        <a href="ks_card.php?act=delsn&amp;id={$type.id}&tid={$type.type_id}">作废</a></span></td>
+        <a href="ks_card.php?act=delsn&amp;id={$type.id}&tid={$type.type_id}">作废</a></td>
        <td align="center">{$type.used_name}</td> 
     </tr>
       {foreachelse}
@@ -49,10 +51,46 @@
       {/foreach}
 
   </table>
-
 {if $full_page}
 </div>
+<h1>
+<div class="toolbar">
+  <input type="checkbox" onclick="selectAll();">全选
+  <input type="checkbox" onclick="selectOther();">反选
+  <input type="checkbox" onclick="selectClean();">全不选
+  <span class="action-span"><a href="javascript:;" action="{$action}" id="setstaus">批量激活</a></span>
+</div>
+<div style="clear:both"></div>
+</h1>
 </form>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+$(function(){
+  $("input[name='ids[]']").attr('checked',false);
+  $(".toolbar input[type='checkbox']").attr('checked',false);
+  $(".toolbar input[type='checkbox']").each(function(index){
+    $(this).click(function(){
+        $(this).prop('checked',true)
+       $(this).siblings().prop('checked',false);
+    })
+  })
+
+  $('#setstaus').click(function(){
+    var _this = $("form[name='listForm']");
+    var action = $(this).attr('action');
+    _this.css({'backround':'red'});
+    $.post( "ks_card.php?act="+action, _this.serialize(), function(data){
+       if( data.status ){
+          alert(data.desc);
+          location.reload();
+       }else{
+          alert(data.desc)
+       }
+     }, "json");
+  })
+})  
+</script>
 <!-- end bonus_type list -->
 
 <script type="text/javascript" language="JavaScript">

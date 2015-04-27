@@ -20,25 +20,35 @@
   </tr>
   <tr>
     <td class="label">是否激活</td>
-    <td><input type="radio" name="status" value="1">是<input type="radio" name="status" value="0">否</td>
+    <td><input type="radio" name="status" {if $card.status} checked='checked' {/if} value="1">是
+      <input type="radio" name="status" {if !$card.status} checked='checked' {/if} value="0">否</td>
   </tr>
   <tr>
     <td class="label">发卡时间</td>
-    <td><input name="send_time" type="text" id="send_time" size="22" value='{$ads.send_time}' readonly="readonly" /><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('send_time', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.btn_select}" class="button"/>
+    <td><input name="send_time" type="text" id="send_time" size="22" value=''
+     readonly="readonly" /><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('send_time', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.btn_select}" class="button"/>
+</td>
+  </tr>
+  <tr>
+    <td class="label">过期时间</td>
+    <td><input name="pass_time" type="text" id="pass_time" size="22" value=''
+     readonly="readonly" /><input name="selbtn1" type="button" id="selbtn1" onclick="return showCalendar('pass_time', '%Y-%m-%d', false, false, 'selbtn1');" value="{$lang.btn_select}" class="button"/>
 </td>
   </tr>
   <tr>
     <td class="label">领卡人</td>
-    <td><input name="owner" type="text" value='' /></td>
+    <td><input name="owner" type="text" value='{$card.owner}' /></td>
   </tr>
   <tr>
     <td class="label">使用人</td>
-    <td><input name="used_name" type="text" value='' /></td>
+    <td><input name="used_name" type="text" value='{$card.used_name}' /></td>
   </tr>
   <tr>
     <td class="label">&nbsp;</td>
     <td>
       <input type="submit" value="修改" class="button" />
+      <input type="hidden" name="sendtime" value="{$card.send_time}" />
+      <input type="hidden" name="passtime" value="{$card.pass_time}" />
       <input type="hidden" name="act" value="{$form_act}" />
       <input type="hidden" name="cid" value="{$card_id}" />
     </td>

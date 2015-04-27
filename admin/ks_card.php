@@ -52,13 +52,21 @@ if ($_REQUEST ['act'] == 'edit_card_type') {
 	$smarty->assign ( 'form_act', 'card_type_update' );
 	$smarty->assign ( 'card_id', $card_id );
 	$smarty->assign ( 'card_type', $card_type );
+	//当前卡信息
+	$cardinfo = getCardInfo($card_id);
+	$smarty->assign ( 'card',$cardinfo );
 	$smarty->assign ( 'cfg_lang', $_CFG ['lang'] );
 	$list = get_catd_type_list ();
 	$smarty->assign ( 'type_list', $list );
 	assign_query_info ();
 	$smarty->display ( 'ks_edit_card_type.htm' );
 }
-
+/* 获取水果卡类型名称 */
+function getCardInfo($card_id){
+	$sql = "SELECT * FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . " WHERE card_id = '$card_id'";
+	$result = $GLOBALS ['db']->getRow ( $sql );
+	return $result;
+}
 /* ------------------------------------------------------ */
 // -- 修改水果卡分类
 /* ------------------------------------------------------ */
@@ -67,11 +75,14 @@ if ($_REQUEST ['act'] == 'card_type_update') {
 	/* 初始化数据 */
 	$card_id = ! empty ( $_REQUEST ['cid'] ) ? intval ( $_REQUEST ['cid'] ) : 0;
 	$up_card_type = ! empty ( $_REQUEST ['card_type'] ) ? intval ( $_REQUEST ['card_type'] ) : 0;
-	$sql = "UPDATE " . $ecs->table ( 'ks_cards' ) . " SET " . "card_type        = '$up_card_type'" . "WHERE card_id    = '$card_id'";
+	$status =  ! empty($_REQUEST['status']) ? intval($_REQUEST['status']) : 0;
+	$sendTime = ! empty($_REQUEST['send_time']) ? strtotime($_REQUEST['send_time']) : $_REQUEST['sendtime'] ;
+	$passTime = ! empty($_REQUEST['pass_time']) ? strtotime($_REQUEST['pass_time']) : $_REQUEST['passtime'] ;
+	$owner =  ! empty($_REQUEST['owner']) ? htmlspecialchars($_REQUEST['owner']) : '';
+	$used_name =  ! empty($_REQUEST['used_name']) ? htmlspecialchars($_REQUEST['used_name'])  : 0;
+	$sql = "UPDATE " . $ecs->table ( 'ks_cards' ) . " SET " . "card_type = '$up_card_type',status = '$status',owner = '$owner',send_time = '$sendTime',pass_time = '$passTime',used_name = '$used_name' " . "WHERE card_id    = '$card_id'";
 	$db->query ( $sql );
-	
-	$url = "ks_card.php?act=edit_card_type&cid=$card_id&tid=$up_card_type";
-	
+	$url = "ks_card.php?act=list&tid=$up_card_type";
 	ecs_header ( "Location: $url\n" );
 	exit ();
 }
@@ -278,7 +289,7 @@ if ($_REQUEST ['act'] == 'query') {
 /* ------------------------------------------------------ */
 // -- 礼品实卡列表
 /* ------------------------------------------------------ */
-
+// TODO::礼品实卡列表
 if ($_REQUEST ['act'] == 'list') {
 	
 	/* 初始化数据 */
@@ -297,18 +308,30 @@ if ($_REQUEST ['act'] == 'list') {
 				'href' => "ks_card.php?act=import&tid=$type_id" 
 		) );
 	$smarty->assign ( 'full_page', 1 );
-	
 	$list = get_card_list ( $type_id, $card_id, $pagesize, $pageid );
-	
 	$pages = get_card_page ( $pagesize, $type_id );
-	
 	$smarty->assign ( 'type_list', $list );
 	$smarty->assign ( 'pages', $pages );
-	
+	$smarty->assign ( 'action', 'setStatus' );
 	assign_query_info ();
 	$smarty->display ( 'ks_card_list.htm' );
 }
-
+// TODO::批量激活
+if ($_REQUEST ['act'] == 'setStatus') {
+	$data = array( 'status'=>0);
+	$ids = (array)$_REQUEST['ids'];
+	if( empty($ids)  ){
+		$data['desc'] = '请选择要激活的卡号';
+		exit( json_encode($data));
+	}else {
+		$where = " WHERE card_id IN (" . implode(',', $ids) .")";
+		$sql = "UPDATE " . $ecs->table ( 'ks_cards' ) . " SET " . "status =1" . $where ;
+		$db->query ( $sql );
+		$data['status'] = 1;
+		$data['desc'] = '激活成功';
+		exit( json_encode($data));
+	}
+}
 /**
  * 获得水果卡实卡页码
  */
@@ -1232,7 +1255,6 @@ function get_type_name($card_type)
 	
 	return $result;
 }
-
 /* 生成水果卡 */
 function create_card($type_id, $bnum, $cnum) 
 

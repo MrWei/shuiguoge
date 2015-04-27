@@ -53,7 +53,7 @@ if ($_REQUEST['act'] == 'query')
 /*------------------------------------------------------ */
 //-- 修改代金卡价格
 /*------------------------------------------------------ */
-
+//TODO::修改代金卡价格
 if ($_REQUEST['act'] == 'edit_fee')
 {
      /* 初始化数据 */
@@ -85,22 +85,24 @@ if ($_REQUEST['act'] == 'update_fee')
     $card_id     = !empty($_REQUEST['id'])    ? intval($_REQUEST['id'])    : 0;
     $card_type   = !empty($_REQUEST['card_type'])    ? intval($_REQUEST['card_type'])    : 0;
     
+    $status =  ! empty($_REQUEST['status']) ? intval($_REQUEST['status']) : 0;
+    $sendTime = ! empty($_REQUEST['send_time']) ? strtotime($_REQUEST['send_time']) : $_REQUEST['sendtime'] ;
+    $passTime = ! empty($_REQUEST['pass_time']) ? strtotime($_REQUEST['pass_time']) : $_REQUEST['passtime'] ;
+    $owner =  ! empty($_REQUEST['owner']) ? htmlspecialchars($_REQUEST['owner']) : '';
+    $used_name =  ! empty($_REQUEST['used_name']) ? htmlspecialchars($_REQUEST['used_name'])  : 0;
+    
     $sql = "UPDATE " .$ecs->table('kt_bcards'). " SET ".
            "card_type        = '$card_type', ".
-           "card_bonus        = '$card_type' ".
+           "card_bonus        = '$card_type',status = '$status',owner = '$owner',send_time = '$sendTime',pass_time = '$passTime',used_name = '$used_name' " .
            "WHERE card_id    = '$card_id'";
-
    $db->query($sql);
     
     /* 记录管理员操作 */
     $log_info = "初始化代金卡余额" . $card_type . "元,代金卡id为:".$card_id ;
-
     $sql = 'INSERT INTO ' . $ecs->table('admin_log') . ' (log_time, user_id, log_info, ip_address) ' .
             " VALUES ('" . gmtime() . "', $_SESSION[admin_id], '" . stripslashes($log_info) . "', '" . real_ip() . "')";
     $db->query($sql);
-    
     $url = "kt_card.php?act=list";
-
     ecs_header("Location: $url\n");
     exit;
  
@@ -320,7 +322,7 @@ if ($_REQUEST['act'] == 'goods')
 /*------------------------------------------------------ */
 //-- 储值实卡列表
 /*------------------------------------------------------ */
-
+//TODO:代金卡列表
 if ($_REQUEST['act'] == 'list')
 {
 	  $id   = intval($_GET['id']);
@@ -333,14 +335,29 @@ if ($_REQUEST['act'] == 'list')
 
     $list = get_card_list($id,$pagesize,$pageid);
     $pages = get_card_page($pagesize);
-
+    $smarty->assign ( 'action', 'setStatus' );
     $smarty->assign('type_list',    $list);
     $smarty->assign('pages',    $pages);
 
     assign_query_info();
     $smarty->display('kt_card_list.htm');
 }
-
+// TODO::批量激活
+if ($_REQUEST ['act'] == 'setStatus') {
+	$data = array( 'status'=>0);
+	$ids = (array)$_REQUEST['ids'];
+	if( empty($ids)  ){
+		$data['desc'] = '请选择要激活的卡号';
+		exit( json_encode($data));
+	}else {
+		$where = " WHERE card_id IN (" . implode(',', $ids) .")";
+		$sql = "UPDATE " . $ecs->table ( 'kt_bcards' ) . " SET " . "status =1" . $where ;
+		$db->query ( $sql );
+		$data['status'] = 1;
+		$data['desc'] = '激活成功';
+		exit( json_encode($data));
+	}
+}
 /**
  * 获得水果卡实卡页码
  */
@@ -409,7 +426,12 @@ function get_card_list($id,$pagesize,$pageid)
         }
         
         $cards[$idx]['order_id']        = $row['order_id'];
-
+        //新增字段
+        $cards [$idx] ['send_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['send_time'] );
+        $cards [$idx] ['pass_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['pass_time'] );
+        $cards [$idx] ['owner'] = $row ['owner'];
+        $cards [$idx] ['used_name'] = $row ['used_name'];
+        $cards [$idx] ['status_text'] = $row ['status'] ? '<font color=red>已激活</font>' : '<font color=green>未激活</font>';
     }
 
 return $cards; 

@@ -113,8 +113,7 @@ $modules['11_system']['navigator']                  = 'navigator.php?act=list';
 $modules['11_system']['file_check']                 = 'filecheck.php';
 //$modules['11_system']['fckfile_manage']             = 'fckfile_manage.php?act=list';
 $modules['11_system']['021_reg_fields']             = 'reg_fields.php?act=list';
- $modules['11_system']['website']  = 'website.php?act=list';
-
+ 
 $modules['12_template']['02_template_select']       = 'template.php?act=list';
 $modules['12_template']['03_template_setup']        = 'template.php?act=setup';
 $modules['12_template']['04_template_library']      = 'template.php?act=library';

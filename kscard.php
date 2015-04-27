@@ -61,23 +61,21 @@ if ($action == 'default') {
 
 /* 处理水果卡登陆界面 */
 if ($action == 'act_login') {
-	
 	$card_sn = isset ( $_REQUEST ['card_sn'] ) ? trim ( $_REQUEST ['card_sn'] ) : '0';
-	
 	$card_pwd = isset ( $_REQUEST ['card_pwd'] ) ? trim ( $_REQUEST ['card_pwd'] ) : '0';
-	
 	if ($card_sn != '0') 
-
 	{
-		
 		$sql = "SELECT * FROM " . $ecs->table ( 'ks_cards' ) . " WHERE card_sn = '$card_sn'" . " AND card_pwd = '$card_pwd'";
-		
 		$record_arr = $db->getRow ( $sql );
-		
 		if (empty ( $record_arr )) 
-
 		{
 			show_message ( '卡号或密码错误' );
+			return 0;
+		}elseif ( !$record_arr['status'] ){
+			show_message ( '卡号未激活!' );
+			return 0;
+		}elseif ( $record_arr['pass_time']<time() ){
+			show_message ( '卡号已过期' );
 			return 0;
 		} else {
 			if ($record_arr ['order_id'] == 0) {
@@ -141,20 +139,6 @@ if ($action == 'act_login') {
 /* 提交客户订单 */
 
 if ($action == 'update_kscard') {
-// 	'order_user' => string '1321231' (length=7)
-// 	'order_tel' => string '18710283199' (length=11)
-// 	'consignee_post' => string '1' (length=1)
-// 	'address_id' => string '' (length=0)
-// 	'country' => string '1' (length=1)
-// 	'province' => string '3' (length=1)
-// 	'city' => string '37' (length=2)
-// 	'district' => string '410' (length=3)
-// 	'order_address' => string '1212121' (length=7)
-// 	'postscript' => string '' (length=0)
-// 	'goods' =>
-// 	array (size=1)
-// 	0 => string '39' (length=2)
-	
 	
 	$order_user = isset ( $_REQUEST ['order_user'] ) ? trim ( $_REQUEST ['order_user'] ) : '0';
 	$order_address = isset ( $_REQUEST ['order_address'] ) ? trim ( $_REQUEST ['order_address'] ) : '0';
@@ -225,29 +209,17 @@ if ($action == 'update_kscard') {
 			//更新卡状态
            	$sql = "UPDATE " .$ecs->table('ks_cards'). " SET ".
                       "order_id         = '$order_id' ,".
-                      "used_time         = '$order_time' ".
+                      "order_id         = '$order_id' ,".
+                      "used_name         = '$order_user' ".
                       " WHERE card_sn = '$card_sn'" .
                       " AND card_pwd = '$card_pwd'";
-
+          
            	$db->query($sql);
 			$action = 'default';
 			show_message ( '已经成功提交订单!', '返回商城首页', 'index.php', 'default' );
 		}
 	}
 }
-
-// /**
-//  * 得到新订单号
-//  * 
-//  * @return string
-//  */
-// function get_order_sn() {
-// 	/* 选择一个随机的方案 */
-// 	mt_srand ( ( double ) microtime () * 1000000 );
-	
-// 	return date ( 'Ymd' ) . str_pad ( mt_rand ( 1, 99999 ), 5, '0', STR_PAD_LEFT );
-// }
-
 /**
  * 获取水果卡商品列表
  * 
