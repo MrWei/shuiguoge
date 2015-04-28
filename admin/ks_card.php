@@ -176,7 +176,7 @@ if ($_REQUEST ['act'] == 'importExcel') {
 		$cardPWD = $result[$i][2];
 		$sendTime = strtotime($result[$i][3]);
 		$passTime = strtotime($result[$i][4]);
-		$owner = iconv('gb2312', 'utf-8', $result[$i][5]);
+		$owner = iconv('gb2312', 'utf-8', $result[$i][5]); //中文转码
 		$data_values .= "('$typeid','$cardSN','$cardPWD', '$add_time','$passTime','$sendTime','$owner','$used_time', '$order_id'),";
 	}
 	fclose ( $handle ); // 关闭指针
