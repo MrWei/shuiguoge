@@ -156,32 +156,36 @@ if ($_REQUEST ['act'] == 'importExcel') {
 	$smarty->assign ( 'ur_here', '导入水果卡' );
 	// 内存占用情况
 	$filename = $_FILES ['file'] ['tmp_name'];
-	if ($filename == '')
-		exit ( "请选择要导入的CSV文件！" );
-	$handle = fopen ( $filename, 'r' );
-	$result = input_csv ( $handle ); // 解析csv
-	$len_result = count ( $result );
-	if ($len_result == 0)
-		exit ( "导入的空CSV文件！" );
-		// 组合数据库
-	$data_values = "";
-	$add_time = gmtime ();
-	$used_time = 0;
-	$order_id = 0;
-	for($i = 1; $i < $len_result; $i ++) { // 循环获取各字段值
-		$typeid = $result [$i] [0];
-		if ($typeid != $cuur_typeid)
-			exit ( '类型id有误' );
-		$cardSN = $result[$i][1];
-		$cardPWD = $result[$i][2];
-		$sendTime = strtotime($result[$i][3]);
-		$passTime = strtotime($result[$i][4]);
-		$owner = iconv('gb2312', 'utf-8', $result[$i][5]); //中文转码
-		$data_values .= "('$typeid','$cardSN','$cardPWD', '$add_time','$passTime','$sendTime','$owner','$used_time', '$order_id'),";
-	}
-	fclose ( $handle ); // 关闭指针
-	$data_values = substr ( $data_values, 0, - 1 ); // 去掉最后一个逗号
-	$sql = "INSERT INTO " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . "(card_type, card_sn, card_pwd, add_time,pass_time,send_time,owner, used_time, order_id) VALUES " . $data_values;
+	if ($filename == '')exit ( "请选择要导入的CSV文件！" );
+	//开始导入 
+	$arr = array();
+	require (dirname ( __FILE__ ) . '/excel/PHPExcel.class.php');
+	require (dirname ( __FILE__ ) . '/excel/PHPExcel/Reader/Excel5.php');
+		$PHPExcel=new PHPExcel();
+		$PHPReader=new PHPExcel_Reader_Excel5();
+    	$PHPExcel=$PHPReader->load($filename);
+    	$currentSheet=$PHPExcel->getSheet(0);
+    	$allColumn=$currentSheet->getHighestColumn();
+    	$allRow=$currentSheet->getHighestRow();
+    	for($currentRow=2;$currentRow<=$allRow;$currentRow++){
+    		for($currentColumn='A';$currentColumn<=$allColumn;$currentColumn++){
+    			$address=$currentColumn.$currentRow;
+    			$arr[$currentRow][$currentColumn]=$currentSheet->getCell($address)->getValue();
+    		}
+    
+    	}
+    	$add_time = gmtime ();
+    	$used_time = 0;
+    	$order_id = 0;
+    	$data_values = "";
+    	foreach ( $arr as $v ){
+    		if( $v['A'] != $cuur_typeid ) exit('类型id错误');
+    		$passTime = strtotime($v['E']);
+    		$sendTime = strtotime($v['D']);
+			$data_values .= "('".$v['A']."','".$v['B']."','".$v['C']."','".$add_time."','$passTime','$sendTime','".$v['F']."','$used_time', '$order_id'),";
+    	}
+    $data_values = substr($data_values,0,-1);
+    $sql = "INSERT INTO " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . "(card_type, card_sn, card_pwd, add_time,pass_time,send_time,owner, used_time, order_id) VALUES " . $data_values;
 	$res = $GLOBALS ['db']->query ( $sql );
 	if ($res) {
 		$iresult = "恭喜，导入成功";
@@ -194,26 +198,6 @@ if ($_REQUEST ['act'] == 'importExcel') {
 	) );
 	$smarty->assign ( 'iresult', $iresult );
 	$smarty->display ( 'ks_card_importcsv.htm' );
-}
-function input_csv($handle) {
-	$out = array ();
-	$n = 0;
-	while ( $data = fgetcsv ( $handle, 10000 ) ) {
-		$num = count ( $data );
-		for($i = 0; $i < $num; $i ++) {
-			$out [$n] [$i] = $data [$i];
-		}
-		$n ++;
-	}
-	return $out;
-}
-function export_csv($filename, $data) {
-	header ( "Content-type:text/csv" );
-	header ( "Content-Disposition:attachment;filename=" . $filename );
-	header ( 'Cache-Control:must-revalidate,post-check=0,pre-check=0' );
-	header ( 'Expires:0' );
-	header ( 'Pragma:public' );
-	echo $data;
 }
 // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ///////////////////////////////////// 导入excel end //////////////////////////////////////////////////
