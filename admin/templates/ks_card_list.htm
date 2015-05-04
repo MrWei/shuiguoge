@@ -1,14 +1,55 @@
 <!-- $Id: bonus_type.htm 14216 2008-03-10 02:27:21Z testyang $ -->
-
+<style type="text/css">
+  .search_box{   background: #F4FAFB;   border: 1px solid #BBDDE5;   color: #9CACAF;    font-size: 14px;    padding: 7px 10px;    margin: 0 0 10px 0;   overflow: hidden; }
+  .inputSelect{ width: 150px}
+</style>
 {if $full_page}
 {include file="pageheader.htm"}
 <h1>页码:  {$pages}</h1>
 {insert_scripts files="../js/utils.js,listtable.js"}
+<!-- 卡搜索开始 -->
+<div class="search_box">
+<form action="" method="get">
+  <table>
+    <tr>
+      <td>分类</td>
+      <td>
+        <select class="inputSelect" name="type_id" id="">
+         <option value="0">不限</option>
+         {foreach from=$typename item=vo}
+         <option  {$vo.selected} value="{$vo.id}">{$vo.cat_name}</option>
+         {/foreach}
+      </select></td>
+      <td>卡号</td>
+      <td><input type="text" name="card_sn" id=""></td>
+      <td>状态</td>
+      <td><select name="status">
+        <option value="2">不限</option>
+        <option value="0">未激活</option>
+        <option value="1">已激活</option>
+      </select></td>
+      <td>时间</td>
+      <td>
+        <select name="" id="">
+          <option value="0">不限</option>
+          <option value="1">近一个月</option>
+          <option value="2">近三个月</option>
+          <option value="3">近半年</option>
+        </select>
+      </td>
+      <td>领卡人</td>
+      <td><input type="text" name="owner" id=""></td>
+      <td><input type="submit" value="查询"></td>
+    </tr>
+  </table>
+  <input type="hidden" name="act" value='list'>
+</form>
+  </div>
+  <!-- 卡搜索结束 -->
 <!-- start bonus_type list -->
 <form method="post" action="" name="listForm">
 <div class="list-div" id="listDiv">
 {/if}
-
   <table cellpadding="3" cellspacing="1">
     <tr>
       <th>选择</th>

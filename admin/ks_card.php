@@ -275,12 +275,15 @@ if ($_REQUEST ['act'] == 'query') {
 /* ------------------------------------------------------ */
 // TODO::礼品实卡列表
 if ($_REQUEST ['act'] == 'list') {
+	if( !empty($_POST) ){
+		var_dump($_POST);
+	}
 	
 	/* 初始化数据 */
 	$type_id = ! empty ( $_REQUEST ['tid'] ) ? intval ( $_REQUEST ['tid'] ) : 0;
 	$card_id = ! empty ( $_REQUEST ['id'] ) ? intval ( $_REQUEST ['id'] ) : 0;
 	$pageid = ! empty ( $_REQUEST ['page'] ) ? intval ( $_REQUEST ['page'] ) : 1;
-	$pagesize = 50;
+	$pagesize = 20;
 	$smarty->assign ( 'ur_here', '水果卡实卡' );
 	$smarty->assign ( 'action_link', array (
 			'text' => '生成水果卡',
@@ -295,6 +298,9 @@ if ($_REQUEST ['act'] == 'list') {
 	$list = get_card_list ( $type_id, $card_id, $pagesize, $pageid );
 	$pages = get_card_page ( $pagesize, $type_id );
 	$smarty->assign ( 'type_list', $list );
+	//所有的卡分类列表
+	$smarty->assign ( 'typename', get_typename($type_id) );
+	
 	$smarty->assign ( 'pages', $pages );
 	$smarty->assign ( 'action', 'setStatus' );
 	assign_query_info ();
@@ -342,6 +348,21 @@ function get_card_page($pagesize, $type_id) {
 	
 	return $pagestr;
 }
+//TODO://查询卡号分类
+function get_typename( $type_id )
+{
+	$sql = "SELECT cat_id,cat_name FROM " . $GLOBALS ['ecs']->table ( 'ks_cardcats' );
+	$result = $GLOBALS ['db']->getAll ( $sql );
+	$cate =array();
+	foreach ( $result as $k=>$v ){
+		$cate[$k]['id'] = $v['cat_id'];
+		$cate[$k]['cat_name'] = $v['cat_name'];
+		$cate[$k]['selected'] = $v['cat_id'] == $type_id ? "selected='selected'" : "";
+	}
+	return $cate;
+}
+
+
 
 /* ------------------------------------------------------ */
 // -- 生成礼品实卡
