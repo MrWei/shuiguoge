@@ -9,7 +9,7 @@
 {insert_scripts files="../js/utils.js,listtable.js"}
 <!-- 卡搜索开始 -->
 <div class="search_box">
-<form action="" method="get">
+<form id="serarch_form">
   <table>
     <tr>
       <td>分类</td>
@@ -39,12 +39,28 @@
       </td>
       <td>领卡人</td>
       <td><input type="text" name="owner" id=""></td>
-      <td><input type="submit" value="查询"></td>
+      <td><a class="sch-btn" href="javascript:;" id="search" url="ks_card.php?act=list">查询</a></td>
     </tr>
   </table>
-  <input type="hidden" name="act" value='list'>
 </form>
   </div>
+  <script type="text/javascript">
+  $(function(){
+      //搜索功能
+      $("#search").click(function(){
+        var url = $(this).attr('url');
+            var query  = $('#serarch_form').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+            query = query.replace(/^&/g,'');
+            if( url.indexOf('?')>0 ){
+                url += '&' + query ;
+            }else{
+                url += '?' + query ;
+            }
+        window.location.href = url;
+      });
+    })
+  </script>
   <!-- 卡搜索结束 -->
 <!-- start bonus_type list -->
 <form method="post" action="" name="listForm">
