@@ -1,12 +1,10 @@
-<!-- $Id: bonus_type.htm 14216 2008-03-10 02:27:21Z testyang $ -->
 <style type="text/css">
   .search_box{   background: #F4FAFB;   border: 1px solid #BBDDE5;   color: #9CACAF;    font-size: 14px;    padding: 7px 10px;    margin: 0 0 10px 0;   overflow: hidden; }
+  .fenye{ text-align: center; font-size: 12px; color: #335b64}
   .inputSelect{ width: 150px}
 </style>
 {if $full_page}
 {include file="pageheader.htm"}
-<h1>页码:  {$pages}</h1>
-{insert_scripts files="../js/utils.js,listtable.js"}
 <!-- 卡搜索开始 -->
 <div class="search_box">
 <form id="serarch_form">
@@ -120,8 +118,7 @@
 <div style="clear:both"></div>
 </h1>
 </form>
-<style type="text/css">
-</style>
+<div class="search_box fenye"> {$fenye}</div>
 <script type="text/javascript">
 $(function(){
   $("input[name='ids[]']").attr('checked',false);
@@ -170,3 +167,4 @@ $(function(){
 </script>
 {include file="pagefooter.htm"}
 {/if}
+

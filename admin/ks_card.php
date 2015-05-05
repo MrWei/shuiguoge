@@ -302,46 +302,33 @@ if ($_REQUEST ['act'] == 'list') {
 	}
 	$where .= true;
 	$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . $where;
-	echo $sql;
 	$total= $GLOBALS ['db']->getOne ( $sql );
-	$page = new Page( $total, 30 );
+	$page = new Page( $total, 20 );
 	
+	$list = getCardList($where, $page->firstRow, $page->listRows );
 	foreach($map as $key=>$val) {
 		 $page->parameter .= "&$key=".urlencode($val)."&";   
 	}
-	
-	$smarty->assign ( 'fenye', $page->show() );
-	assign_query_info ();
-	$smarty->display ( 'ks_card_list.htm' );
-}
-/*
- * 
- * 
- * 
-	$type_id = ! empty ( $_REQUEST ['tid'] ) ? intval ( $_REQUEST ['tid'] ) : 0;
-	$card_id = ! empty ( $_REQUEST ['id'] ) ? intval ( $_REQUEST ['id'] ) : 0;
-	$pageid = ! empty ( $_REQUEST ['page'] ) ? intval ( $_REQUEST ['page'] ) : 1;
-	$pagesize = 20;
+	//分配显示数据
 	$smarty->assign ( 'ur_here', '水果卡实卡' );
 	$smarty->assign ( 'action_link', array (
 			'text' => '生成水果卡',
-			'href' => "ks_card.php?act=edit_card&tid=$type_id" 
+			'href' => "ks_card.php?act=edit_card&tid={$map['card_type']}"
 	) );
-	if ($type_id)
+	if ($map['card_type'])
 		$smarty->assign ( 'import_link', array (
 				'text' => '导入水果卡',
-				'href' => "ks_card.php?act=import&tid=$type_id" 
+				'href' => "ks_card.php?act=import&tid={$map['card_type']}"
 		) );
-	$smarty->assign ( 'full_page', 1 );
-	$list = get_card_list ( $type_id, $card_id, $pagesize, $pageid );
-	$pages = get_card_page ( $pagesize, $type_id );
+	$smarty->assign ( 'full_page', 1 );						//全屏
+	$smarty->assign ( 'typename', get_typename($map['card_type']) );//所有的卡分类列表
+	$smarty->assign ( 'action', 'setStatus' );				//激活action值
+	$smarty->assign ( 'fenye', $page->show() );				//分页
 	$smarty->assign ( 'type_list', $list );
-	//所有的卡分类列表
-	$smarty->assign ( 'typename', get_typename($type_id) );
-	$smarty->assign ( 'pageId', $pageid );
-	$smarty->assign ( 'pages', $pages );
-	$smarty->assign ( 'action', 'setStatus' );
- */
+	$smarty->assign ( 'condition', $map );
+	assign_query_info ();
+	$smarty->display ( 'ks_card_list.htm' );
+}
 // TODO::批量激活
 if ($_REQUEST ['act'] == 'setStatus') {
 	$data = array( 'status'=>0);
@@ -358,32 +345,7 @@ if ($_REQUEST ['act'] == 'setStatus') {
 		exit( json_encode($data));
 	}
 }
-/**
- * 获得水果卡实卡页码
- */
-function get_card_page($pagesize, $type_id) {
-	if ($type_id == 0) {
-		$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' );
-	} else {
-		$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . " WHERE card_type = '$type_id'";
-	}
-	$total = $GLOBALS ['db']->getOne ( $sql );
-	
-	$total = intval ( $total );
-	$pagesize = intval ( $pagesize );
-	
-	$pages = ceil ( $total / $pagesize ); // 计算总分页
-	
-	for($i = 1; $i <= $pages; $i ++) {
-		if ($type_id == 0) {
-			$pagestr .= "<a href=\"ks_card.php?act=list&page=" . $i . "\">第" . $i . "页</a>&nbsp;&nbsp;";
-		} else {
-			$pagestr .= "<a href=\"ks_card.php?act=list&tid=" . $type_id . "&page=" . $i . "\">第" . $i . "页</a>&nbsp;&nbsp;";
-		}
-	}
-	
-	return $pagestr;
-}
+
 //TODO://查询卡号分类
 function get_typename( $type_id )
 {
@@ -398,8 +360,36 @@ function get_typename( $type_id )
 	return $cate;
 }
 
-
-
+function getCardList( $where, $firstRow, $listRows ){
+	$sql = "SELECT * FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . $where . " LIMIT {$firstRow},{$listRows}";
+// 	echo $sql;
+	$result = $GLOBALS ['db']->getAll ( $sql );
+	$cards = array ();
+	foreach ( $result as $idx => $row ) {
+	
+		$cards [$idx] ['id'] = $row ['card_id'];
+		$cards [$idx] ['type_id'] = $row ['card_type'];
+		$cards [$idx] ['type_name'] = get_type_name ( $row ['card_type'] );
+		$cards [$idx] ['card_sn'] = $row ['card_sn'];
+		$cards [$idx] ['card_pwd'] = $row ['card_pwd'];
+		$cards [$idx] ['add_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['add_time'] );
+		if ($row ['used_time'] == 0) {
+			$cards [$idx] ['used_time'] = $row ['used_time'];
+		} else {
+			$cards [$idx] ['used_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['used_time'] );
+		}
+		$cards [$idx] ['order_id'] = $row ['order_id'];
+		//新增字段
+		$cards [$idx] ['send_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['send_time'] );
+		$cards [$idx] ['pass_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['pass_time'] );
+		$cards [$idx] ['owner'] = $row ['owner'];
+		$cards [$idx] ['used_name'] = $row ['used_name'];
+		$cards [$idx] ['status_text'] = $row ['status'] ? '<font color=red>已激活</font>' : '<font color=green>未激活</font>';
+	}
+	
+	return $cards;
+	
+}
 /* ------------------------------------------------------ */
 // -- 生成礼品实卡
 /* ------------------------------------------------------ */
@@ -1235,56 +1225,6 @@ function get_order_goods_list($id) {
 	}
 	
 	return $goods;
-}
-
-/**
- * 获得水果卡实卡列表
- *
- * @access public
- * @param
- *        	s integer $isdelete
- * @param
- *        	s integer $real_goods
- * @return array
- */
-function get_card_list($type_id, $card_id, $pagesize, $pageid) {
-	$startrow = ($pageid - 1) * $pagesize;
-	
-	if ($type_id != 0) {
-		$sql = "SELECT * FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . " WHERE card_type = '$type_id' ORDER BY card_id desc LIMIT $startrow,$pagesize";
-	} else {
-		$sql = "SELECT * FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . " ORDER BY card_id desc LIMIT $startrow,$pagesize";
-	}
-	if ($card_id != 0) {
-		$sql = "SELECT * FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . " WHERE card_id = '$card_id' ";
-	}
-	
-	$result = $GLOBALS ['db']->getAll ( $sql );
-	$cards = array ();
-	
-	foreach ( $result as $idx => $row ) {
-		
-		$cards [$idx] ['id'] = $row ['card_id'];
-		$cards [$idx] ['type_id'] = $row ['card_type'];
-		$cards [$idx] ['type_name'] = get_type_name ( $row ['card_type'] );
-		$cards [$idx] ['card_sn'] = $row ['card_sn'];
-		$cards [$idx] ['card_pwd'] = $row ['card_pwd'];
-		$cards [$idx] ['add_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['add_time'] );
-		if ($row ['used_time'] == 0) {
-			$cards [$idx] ['used_time'] = $row ['used_time'];
-		} else {
-			$cards [$idx] ['used_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['used_time'] );
-		}
-		$cards [$idx] ['order_id'] = $row ['order_id'];
-		//新增字段
-		$cards [$idx] ['send_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['send_time'] );
-		$cards [$idx] ['pass_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['pass_time'] );
-		$cards [$idx] ['owner'] = $row ['owner'];
-		$cards [$idx] ['used_name'] = $row ['used_name'];
-		$cards [$idx] ['status_text'] = $row ['status'] ? '<font color=red>已激活</font>' : '<font color=green>未激活</font>';
-	}
-	
-	return $cards;
 }
 
 /* 获取水果卡类型名称 */
