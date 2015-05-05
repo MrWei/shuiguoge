@@ -275,11 +275,49 @@ if ($_REQUEST ['act'] == 'query') {
 /* ------------------------------------------------------ */
 // TODO::礼品实卡列表
 if ($_REQUEST ['act'] == 'list') {
-	if( !empty($_POST) ){
-		var_dump($_POST);
+	//导入入类
+	require (dirname ( __FILE__ ) . '/includes/Page.class.php');
+	//接收查询条件
+	$map = array();
+	//查询类型
+	if( !empty($_REQUEST['type_id'] ) ){
+		$map['card_type'] = intval($_REQUEST['type_id']);
+	}
+	//查询卡号
+	if( !empty($_REQUEST['card_sn'] ) ){
+		$map['card_sn'] =  htmlspecialchars( $_REQUEST['card_sn']) ;
+	}
+	//激活状态
+	if( !empty($_REQUEST['status'] ) && $_REQUEST['status']!=2 ){
+		$map['status'] =  ( $_REQUEST['status']) ;
+	}
+	//领卡人
+	if( !empty($_REQUEST['owner'] )  ){
+		$map['owner'] = htmlspecialchars( $_REQUEST['owner']);
+	}
+	//组合查询条件
+	$where= " WHERE ";
+	foreach ( $map as $k=>$v ){
+		$where .= " ( {$k}='{$v}' ) AND ";
+	}
+	$where .= true;
+	$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . $where;
+	echo $sql;
+	$total= $GLOBALS ['db']->getOne ( $sql );
+	$page = new Page( $total, 30 );
+	
+	foreach($map as $key=>$val) {
+		 $page->parameter .= "&$key=".urlencode($val)."&";   
 	}
 	
-	/* 初始化数据 */
+	$smarty->assign ( 'fenye', $page->show() );
+	assign_query_info ();
+	$smarty->display ( 'ks_card_list.htm' );
+}
+/*
+ * 
+ * 
+ * 
 	$type_id = ! empty ( $_REQUEST ['tid'] ) ? intval ( $_REQUEST ['tid'] ) : 0;
 	$card_id = ! empty ( $_REQUEST ['id'] ) ? intval ( $_REQUEST ['id'] ) : 0;
 	$pageid = ! empty ( $_REQUEST ['page'] ) ? intval ( $_REQUEST ['page'] ) : 1;
@@ -300,12 +338,10 @@ if ($_REQUEST ['act'] == 'list') {
 	$smarty->assign ( 'type_list', $list );
 	//所有的卡分类列表
 	$smarty->assign ( 'typename', get_typename($type_id) );
-	
+	$smarty->assign ( 'pageId', $pageid );
 	$smarty->assign ( 'pages', $pages );
 	$smarty->assign ( 'action', 'setStatus' );
-	assign_query_info ();
-	$smarty->display ( 'ks_card_list.htm' );
-}
+ */
 // TODO::批量激活
 if ($_REQUEST ['act'] == 'setStatus') {
 	$data = array( 'status'=>0);
