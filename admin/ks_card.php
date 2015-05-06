@@ -285,25 +285,42 @@ if ($_REQUEST ['act'] == 'list') {
 	}
 	//查询卡号
 	if( !empty($_REQUEST['card_sn'] ) ){
-		$map['card_sn'] =  htmlspecialchars( $_REQUEST['card_sn']) ;
+		$map['card_sn']  = htmlspecialchars( $_REQUEST['card_sn']) ;
 	}
+	$status = intval($_REQUEST['status']);
 	//激活状态
-	if( !empty($_REQUEST['status'] ) && $_REQUEST['status']!=2 ){
-		$map['status'] =  ( $_REQUEST['status']) ;
+	if( $status > -1 ){
+		$map['status'] =  intval(( $_REQUEST['status'])) ;
 	}
 	//领卡人
 	if( !empty($_REQUEST['owner'] )  ){
 		$map['owner'] = htmlspecialchars( $_REQUEST['owner']);
 	}
+	//每页显示数量
+	$listRows = 20;
 	//组合查询条件
 	$where= " WHERE ";
 	foreach ( $map as $k=>$v ){
 		$where .= " ( {$k}='{$v}' ) AND ";
 	}
+	//时间
+	$sch_time = intval($_REQUEST['sch_time']);
+	$map['sch_time'] = $sch_time;
+	switch ( $sch_time ){
+		case 1: 
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND ";
+			break;
+		case 2: 
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND ";
+			break;
+		case 3: 
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND ";
+			break;
+	}
 	$where .= true;
 	$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . $where;
 	$total= $GLOBALS ['db']->getOne ( $sql );
-	$page = new Page( $total, 20 );
+	$page = new Page( $total, $listRows );
 	
 	$list = getCardList($where, $page->firstRow, $page->listRows );
 	foreach($map as $key=>$val) {
@@ -326,6 +343,8 @@ if ($_REQUEST ['act'] == 'list') {
 	$smarty->assign ( 'fenye', $page->show() );				//分页
 	$smarty->assign ( 'type_list', $list );
 	$smarty->assign ( 'condition', $map );
+	$smarty->assign ( 'state', $status );
+	$smarty->assign ( 'schtime', $sch_time );
 	assign_query_info ();
 	$smarty->display ( 'ks_card_list.htm' );
 }

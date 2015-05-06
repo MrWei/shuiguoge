@@ -2,6 +2,7 @@
   .search_box{   background: #F4FAFB;   border: 1px solid #BBDDE5;   color: #9CACAF;    font-size: 14px;    padding: 7px 10px;    margin: 0 0 10px 0;   overflow: hidden; }
   .fenye{ text-align: center; font-size: 12px; color: #335b64}
   .inputSelect{ width: 150px}
+  .sch-btn{color: #666;font-size: 12px;text-decoration: none;display: block;padding: 2px 10px 2px 10px;border: 1px solid #278296;border-right: 2px solid #278296;border-bottom: 2px solid #278296;}
 </style>
 {if $full_page}
 {include file="pageheader.htm"}
@@ -19,25 +20,26 @@
          {/foreach}
       </select></td>
       <td>卡号</td>
-      <td><input type="text" name="card_sn" id=""></td>
+      <td><input type="text" name="card_sn" value="{$condition.card_sn}"></td>
       <td>状态</td>
       <td><select name="status">
-        <option value="2">不限</option>
-        <option value="0">未激活</option>
-        <option value="1">已激活</option>
+        <option value="-1" {if $state eq -1 }selected='selected'{/if}>不限</option>
+        <option value="0" {if $state eq 0 }selected='selected'{/if}>未激活</option>
+        <option value="1" {if $state eq 1 }selected='selected'{/if}>已激活</option>
       </select></td>
       <td>时间</td>
       <td>
-        <select name="" id="">
-          <option value="0">不限</option>
-          <option value="1">近一个月</option>
-          <option value="2">近三个月</option>
-          <option value="3">近半年</option>
+        <select name="sch_time" id="">
+          <option value="0" {if $schtime eq 0 }selected='selected'{/if}>不限</option>
+          <option value="1" {if $schtime eq 1 }selected='selected'{/if}>近一个月</option>
+          <option value="2" {if $schtime eq 2 }selected='selected'{/if}>近三个月</option>
+          <option value="3" {if $schtime eq 3 }selected='selected'{/if}>近半年</option>
         </select>
       </td>
       <td>领卡人</td>
-      <td><input type="text" name="owner" id=""></td>
-      <td><a class="sch-btn" href="javascript:;" id="search" url="ks_card.php?act=list">查询</a></td>
+      <td><input type="text" name="owner" value="{$condition.owner}"></td>
+      <td>
+        <a class="sch-btn" href="javascript:;" id="search" url="ks_card.php?act=list">查询</a></td>
     </tr>
   </table>
 </form>
@@ -118,7 +120,9 @@
 <div style="clear:both"></div>
 </h1>
 </form>
+{if $fenye }
 <div class="search_box fenye"> {$fenye}</div>
+{/if}
 <script type="text/javascript">
 $(function(){
   $("input[name='ids[]']").attr('checked',false);
@@ -167,4 +171,3 @@ $(function(){
 </script>
 {include file="pagefooter.htm"}
 {/if}
-
