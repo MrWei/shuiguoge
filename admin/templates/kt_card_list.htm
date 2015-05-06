@@ -1,14 +1,67 @@
-<!-- $Id: bonus_type.htm 14216 2008-03-10 02:27:21Z testyang $ -->
-
 {if $full_page}
 {include file="pageheader.htm"}
-<h1>页码:  {$pages}</h1>
-{insert_scripts files="../js/utils.js,listtable.js"}
+
+<style type="text/css">
+  .search_box{   background: #F4FAFB;   border: 1px solid #BBDDE5;   color: #9CACAF;    font-size: 14px;    padding: 7px 10px;    margin: 0 0 10px 0;   overflow: hidden; }
+  .fenye{ text-align: center; font-size: 12px; color: #335b64}
+  .inputSelect{ width: 150px}
+  .sch-btn{color: #666;font-size: 12px;text-decoration: none;display: block;padding: 2px 10px 2px 10px;border: 1px solid #278296;border-right: 2px solid #278296;border-bottom: 2px solid #278296;}
+</style>
+<!-- 卡搜索开始 -->
+<div class="search_box">
+<form id="serarch_form">
+  <table>
+    <tr>
+      <td>类型</td>
+      <td><input type="text" name="type" value="{$condition.type}"></td>
+      <td>卡号</td>
+      <td><input type="text" name="card_sn" value="{$condition.card_sn}"></td>
+      <td>状态</td>
+      <td><select name="status">
+        <option value="-1" {if $state eq -1 }selected='selected'{/if}>不限</option>
+        <option value="0" {if $state eq 0 }selected='selected'{/if}>未激活</option>
+        <option value="1" {if $state eq 1 }selected='selected'{/if}>已激活</option>
+      </select></td>
+      <td>时间</td>
+      <td>
+        <select name="sch_time" id="">
+          <option value="0" {if $schtime eq 0 }selected='selected'{/if}>不限</option>
+          <option value="1" {if $schtime eq 1 }selected='selected'{/if}>近一个月</option>
+          <option value="2" {if $schtime eq 2 }selected='selected'{/if}>近三个月</option>
+          <option value="3" {if $schtime eq 3 }selected='selected'{/if}>近半年</option>
+        </select>
+      </td>
+      <td>领卡人</td>
+      <td><input type="text" name="owner" value="{$condition.owner}"></td>
+      <td>
+        <a class="sch-btn" href="javascript:;" id="search" url="kt_card.php?act=list">查询</a></td>
+    </tr>
+  </table>
+</form>
+  </div>
+  <script type="text/javascript">
+  $(function(){
+      //搜索功能
+      $("#search").click(function(){
+        var url = $(this).attr('url');
+            var query  = $('#serarch_form').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+            query = query.replace(/^&/g,'');
+            if( url.indexOf('?')>0 ){
+                url += '&' + query ;
+            }else{
+                url += '?' + query ;
+            }
+        window.location.href = url;
+      });
+    })
+  </script>
+  <!-- 卡搜索结束 -->
+
 <!-- start bonus_type list -->
 <form method="post" action="" name="listForm">
 <div class="list-div" id="listDiv">
 {/if}
-
   <table cellpadding="3" cellspacing="1">
     <tr>
       <th>选择</th>
@@ -62,8 +115,8 @@
 <div style="clear:both"></div>
 </h1>
 </form>
-<style type="text/css">
-</style>
+<div class="search_box fenye"> {$fenye}</div>
+
 <script type="text/javascript">
 $(function(){
   $("input[name='ids[]']").attr('checked',false);

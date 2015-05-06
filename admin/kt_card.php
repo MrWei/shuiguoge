@@ -325,23 +325,130 @@ if ($_REQUEST['act'] == 'goods')
 //TODO:代金卡列表
 if ($_REQUEST['act'] == 'list')
 {
-	  $id   = intval($_GET['id']);
-	  $pageid = !empty($_REQUEST['page'])    ? intval($_REQUEST['page'])    : 1;
-	  $pagesize = 50;
-    
-    $smarty->assign('ur_here',     '代金卡实卡');
-    $smarty->assign('action_link', array('text' => '生成代金卡', 'href' => "kt_card.php?act=edit_card"));
-    $smarty->assign('full_page',   1);
-
-    $list = get_card_list($id,$pagesize,$pageid);
-    $pages = get_card_page($pagesize);
-    $smarty->assign ( 'action', 'setStatus' );
-    $smarty->assign('type_list',    $list);
-    $smarty->assign('pages',    $pages);
-
+	   //导入入类
+	require (dirname ( __FILE__ ) . '/includes/Page.class.php');
+	//接收查询条件
+	$map = array();
+	$where= " WHERE ";
+	//查询类型
+	if( !empty($_REQUEST['type'] ) ){
+		$map['type'] = htmlspecialchars($_REQUEST['type']);
+		$where .= " ( type LIKE '%".$map['type']."%' ) AND ";
+	}
+	//查询卡号
+	if( !empty($_REQUEST['card_sn'] ) ){
+		$map['card_sn']  = htmlspecialchars( $_REQUEST['card_sn']) ;
+		$where .= " ( card_sn = ".$map['card_sn']." ) ";
+	}
+	$status = intval($_REQUEST['status']);
+	//激活状态
+	if( $status > -1 ){
+		$map['status'] =  intval(( $_REQUEST['status'])) ;
+	}
+	//领卡人
+	if( !empty($_REQUEST['owner'] )  ){
+		$map['owner'] = htmlspecialchars( $_REQUEST['owner']);
+	}
+	//每页显示数量
+	$listRows = 2;
+	//组合查询条件
+	$where= " WHERE ";
+	foreach ( $map as $k=>$v ){
+		
+		$where .= " ( {$k}='{$v}' ) AND ";
+	}
+	//时间
+	$sch_time = intval($_REQUEST['sch_time']);
+	$map['sch_time'] = $sch_time;
+	switch ( $sch_time ){
+		case 1: 
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND ";
+			break;
+		case 2: 
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND ";
+			break;
+		case 3: 
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND ";
+			break;
+	}
+	$where .= true;
+	$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'kt_bcards' ) . $where;
+	echo $sql;
+	$total= $GLOBALS ['db']->getOne ( $sql );
+	$page = new Page( $total, $listRows );
+	
+	$list = getCardList($where, $page->firstRow, $page->listRows );
+	foreach($map as $key=>$val) {
+		 $page->parameter .= "&$key=".urlencode($val)."&";   
+	}
+	//分配显示数据
+	$smarty->assign ( 'ur_here', '代金卡实卡' );
+	$smarty->assign ( 'action_link', array (
+			'text' => '生成代金卡',
+			'href' => "kt_card.php?act=edit_card"
+	) );
+	if ($map['card_type'])
+		$smarty->assign ( 'import_link', array (
+				'text' => '导入代金卡',
+				'href' => "kt_card.php?act=import"
+		) );
+	$smarty->assign ( 'full_page', 1 );						//全屏
+	$smarty->assign ( 'action', 'setStatus' );				//激活action值
+	$smarty->assign ( 'fenye', $page->show() );				//分页
+	$smarty->assign ( 'type_list', $list );
+	$smarty->assign ( 'condition', $map );
+	$smarty->assign ( 'state', $status );
+	$smarty->assign ( 'schtime', $sch_time );
+	
     assign_query_info();
     $smarty->display('kt_card_list.htm');
 }
+/**
+ * 查询卡列表
+ * @param 查询的条件 $where
+ * @param 分页的开始数 $firstRow
+ * @param 分页的结束 $listRows
+ * @return Ambigous <multitype:, string>
+ */
+function getCardList( $where, $firstRow, $listRows ){
+	$sql = "SELECT * FROM " .$GLOBALS['ecs']->table('kt_bcards') . $where . " LIMIT {$firstRow},{$listRows}";
+    $result = $GLOBALS['db']->getAll($sql);
+    $cards = array();
+    
+    foreach ($result AS $idx => $row)
+    {
+    	$cards[$idx]['type']           = $row['type'];
+    	$cards[$idx]['card_id']           = $row['card_id'];
+        $cards[$idx]['card_sn']         = $row['card_sn'];
+        $cards[$idx]['card_pwd']         = $row['card_pwd'];
+        $cards[$idx]['add_time']        = local_date($GLOBALS['_CFG']['time_format'],$row['add_time']);
+        $cards[$idx]['used_time']        = local_date($GLOBALS['_CFG']['time_format'],$row['used_time']);
+        $cards[$idx]['card_type']        = $row['card_type'];
+        $cards[$idx]['card_bonus']        = $row['card_bonus'];
+        
+        if($row['used_time'] == 0)
+        {
+        $cards[$idx]['used_time']        = $row['used_time'];
+        }
+        else
+        {
+        $cards[$idx]['used_time']        = local_date($GLOBALS['_CFG']['time_format'],$row['used_time']);
+        }
+        
+        $cards[$idx]['order_id']        = $row['order_id'];
+        //新增字段
+        $cards [$idx] ['send_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['send_time'] );
+        $cards [$idx] ['pass_time'] = local_date ( $GLOBALS ['_CFG'] ['time_format'], $row ['pass_time'] );
+        $cards [$idx] ['owner'] = $row ['owner'];
+        $cards [$idx] ['used_name'] = $row ['used_name'];
+        $cards [$idx] ['status_text'] = $row ['status'] ? '<font color=red>已激活</font>' : '<font color=green>未激活</font>';
+    }
+
+	return $cards;
+
+}
+
+
 // TODO::批量激活
 if ($_REQUEST ['act'] == 'setStatus') {
 	$data = array( 'status'=>0);
