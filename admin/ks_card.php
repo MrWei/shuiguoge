@@ -279,47 +279,48 @@ if ($_REQUEST ['act'] == 'list') {
 	require (dirname ( __FILE__ ) . '/includes/Page.class.php');
 	//接收查询条件
 	$map = array();
+	$where= " WHERE ";
 	//查询类型
 	if( !empty($_REQUEST['type_id'] ) ){
 		$map['card_type'] = intval($_REQUEST['type_id']);
+		$where .= " ( card_type = ".$map['card_type']." ) AND ";
 	}
 	//查询卡号
 	if( !empty($_REQUEST['card_sn'] ) ){
 		$map['card_sn']  = htmlspecialchars( $_REQUEST['card_sn']) ;
+		$where .= " ( card_sn = '".$map['card_sn']."' ) AND ";
 	}
-	$status = intval($_REQUEST['status']);
+	$status = isset($_REQUEST['status'])? intval($_REQUEST['status']) : -1;
 	//激活状态
 	if( $status > -1 ){
 		$map['status'] =  intval(( $_REQUEST['status'])) ;
+		$where .= " ( status = ".$map['status']." ) AND ";
 	}
 	//领卡人
 	if( !empty($_REQUEST['owner'] )  ){
 		$map['owner'] = htmlspecialchars( $_REQUEST['owner']);
-	}
-	//每页显示数量
-	$listRows = 20;
-	//组合查询条件
-	$where= " WHERE ";
-	foreach ( $map as $k=>$v ){
-		$where .= " ( {$k}='{$v}' ) AND ";
+		$where .= " ( owner = '".$map['owner']."' ) AND ";
 	}
 	//时间
 	$sch_time = intval($_REQUEST['sch_time']);
 	$map['sch_time'] = $sch_time;
 	switch ( $sch_time ){
 		case 1: 
-			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND ";
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%s' ) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND ";
 			break;
 		case 2: 
-			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND ";
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%s' ) > DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND ";
 			break;
 		case 3: 
-			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND ";
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%s' ) > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND ";
 			break;
 	}
 	$where .= true;
 	$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'ks_cards' ) . $where;
 	$total= $GLOBALS ['db']->getOne ( $sql );
+	//每页显示数量
+	$listRows = 20;
+	//组合查询条件
 	$page = new Page( $total, $listRows );
 	
 	$list = getCardList($where, $page->firstRow, $page->listRows );
@@ -332,11 +333,13 @@ if ($_REQUEST ['act'] == 'list') {
 			'text' => '生成水果卡',
 			'href' => "ks_card.php?act=edit_card&tid={$map['card_type']}"
 	) );
-	if ($map['card_type'])
+	if ($map['card_type']){
 		$smarty->assign ( 'import_link', array (
 				'text' => '导入水果卡',
 				'href' => "ks_card.php?act=import&tid={$map['card_type']}"
 		) );
+	}
+	
 	$smarty->assign ( 'full_page', 1 );						//全屏
 	$smarty->assign ( 'typename', get_typename($map['card_type']) );//所有的卡分类列表
 	$smarty->assign ( 'action', 'setStatus' );				//激活action值
