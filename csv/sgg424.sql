@@ -12,3 +12,8 @@ ADD  `used_name` VARCHAR( 20 ) NOT NULL  DEFAULT  '无使用人' COMMENT  '使�
 
 ALTER TABLE  `ecs_ks_cards` ADD  `status` TINYINT( 1 ) NOT NULL DEFAULT  '0' COMMENT  '是否激活0没有激活1激活' AFTER  `card_pwd` ;
 
+ALTER TABLE  `ecs_kt_bcards` ADD  `order_id` SMALLINT UNSIGNED NOT NULL COMMENT  '订单id' AFTER  `card_bonus`;
+
+truncate table ecs_ks_cards;
+
+ALTER TABLE  `ecs_kt_bcards` ADD INDEX (  `card_pwd` )

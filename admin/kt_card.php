@@ -338,43 +338,40 @@ if ($_REQUEST['act'] == 'list')
 	//查询卡号
 	if( !empty($_REQUEST['card_sn'] ) ){
 		$map['card_sn']  = htmlspecialchars( $_REQUEST['card_sn']) ;
-		$where .= " ( card_sn = ".$map['card_sn']." ) ";
+		$where .= " ( card_sn = '".$map['card_sn']."' ) AND ";
 	}
-	$status = intval($_REQUEST['status']);
+	$status = isset($_REQUEST['status'])? intval($_REQUEST['status']) : -1;
 	//激活状态
 	if( $status > -1 ){
 		$map['status'] =  intval(( $_REQUEST['status'])) ;
+		$where .= " ( status = ".$map['status']." ) AND ";
 	}
 	//领卡人
 	if( !empty($_REQUEST['owner'] )  ){
 		$map['owner'] = htmlspecialchars( $_REQUEST['owner']);
+		$where .= " ( owner = '".$map['owner']."' ) AND ";
 	}
-	//每页显示数量
-	$listRows = 2;
+	
 	//组合查询条件
-	$where= " WHERE ";
-	foreach ( $map as $k=>$v ){
-		
-		$where .= " ( {$k}='{$v}' ) AND ";
-	}
 	//时间
 	$sch_time = intval($_REQUEST['sch_time']);
 	$map['sch_time'] = $sch_time;
 	switch ( $sch_time ){
 		case 1: 
-			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND ";
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%s' ) > DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND ";
 			break;
 		case 2: 
-			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND ";
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%s' ) > DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND ";
 			break;
 		case 3: 
-			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%S' ) > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND ";
+			$where .= "from_unixtime( send_time, '%Y-%m-%d %H:%i:%s' ) > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND ";
 			break;
 	}
 	$where .= true;
 	$sql = "SELECT COUNT(*) FROM " . $GLOBALS ['ecs']->table ( 'kt_bcards' ) . $where;
-	echo $sql;
 	$total= $GLOBALS ['db']->getOne ( $sql );
+	//每页显示数量
+	$listRows = 20;
 	$page = new Page( $total, $listRows );
 	
 	$list = getCardList($where, $page->firstRow, $page->listRows );
@@ -387,8 +384,7 @@ if ($_REQUEST['act'] == 'list')
 			'text' => '生成代金卡',
 			'href' => "kt_card.php?act=edit_card"
 	) );
-	if ($map['card_type'])
-		$smarty->assign ( 'import_link', array (
+	$smarty->assign ( 'import_link', array (
 				'text' => '导入代金卡',
 				'href' => "kt_card.php?act=import"
 		) );
@@ -447,7 +443,79 @@ function getCardList( $where, $firstRow, $listRows ){
 	return $cards;
 
 }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////// 导入excel start //////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * TODO::导入execel
+ */
+if ($_REQUEST ['act'] == 'import') {
+	$type_id = ! empty ( $_REQUEST ['tid'] ) ? intval ( $_REQUEST ['tid'] ) : 0;
+	// 语言
+	$smarty->assign ( 'lang', $_LANG );
+	$smarty->assign ( 'ur_here', '导入代金卡' );
+	// 返回链接
+	$smarty->assign ( 'action_link', array (
+			'text' => '返回代金卡列表',
+			'href' => "kt_card.php?act=list"
+	) );
+	// 内存占用情况
+	$smarty->assign ( 'form_act', 'importExcel' );
+	assign_query_info ();
+	$smarty->display ( 'kt_card_import.htm' );
+}
 
+if ($_REQUEST ['act'] == 'importExcel') {
+	// 语言
+	$smarty->assign ( 'lang', $_LANG );
+	$smarty->assign ( 'ur_here', '导入代金卡' );
+	// 内存占用情况
+	$filename = $_FILES ['file'] ['tmp_name'];
+	if ($filename == '')exit ( "请选择要导入的CSV文件！" );
+	//开始导入
+	$arr = array();
+	require (dirname ( __FILE__ ) . '/excel/PHPExcel.class.php');
+	require (dirname ( __FILE__ ) . '/excel/PHPExcel/Reader/Excel5.php');
+	$PHPExcel=new PHPExcel();
+	$PHPReader=new PHPExcel_Reader_Excel5();
+	$PHPExcel=$PHPReader->load($filename);
+	$currentSheet=$PHPExcel->getSheet(0);
+	$allColumn=$currentSheet->getHighestColumn();
+	$allRow=$currentSheet->getHighestRow();
+	for($currentRow=2;$currentRow<=$allRow;$currentRow++){
+		for($currentColumn='A';$currentColumn<=$allColumn;$currentColumn++){
+			$address=$currentColumn.$currentRow;
+			$arr[$currentRow][$currentColumn]=$currentSheet->getCell($address)->getValue();
+		}
+
+	}
+	$add_time = gmtime ();
+	$used_time = 0;
+	$order_id = 0;
+	$data_values = "";
+	foreach ( $arr as $v ){
+		$passTime = strtotime($v['E']);
+		$sendTime = strtotime($v['D']);
+		$data_values .= "('".$v['A']."','".$v['B']."','".$v['C']."','".$add_time."','$passTime','$sendTime','".$v['F']."','$used_time', '$order_id','".$v['G']."','".$v['G']."'),";
+	}
+	$data_values = substr($data_values,0,-1);
+	$sql = "INSERT INTO " . $GLOBALS ['ecs']->table ( 'kt_bcards' ) . "(type, card_sn, card_pwd, add_time,pass_time,send_time,owner, used_time, order_id,card_type, card_bonus) VALUES " . $data_values;
+	$res = $GLOBALS ['db']->query ( $sql );
+	if ($res) {
+		$iresult = "恭喜，导入成功";
+	} else {
+		$iresult = "导入失败";
+	}
+	$smarty->assign ( 'action_link', array (
+			'text' => '返回代金卡列表',
+			'href' => "kt_card.php?act=list"
+	) );
+	$smarty->assign ( 'iresult', $iresult );
+	$smarty->display ( 'kt_card_importcsv.htm' );
+}
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////// 导入excel end //////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO::批量激活
 if ($_REQUEST ['act'] == 'setStatus') {
@@ -642,7 +710,6 @@ function create_card( $type,$sn_head,$bnum,$cnum,$card_type)
 
              {
                 $GLOBALS['db']->query("INSERT INTO ".$GLOBALS['ecs']->table('kt_bcards')." (type,card_sn, card_pwd, add_time, used_time, card_type, card_bonus) VALUES('$type','$card_sn','$card_pwd','$add_time','$used_time','$card_type','$card_type')");
-             	echo "INSERT INTO ".$GLOBALS['ecs']->table('kt_bcards')." (type,card_sn, card_pwd, add_time, used_time, card_type, card_bonus) VALUES('$type','$card_sn','$card_pwd','$add_time','$used_time','$card_type','$card_type')" . "<hr />";
              }
              else
              {
