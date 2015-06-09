@@ -112,10 +112,11 @@
 </div>
 <h1>
 <div class="toolbar">
-  <input type="checkbox" onclick="selectAll();">全选
-  <input type="checkbox" onclick="selectOther();">反选
-  <input type="checkbox" onclick="selectClean();">全不选
-  <span class="action-span"><a href="javascript:;" action="{$action}" id="setstaus">批量激活</a></span>
+  <input type="checkbox" onclick="selectOther();">选择
+  <span class="action-span">
+  	<input type="hidden" name='act' value='{$action}'>
+  	<input type="submit" name='' value='批量设置'>
+  </span>
 </div>
 <div style="clear:both"></div>
 </h1>
@@ -132,19 +133,6 @@ $(function(){
     })
   })
 
-  $('#setstaus').click(function(){
-    var _this = $("form[name='listForm']");
-    var action = $(this).attr('action');
-    _this.css({'backround':'red'});
-    $.post( "ks_card.php?act="+action, _this.serialize(), function(data){
-       if( data.status ){
-          alert(data.desc);
-          location.reload();
-       }else{
-          alert(data.desc)
-       }
-     }, "json");
-  })
 })  
 </script>
 <!-- end bonus_type list -->

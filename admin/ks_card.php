@@ -353,6 +353,10 @@ if ($_REQUEST ['act'] == 'list') {
 }
 // TODO::批量激活
 if ($_REQUEST ['act'] == 'setStatus') {
+	
+	var_dump($_POST);
+	
+	exit();
 	$data = array( 'status'=>0);
 	$ids = (array)$_REQUEST['ids'];
 	if( empty($ids)  ){

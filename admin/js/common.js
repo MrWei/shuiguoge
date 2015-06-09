@@ -246,31 +246,14 @@ function rand_str(prefix)
 
   return (tt + rand);
 }
-//反选
 function selectOther(){ 
-  var ids=$("input[name='ids[]']");
-  for(var i=0;i<ids.length;i++)　　{  
- 　　　　if(ids[i].checked==true)
-　　　　{    
-　　　　　　ids[i].checked="";   
-　　　　}else{   
- 　　　　　　ids[i].checked="checked";  
- 　　　}  
-　　}
-}
-//全选
-function selectAll(){  
-　　var ids=$("input[name='ids[]']");  
-　　for(var i=0;i<ids.length;i++)
-　　{   
-　　　　ids[i].checked="checked";  
-　　}
-}
-//全选
-function selectClean(){  
-　　var ids=$("input[name='ids[]']");  
-　　for(var i=0;i<ids.length;i++)
-　　{   
-　　　　ids[i].checked=false;  
-　　}
+	  var ids=$("input[name='ids[]']");
+	  for(var i=0;i<ids.length;i++)　　{  
+	 　　　　if(ids[i].checked==true)
+	　　　　{    
+	　　　　　　ids[i].checked="";   
+	　　　　}else{   
+	 　　　　　　ids[i].checked="checked";  
+	 　　　}  
+	　　}
 }
