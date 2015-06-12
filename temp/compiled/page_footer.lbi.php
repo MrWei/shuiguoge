@@ -37,12 +37,12 @@
           <ul>
             <li class="item1"><span class="icon-common icon-common-tel"></span><?php echo $this->_var['service_phone']; ?></li>
             <li class="item2"> 周一至周六9:00-18:00 </li>
-            <?php $_from = $this->_var['qq']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'im_0_00887300_1434074322');if (count($_from)):
-    foreach ($_from AS $this->_var['im_0_00887300_1434074322']):
+            <?php $_from = $this->_var['qq']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'im');if (count($_from)):
+    foreach ($_from AS $this->_var['im']):
 ?>
-      <?php if ($this->_var['im_0_00887300_1434074322']): ?>
+      <?php if ($this->_var['im']): ?>
         <li class="item3 clearfix">
-      <a class="btn btn-green" href="http://wpa.qq.com/msgrd?v=3&uin=<?php echo $this->_var['im_0_00887300_1434074322']; ?>&site=qq&menu=yes" target="_blank"><span class="icon-common icon-common-face"></span>24小时在线客服</a></li>
+      <a class="btn btn-green" href="http://wpa.qq.com/msgrd?v=3&uin=<?php echo $this->_var['im']; ?>&site=qq&menu=yes" target="_blank"><span class="icon-common icon-common-face"></span>24小时在线客服</a></li>
       <?php endif; ?>
       <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
           </ul>
