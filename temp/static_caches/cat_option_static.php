@@ -1,21 +1,5 @@
 <?php
 $data = array (
-  29 => 
-  array (
-    'cat_id' => '29',
-    'cat_name' => '圣诞',
-    'measure_unit' => '100',
-    'parent_id' => '0',
-    'is_show' => '0',
-    'show_in_nav' => '0',
-    'grade' => '0',
-    'sort_order' => '50',
-    'has_children' => '0',
-    'goods_num' => '1',
-    'level' => 0,
-    'id' => '29',
-    'name' => '圣诞',
-  ),
   26 => 
   array (
     'cat_id' => '26',
@@ -47,6 +31,22 @@ $data = array (
     'level' => 0,
     'id' => '28',
     'name' => '核心产品',
+  ),
+  29 => 
+  array (
+    'cat_id' => '29',
+    'cat_name' => '圣诞',
+    'measure_unit' => '100',
+    'parent_id' => '0',
+    'is_show' => '0',
+    'show_in_nav' => '0',
+    'grade' => '0',
+    'sort_order' => '50',
+    'has_children' => '0',
+    'goods_num' => '1',
+    'level' => 0,
+    'id' => '29',
+    'name' => '圣诞',
   ),
 );
 ?>
