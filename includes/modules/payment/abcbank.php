@@ -55,36 +55,27 @@ class abcbank
     function get_code($order, $payment)
     {   
     	$http = 'http://'.$_SERVER['HTTP_HOST'];
-	    $tOrderNo    = $order['order_sn'];                         /*订单编号*/
+	    $tOrderNo    = $order['order_sn'];                         //*订单编号
 		$tOrderDesc = '';                           /*订单说明*/
-		$tOrderDate = date("Y/m/d", $order['add_time']);           /*订单日期*/
-		$tOrderTime = date("h:i:s", $order['add_time']);           /*订单时间*/
-		$tOrderAmountStr =$order['order_amount'];                  /*订单金额*/
-		$tOrderURL ='http://您的域名/MerchantPayment/MerchantQueryOrder.php?OrderNo=ON200306300001&QueryType=1';                   /*订单查询网址*/
-		$tProductType = '1';                                        /*商品种类*/
-	    $tPaymentType ='1';                                         /*支付类型*/
-        $tpaymentlinktype ='1';                                     /*接入类型*/
-		$tnotifytype = '1';                                         /*通知方式*/
-		$tresultnotifyurl ='http://您的域名:8080/axis/MerchantResult.jsp';                                               /*支付结果地址*/
-		$tMerchantRemarks = 'Hi!';                                  /*商家备注*/
-		$tTotalCount = '1';                                         /*订单数量*/
-		$tproductid = "160605";                                     /*商品ID*/
-		$tproductname= "HTC s710e";                                 /*商品名称*/
-		$tuniteprice ="0.01";                                       /*商品单价*/
-		$tqty        ="1";                                          /*购买数量*/
+		$tOrderDate = date("Y/m/d", $order['add_time']);           //*订单日期
+		$tOrderTime = date("h:i:s", $order['add_time']);           //*订单时间
+		$orderTimeoutDate = date("h:i:s", $order['add_time']+3600); //订单支付有效期 
+		$tOrderAmountStr =$order['order_amount'];                  //*订单金额*/
+		$tOrderURL = $http."/Payment/ABCBank/code/MerchantQueryOrder.php?OrderNo={$tOrderNo}&QueryType=1";                   //*订单查询网址*/
+		$tresultnotifyurl = $http."/Payment/ABCBank/code/MerchantResult.php ";                                               //*支付结果地址*/
 		
 		//订单表单
 		$html = '';
-		$html .= '<form action="'.$http.'MerchantPayment.php" method="post" style="display:none" >';
+		$html .= '<form action="'.$http.'/Payment/ABCBank/code/MerchantPayment.php" method="post" >';
 		$html .= '<input type="hidden" name="PayTypeID" value="ImmediatePay">交易类型 *必输';
-		$html .= '<input type="hidden" name="OrderDate" value="">订单日期';
-		$html .= '<input type="hidden" name="OrderTime" value="">订单时间';
-		$html .= '<input type="hidden" name="orderTimeoutDate" value="">订单支付有效期 精确到秒，选输';
-		$html .= '<input type="hidden" name="OrderNo" value="">交易编号 *必输';
+		$html .= '<input type="hidden" name="OrderDate" value="'.$tOrderDate.'">订单日期';
+		$html .= '<input type="hidden" name="OrderTime" value="'.$tOrderTime.'">订单时间';
+		$html .= '<input type="hidden" name="orderTimeoutDate" value="'.$orderTimeoutDate.'">订单支付有效期 精确到秒，选输';
+		$html .= '<input type="hidden" name="OrderNo" value="'.$tOrderNo.'">交易编号 *必输';
 		$html .= '<input type="hidden" name="CurrencyCode" value="156"> 交易币种 156:人民币,*必输';
-		$html .= '<input type="hidden" name="PaymentRequestAmount" value="">交易金额 *必输';
+		$html .= '<input type="hidden" name="PaymentRequestAmount" value="'.$tOrderAmountStr.'">交易金额 *必输';
 		$html .= '<input type="hidden" name="Fee" value="0">手续费金额';
-		$html .= '<input type="hidden" name="OrderDesc" value="">订单说明';
+		$html .= '<input type="hidden" name="OrderDesc" value="'.$tOrderNo.'">订单说明';
 		$html .= '<input type="hidden" name="OrderURL" value="">订单地址';
 		$html .= '<input type="hidden" name="ReceiverAddress" value="">收货地址';
 		$html .= '<input type="hidden" name="InstallmentMark" value="0">分期标识1：分期；0：否。*必输';
@@ -95,9 +86,9 @@ class abcbank
 		$html .= '<input type="hidden" name="PaymentLinkType" value="1">交易渠道 *必输';
 		$html .= '<input type="hidden" name="trUnionPayLinkType" value="0"> *必输';
 		$html .= '<input type="hidden" name="NotifyType" value="0">  *必输';
-		$html .= '<input type="hidden" name="ResultNotifyURL" value="http://10.233.4.10:99/demo/MerchantResult.php">通知URL地址  *必输';
-		$html .= '<input type="hidden" name="IsBreakAccount" value="0">交易是否分账  *必输</form>';
-		
+		$html .= '<input type="hidden" name="ResultNotifyURL" value="'.$tresultnotifyurl.'">通知URL地址  *必输';
+		$html .= '<input type="hidden" name="IsBreakAccount" value="0">交易是否分账  *必输';
+		$html .= "<input type=submit value='" .$GLOBALS['_LANG']['pay_button']. "'></form>";
 		return $html;
     }
 
